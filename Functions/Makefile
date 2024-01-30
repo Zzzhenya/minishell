@@ -13,7 +13,7 @@ OBJ := $(SRC:.c=.o)
 all : $(NAME)
 
 $(NAME): $(OBJ) Makefile
-	$(CC) $(OBJ) $(CPPFLAGS) -lreadline $(LDFLAGS) -o $@
+	$(CC) $(OBJ) $(CPPFLAGS) $(LDFLAGS) -lreadline -o $@
 
 clean:
 	rm -rf $(OBJ)
