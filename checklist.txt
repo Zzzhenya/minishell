@@ -1,0 +1,61 @@
+1. Display a prompt when waiting for new command
+
+2. Have a working history
+
+3. Search and launch the right executable (based on the PATH variable or using a relative or an absolute path)
+
+4. Shoukd not have more than one global variable
+
+5. Should not interpret 
+		unclosed quotes 
+		or special chars that are not required by subject such as \ or ;
+
+6. Handle single quote ' - should prevent the shell from interpreting the meta chars in the quoted sequence
+
+7. Handle double quote '' - should prevent the shell from interpreting the meta chars in the quoted sequence
+	except for $ - $ should be interpreted
+
+8. Implement redirections:
+	< redirect input
+	> redirect output
+	<< should be given a delimiter, 
+		read input until a line with the delimeter is seen. 
+		It doesn't have to update the history.
+	>> redirect output in append mode
+
+9. Implement pipes (|)
+	output of each command in a pipeline is connected to the input of the next comman via a |
+
+10. Handle environment variables ($ followed by a sequence of chars)
+	They should expand to their values.
+
+11. Handle $?
+	It should expand to exit status of the most recently executed foreground pipeline.
+
+12. Handle like bash
+		ctrl C
+		ctrl D
+		ctrl \
+
+13. In interactive mode;
+		ctrl C - displays a new prompt on a new line.
+		ctrl D - exits the shell
+		ctrl \ - does nothing
+
+14. Implement following builtins
+		echo with option -n
+		cd with only a relative or absolute path
+		pwd with no options
+		export with no options
+		unset with no options
+		env with no options or arguments
+		exit with no options
+
+** readline function may cause memory leaks but your code sholdn't leak
+
+
+BONUS
+
+15. && and || with parenthesis for priorities
+
+16. Wildcards * should work for the current working directory.
