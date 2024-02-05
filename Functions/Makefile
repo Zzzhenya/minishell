@@ -1,6 +1,6 @@
 NAME = read_line
 
-SRC = read_line.c
+SRC = read_line.c ft_splitbyspace.c
 
 LDFLAGS= -L/usr/local/opt/readline/lib
 
