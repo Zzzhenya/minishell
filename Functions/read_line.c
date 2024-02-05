@@ -34,12 +34,10 @@ int main (void)
 
 	line = NULL;
 	argv = NULL;
-	//printf("%s\n", line);
 	line = readline ("Shell % ");
 	
 	argv = ft_splitbyspace(line);
 	argc = get_arg_count(argv);
-	//if (argc >= 1)
 	pid = fork();
 	if (pid == -1)
 	{
@@ -49,6 +47,7 @@ int main (void)
 	}
 	if (pid == 0)
 	{
+		// Do execve stuff to call first command(/bin/ls -la)
 		if (execve(argv[0], argv, NULL) == -1)
 		{
 			printf("execve error\n");
@@ -60,7 +59,6 @@ int main (void)
 	{
 		wait(NULL);
 		clean_argv(argv, argc);
-		// Do execve stuff to call first command(/bin/ls -la)
 		free (line);
 	}
 	system("leaks read_line"); 
