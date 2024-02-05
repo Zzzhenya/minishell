@@ -26,19 +26,12 @@ void clean_argv(char **argv, int argc)
 	argv = NULL;
 }
 
-int main (void)
+/* If file is accessible execve the path and options */
+
+int run_command(char **argv)
 {
 	pid_t	pid;
-	char 	*line; 
-	char 	**argv;
-	int 	argc;
 
-	line = NULL;
-	argv = NULL;
-	line = readline ("Shell % ");
-	
-	argv = ft_splitbyspace(line);
-	argc = get_arg_count(argv);
 	if (access(argv[0], 1) != 0)
 	{
 		printf("%d :Do not have access\n", errno);
@@ -65,9 +58,41 @@ int main (void)
 	else
 	{
 		wait(NULL);
-		clean_argv(argv, argc);
-		free (line);
 	}
+	return (0);
+}
+
+void	get_env_var(char *name)
+{
+	char *ret = NULL;
+
+	ret = getenv(name);
+	if (ret == NULL)
+	{
+		printf("%d :getenv error\n", errno);
+		return;
+	}
+	else
+		printf("%s\n", ret);
+}
+
+int main (void)
+{
+	char 	*line; 
+	char 	**argv;
+	int 	argc;
+
+	line = NULL;
+	argv = NULL;
+	line = readline ("Shell % ");
+	
+	argv = ft_splitbyspace(line);
+	argc = get_arg_count(argv);
+
+	//run_command(argv);
+	get_env_var(argv[0]);
+	clean_argv(argv, argc);
+	free (line);
 	//system("leaks read_line"); 
 	return (0);
 }
