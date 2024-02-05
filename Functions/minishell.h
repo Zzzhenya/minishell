@@ -6,9 +6,10 @@
 /* READLINE includes + flags in Makefile */
 # include <readline/readline.h>
 # include <readline/history.h>
-/* execve */
+/* execve fork */
 # include <unistd.h>
-
+/* wait wait2 wait3*/
+#include <sys/wait.h>
 
 char	**ft_splitbyspace(char *str);
 

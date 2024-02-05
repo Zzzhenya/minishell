@@ -27,20 +27,42 @@ void clean_argv(char **argv, int argc)
 
 int main (void)
 {
-	char *line = NULL; 
-	char **argv = NULL;
-	int argc;
+	pid_t	pid;
+	char 	*line; 
+	char 	**argv;
+	int 	argc;
 
+	line = NULL;
+	argv = NULL;
 	//printf("%s\n", line);
 	line = readline ("Shell % ");
 	
 	argv = ft_splitbyspace(line);
 	argc = get_arg_count(argv);
 	//if (argc >= 1)
-	if (execve(argv[0], argv, NULL) == -1)
+	pid = fork();
+	if (pid == -1)
+	{
+		printf("Fork error\n");
+		system("leaks read_line"); 
 		return (1);
-	clean_argv(argv, argc);
-	// Do execve stuff to call first command(/bin/ls -la)
-	free (line);
+	}
+	if (pid == 0)
+	{
+		if (execve(argv[0], argv, NULL) == -1)
+		{
+			printf("execve error\n");
+			system("leaks read_line");
+			return (1);
+		}
+	}
+	else
+	{
+		wait(NULL);
+		clean_argv(argv, argc);
+		// Do execve stuff to call first command(/bin/ls -la)
+		free (line);
+	}
+	system("leaks read_line"); 
 	return (0);
 }

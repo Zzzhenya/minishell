@@ -21,4 +21,12 @@ clean:
 fclean: clean
 	rm -rf $(NAME)
 
-.PHONY : all clean fclean
+re: fclean all
+
+leak_check:
+	make re
+	export MallocStackLogging=1
+	export MallocStackLoggingNoCompact=1
+	leaks --atExit -- ./$(NAME)
+
+.PHONY : all clean fclean leak_check re
