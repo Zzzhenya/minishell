@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+extern int errno;
 //char *readline (char *prompt);
 
 int get_arg_count(char **argv)
@@ -38,11 +39,17 @@ int main (void)
 	
 	argv = ft_splitbyspace(line);
 	argc = get_arg_count(argv);
-	pid = fork();
+	if (access(argv[0], 1) != 0)
+	{
+		printf("%d :Do not have access\n", errno);
+		return (1);
+	}
+	else
+		pid = fork();
 	if (pid == -1)
 	{
-		printf("Fork error\n");
-		system("leaks read_line"); 
+		printf("%d :Fork error\n", errno);
+		//system("leaks read_line"); 
 		return (1);
 	}
 	if (pid == 0)
@@ -50,8 +57,8 @@ int main (void)
 		// Do execve stuff to call first command(/bin/ls -la)
 		if (execve(argv[0], argv, NULL) == -1)
 		{
-			printf("execve error\n");
-			system("leaks read_line");
+			printf("%d :execve error\n", errno);
+			//system("leaks read_line");
 			return (1);
 		}
 	}
@@ -61,6 +68,6 @@ int main (void)
 		clean_argv(argv, argc);
 		free (line);
 	}
-	system("leaks read_line"); 
+	//system("leaks read_line"); 
 	return (0);
 }
