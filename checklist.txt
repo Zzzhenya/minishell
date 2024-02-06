@@ -59,3 +59,5 @@ BONUS
 15. && and || with parenthesis for priorities
 
 16. Wildcards * should work for the current working directory.
+
+17. Hello
