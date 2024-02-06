@@ -84,15 +84,17 @@ int main (void)
 
 	line = NULL;
 	argv = NULL;
-	line = readline ("Shell % ");
+	while (1)
+	{
+		line = readline ("Shell % ");
 	
-	argv = ft_splitbyspace(line);
-	argc = get_arg_count(argv);
-
-	//run_command(argv);
-	get_env_var(argv[0]);
-	clean_argv(argv, argc);
-	free (line);
+		argv = ft_splitbyspace(line);
+		argc = get_arg_count(argv);
+		run_command(argv);
+		//get_env_var(argv[0]);
+		clean_argv(argv, argc);
+		free (line);
+	}
 	//system("leaks read_line"); 
 	return (0);
 }
