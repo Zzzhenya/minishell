@@ -1,0 +1,8 @@
+[?2004hShell % 
+[?2004lYou have access to multiple processes named read_line:
+    a) 76786 ./read_line
+    b) 76789 ./read_line
+
+leaks[76790]: leaks cannot find any existing process you have access to which has a name like 'read_line'; try running with `sudo`.
+leaks[76790]: [fatal] mach port for process 0 not valid
+execve error
