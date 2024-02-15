@@ -1,0 +1,3 @@
+[submodule "Shenya/Functions/libft"]
+	path = Shenya/Functions/libft
+	url = https://github.com/Zzzhenya/libft.git
