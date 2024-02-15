@@ -1,19 +1,30 @@
-NAME = read_line
+NAME = minishell
 
-SRC = read_line.c ft_splitbyspace.c
+SRC = read_line.c ft_splitbyspace.c main.c
 
-LDFLAGS= -L/usr/local/opt/readline/lib
+#ifeq ($(detected_OS), Darwin)
+#	LDFLAGS= -L/usr/local/opt/readline/lib
+#	CPPFLAGS= -I/usr/local/opt/readline/include
+#else
+#	LDFLAGS= -L/usr/local/lib
+#	CPPFLAGS= -I/usr/local/include
+#endif
 
-CPPFLAGS= -I/usr/local/opt/readline/include
+LDFLAGS= -L/lib/x86_64-linux-gnu/ -lreadline
+
+CFLAGS = -Wall -Werror -Wextra -g -v
 
 CC = cc
 
-OBJ := $(SRC:.c=.o)
+#OBJ := $(SRC:.c=.o)
 
 all : $(NAME)
 
-$(NAME): $(OBJ) Makefile
-	$(CC) $(OBJ) $(CPPFLAGS) $(LDFLAGS) -lreadline -o $@
+%.o: %.c Makefile
+	$(CC) $(CFLAGS) -DREADLINE_LIBRARY=1 -I./ -Ilib/readline -c $< -o $@
+
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) $(OBJ) -Llib/readline/library -lreadline -lhistory -o $(NAME)
 
 clean:
 	rm -rf $(OBJ)

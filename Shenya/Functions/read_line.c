@@ -1,8 +1,5 @@
 #include "minishell.h"
 
-extern int errno;
-//char *readline (char *prompt);
-
 int get_arg_count(char **argv)
 {
 	int len = 0;
@@ -74,27 +71,4 @@ void	get_env_var(char *name)
 	}
 	else
 		printf("%s\n", ret);
-}
-
-int main (void)
-{
-	char 	*line; 
-	char 	**argv;
-	int 	argc;
-
-	line = NULL;
-	argv = NULL;
-	while (1)
-	{
-		line = readline ("Shell % ");
-	
-		argv = ft_splitbyspace(line);
-		argc = get_arg_count(argv);
-		run_command(argv);
-		//get_env_var(argv[0]);
-		clean_argv(argv, argc);
-		free (line);
-	}
-	//system("leaks read_line"); 
-	return (0);
 }

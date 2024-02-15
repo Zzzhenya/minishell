@@ -11,6 +11,16 @@
 /* wait wait2 wait3*/
 #include <sys/wait.h>
 
+extern int errno;
+
 char	**ft_splitbyspace(char *str);
+
+int get_arg_count(char **argv);
+
+void	get_env_var(char *name);
+
+int run_command(char **argv);
+
+void clean_argv(char **argv, int argc);
 
 #endif
