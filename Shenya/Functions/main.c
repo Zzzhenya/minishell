@@ -31,11 +31,17 @@ int main (int argc, char **argv, char **envp)
 	if (argc == 2)
 		non_interactive_bash(argv[1], envp);
 	else
-	{
+	{ /* if stdin is a tty*/
 		(void)argc;
 		(void)argv;
-		interactive_bash(NULL, NULL, 0, envp);
+		if (isatty(0) == 1)
+			interactive_bash(NULL, NULL, 0, envp);
+		else
+		{
+			(void)envp;
+			return(errno);
+		}
 	}
-	//system("leaks read_line"); 
+	//system("leaks minishell"); 
 	return (0);
 }
