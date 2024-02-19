@@ -9,7 +9,9 @@
 /* execve fork */
 # include <unistd.h>
 /* wait wait2 wait3*/
-#include <sys/wait.h>
+# include <sys/wait.h>
+
+# include "libft/libft.h"
 
 extern int errno;
 
