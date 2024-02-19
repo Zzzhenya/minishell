@@ -27,6 +27,8 @@ void	get_env_var(char *name);
 
 int run_command(char **argv);
 
+int run_command1(char *cmd, char **argv);
+
 void clean_argv(char **argv, int argc);
 
 #endif
