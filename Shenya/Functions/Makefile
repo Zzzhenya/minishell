@@ -10,9 +10,13 @@ SRC = read_line.c ft_splitbyspace.c main.c
 #	CPPFLAGS= -I/usr/local/include
 #endif
 
-LDFLAGS= -L/lib/x86_64-linux-gnu/ -lreadline
+#LDFLAGS= -L/lib/x86_64-linux-gnu/ -lreadline
 
 CFLAGS = -Wall -Werror -Wextra -g -v
+
+LDFLAGS= -L/usr/local/opt/readline/lib
+
+CPPFLAGS= -I/usr/local/opt/readline/include
 
 CC = cc
 
@@ -21,10 +25,10 @@ CC = cc
 all : $(NAME)
 
 %.o: %.c Makefile
-	$(CC) $(CFLAGS) -DREADLINE_LIBRARY=1 -I./ -Ilib/readline -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -Llib/readline/library -lreadline -lhistory -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) $(CPPFLAGS) $(LDFLAGS) -lreadline -o $(NAME)
 
 clean:
 	rm -rf $(OBJ)
