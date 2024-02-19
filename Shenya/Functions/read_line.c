@@ -61,6 +61,41 @@ int run_command(char **argv)
 	return (0);
 }
 
+int run_command1(char *cmd, char **argv)
+{
+	pid_t	pid;
+
+	if (access(cmd, 1) != 0)
+	{
+		printf("%d :Do not have access\n", errno);
+		return (1);
+	}
+	else
+		pid = fork();
+	if (pid == -1)
+	{
+		printf("%d :Fork error\n", errno);
+		//system("leaks read_line"); 
+		return (1);
+	}
+	if (pid == 0)
+	{
+		// Do execve stuff to call first command(/bin/ls -la)
+		/* have to string together cmd and flags as second arg to execve */
+		if (execve(cmd, argv, NULL) == -1)
+		{
+			printf("%d :execve error\n", errno);
+			//system("leaks read_line");
+			return (1);
+		}
+	}
+	else
+	{
+		wait(NULL);
+	}
+	return (0);
+}
+
 void	get_env_var(char *name)
 {
 	char *ret = NULL;
