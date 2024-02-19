@@ -11,9 +11,13 @@
 /* wait wait2 wait3*/
 # include <sys/wait.h>
 
-# include "libft/libft.h"
+#if __linux__ 
+# include <sys/errno.h>
+#else
+# include <errno.h>
+#endif
 
-extern int errno;
+# include "libft/libft.h"
 
 char	**ft_splitbyspace(char *str);
 
