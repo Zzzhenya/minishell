@@ -13,9 +13,11 @@ void	free_2d(char **arr)
 	while (arr[i] != NULL)
 	{
 		free(arr[i]);
+		//arr[i] = NULL;
 		i++;
 	}
 	free (arr);
+	//arr = NULL;
 }
 
 char	**save_all_env_paths(char **envp)
