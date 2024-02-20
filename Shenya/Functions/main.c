@@ -67,7 +67,14 @@ char	*check_cmd_in_path(char **envp, char *command)
 	while (path_array[i] != NULL)
 	{
 		if (command[0] != '/')
+		{
+			/*Check whether it's a built in
+				if a built in run the built in function
+				else convert command to absolute path
+				( File names will be coupled with redirections in the struct)
+			*/
 			path = convert_command_absolute_path(path_array, i, command);
+		}
 		else
 			path = ft_strdup(command);
 		if (access(path, F_OK) == 0 && access(path, X_OK) == 0)
@@ -101,7 +108,10 @@ void interactive_bash(char **argv, char *line, int argc, char **envp)
 			if (errno == 2)
 				ft_printf("%s: command not found\n", argv[0]);
 			else
+			{
+				ft_printf("Haha\n");
 				perror("buf_command[0]: ");
+			}
 		}
 		else
 		{
@@ -112,7 +122,8 @@ void interactive_bash(char **argv, char *line, int argc, char **envp)
 		//get_env_var(argv[0]);
 		clean_argv(argv, argc);
 		free (line);
-		ft_printf("errno %d\n", errno);
+		get_env_var(cmd);
+		//ft_printf("errno %d\n", errno);
 	}
 }
 
