@@ -2,28 +2,9 @@ NAME = minishell
 
 SRC = read_line.c ft_splitbyspace.c main.c
 
-#ifeq ($(detected_OS), Darwin)
-#	LDFLAGS= -L/usr/local/opt/readline/lib
-#	CPPFLAGS= -I/usr/local/opt/readline/include
-#endif
-#else
-#	LDFLAGS= -L/lib/x86_64-linux-gnu/
-	#CPPFLAGS= -I/usr/local/include
-#endif
-
-#LDFLAGS= -L/lib/x86_64-linux-gnu/ -lreadline
-
 CFLAGS = -Wall -Werror -Wextra -g
 
-LDFLAGS= -L/usr/local/opt/readline/lib
-
-CPPFLAGS= -I/usr/local/opt/readline/include
-
 INCLUDE=libft/libft.h minishell.h
-
-#LDFLAGS= -L/usr/local/lib
-#CPPFLAGS= -I/usr/local/include
-#$(CPPFLAGS) $(LDFLAGS)
 
 LIBFT_DIR= libft
 
