@@ -68,11 +68,6 @@ char	*check_cmd_in_path(char **envp, char *command)
 	{
 		if (command[0] != '/')
 		{
-			/*Check whether it's a built in
-				if a built in run the built in function
-				else convert command to absolute path
-				( File names will be coupled with redirections in the struct)
-			*/
 			path = convert_command_absolute_path(path_array, i, command);
 		}
 		else
@@ -89,40 +84,89 @@ char	*check_cmd_in_path(char **envp, char *command)
 	return (NULL);
 }
 
-
-void interactive_bash(char **argv, char *line, int argc, char **envp)
+void	exec_from_path(char **envp, char **argv)
 {
 	char 	*cmd;
 
-	(void)envp;
 	cmd = NULL;
-	while (1)
+	cmd = check_cmd_in_path(envp, argv[0]);
+	if (!cmd)
 	{
-		line = readline ("Shell % ");
-	
-		argv = ft_splitbyspace(line);
-		argc = get_arg_count(argv);
-		cmd = check_cmd_in_path(envp, argv[0]);
-		if (!cmd)
-		{
-			if (errno == 2)
-				ft_printf("%s: command not found\n", argv[0]);
-			else
-			{
-				ft_printf("Haha\n");
-				perror("buf_command[0]: ");
-			}
-		}
+		if (errno == 2)
+			ft_printf("%s: command not found\n", argv[0]);
 		else
 		{
-			printf("%s\n", cmd);
-			//run_command(argv);
-			run_command1(cmd, argv);
+			ft_printf("Haha\n");
+			perror("buf_command[0]: ");
 		}
+	}
+	else
+	{
+		printf("%s\n", cmd);
+		//run_command(argv);
+		run_command1(cmd, argv);
+	}
+
+}
+
+
+int cmd_is_builtin(char	**argv)
+{
+	if (!ft_strncmp(argv[0], "echo", ft_strlen(argv[0]))
+		|| !ft_strncmp(argv[0], "cd", ft_strlen(argv[0]))
+		|| !ft_strncmp(argv[0], "pwd", ft_strlen(argv[0]))
+		|| !ft_strncmp(argv[0], "export", ft_strlen(argv[0]))
+		|| !ft_strncmp(argv[0], "unset", ft_strlen(argv[0]))
+		|| !ft_strncmp(argv[0], "env", ft_strlen(argv[0]))
+		|| !ft_strncmp(argv[0], "exit", ft_strlen(argv[0])))
+		return (1);
+	else
+		return (0);
+}
+
+void	exec_builtin(char **argv)
+{
+	printf("%s\n", argv[0]);
+}
+
+void	child_process(char **envp, char **argv)
+{
+	/*Check whether it's a built in
+	if a built in run the built in function
+	else convert command to absolute path
+	( File names will be coupled with redirections in the struct)
+	*/
+	if (cmd_is_builtin(argv))
+		exec_builtin(argv);
+	else
+	{
+		/* handle errors??? What errors? Are they already
+		handled by lexer parser? */
+		exec_from_path(envp, argv);
+	}
+}
+
+
+void interactive_bash(char **argv, char *line, int argc, char **envp)
+{
+	(void)envp;
+	//cmd = NULL;
+	while (1)
+	{
+		line = readline ("Minishell > ");
+		add_history(line);
+		if (!line)
+		{
+			/* What is the exit code?*/
+			exit (0);
+		}
+		argv = ft_splitbyspace(line);
+		argc = get_arg_count(argv);
+		child_process(envp, argv);
 		//get_env_var(argv[0]);
 		clean_argv(argv, argc);
 		free (line);
-		get_env_var(cmd);
+		//get_env_var(cmd);
 		//ft_printf("errno %d\n", errno);
 	}
 }
@@ -142,7 +186,8 @@ int main (int argc, char **argv, char **envp)
 	{ 
 		(void)argc;
 		(void)argv;
-		/* check if stdin is a tty*/
+		/* check if stdin is a tty, why only stdin checked for tty?
+			why shouldnt stdin be a tty?*/
 		if (isatty(0) == 1)
 			interactive_bash(NULL, NULL, 0, envp);
 		else
