@@ -124,9 +124,34 @@ int cmd_is_builtin(char	**argv)
 		return (0);
 }
 
+void	exec_pwd(void)
+{
+	char *buf;
+	char *retptr;
+
+	buf = malloc(sizeof(char) * 1024);
+	if(!buf)
+		printf("malloc failed\n");
+	buf[1024] = '\0';
+	retptr = getcwd(buf, 1024);
+	if (!retptr)
+	{
+		free(buf);
+		printf("getcwd crashed\n");
+	}
+	else
+	{
+		printf("%s", retptr);
+		free (buf);
+	}
+}
+
 void	exec_builtin(char **argv)
 {
-	printf("%s\n", argv[0]);
+	if (!ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])))
+		exec_pwd();
+	else
+		printf("%s\n", argv[0]);
 }
 
 void	child_process(char **envp, char **argv)
