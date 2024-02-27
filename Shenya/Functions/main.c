@@ -184,12 +184,19 @@ int main (int argc, char **argv, char **envp)
 		if (isatty(0) == 1)
 			interactive_bash(NULL, NULL, 0, envp);
 		else
-		{
 			(void)envp;
-			/* Errno from isatty() */
-			return(errno);
-		}
 	}
 	//system("leaks minishell"); 
 	return (0);
 }
+/* Removing error handling for isatty for now because;
+
+sde-silv@c4b11c5$ /bin/bash < a.txt 
+sde-silv@c4b11c5$ $?
+0: command not found
+sde-silv@c4b11c5$ ./minishell < a.txt 
+sde-silv@c4b11c5$ $?
+25: command not found
+
+
+*/
