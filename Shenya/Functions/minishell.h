@@ -31,4 +31,7 @@ int run_command1(char *cmd, char **argv);
 
 void clean_argv(char **argv, int argc);
 
+/* Built-ins*/
+void	exec_builtin(char **argv);
+
 #endif
