@@ -96,19 +96,17 @@ void	exec_from_path(char **envp, char **argv)
 			ft_printf("%s: command not found\n", argv[0]);
 		else
 		{
-			ft_printf("Haha\n");
+			printf("errno %d\n", errno);
 			perror("buf_command[0]: ");
 		}
 	}
 	else
 	{
-		printf("%s\n", cmd);
 		//run_command(argv);
 		run_command1(cmd, argv);
 	}
 
 }
-
 
 int cmd_is_builtin(char	**argv)
 {
@@ -122,36 +120,6 @@ int cmd_is_builtin(char	**argv)
 		return (1);
 	else
 		return (0);
-}
-
-void	exec_pwd(void)
-{
-	char *buf;
-	char *retptr;
-
-	buf = malloc(sizeof(char) * 1024);
-	if(!buf)
-		printf("malloc failed\n");
-	buf[1024] = '\0';
-	retptr = getcwd(buf, 1024);
-	if (!retptr)
-	{
-		free(buf);
-		printf("getcwd crashed\n");
-	}
-	else
-	{
-		printf("%s", retptr);
-		free (buf);
-	}
-}
-
-void	exec_builtin(char **argv)
-{
-	if (!ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])))
-		exec_pwd();
-	else
-		printf("%s\n", argv[0]);
 }
 
 void	child_process(char **envp, char **argv)
