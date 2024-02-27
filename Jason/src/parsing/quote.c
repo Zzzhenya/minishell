@@ -1,10 +1,23 @@
-#include <stdio.h>
-#include <stdlib.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quote.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkwak <tkwak@student.42berlin.de>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/27 20:05:45 by tkwak             #+#    #+#             */
+/*   Updated: 2024/02/27 20:12:12 by tkwak            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../include/minishell.h"
 
 /*	[F]
 	[Main point]
 	validate whether "User_input" has the even number of s_quote and d_quote.
 	If it's validated, save the number of sq, dq, which counted, to data struct.
+
+	if(n_sq & n_dq) is 짝수(even number) or 0.
 */
 int	count_quote(char *str, t_data *data)
 {
@@ -23,38 +36,13 @@ int	count_quote(char *str, t_data *data)
 			n_dq++;
 		i++;
 	}
-	if (n_sq % 2 == 0 && n_dq % 2 == 0) // if(n_sq & n_dq) is 짝수(even number) or 0.
+	if (n_sq % 2 == 0 && n_dq % 2 == 0)
 	{
-		data->n_sn = n_sq;
+		data->n_sq = n_sq;
 		data->n_dq = n_dq;
 		return (n_sq);
 	}
 	return (-1);
-}
-
-int ft_strlen(char *str)
-{
-    int i = 0;
-    while (str[i])
-        i++;
-    return (i);
-}
-
-/* [F]
-// 만약 문자열이 비어 있거나 유효하지 않은 따옴표 배열을 가지고 있다면 -1 반환 -> 에러.
-// Check unescaped quote: ' or " not pair but alone.
-*/
-int	check_unescaped_quote(char *str)
-{
-	if (str[0] != '\0')
-	{
-		if (check_quote_arrangement(str, 0) == -1)
-		{
-			free(str);
-			return (-1);
-		}
-	}
-	return (0);
 }
 
 /* [F]
@@ -82,27 +70,40 @@ int	check_quote_arrangement(char *str, int i)
 		return (-1);
 	while (str[i])
 	{
-        printf("str[i:%d]: %c\t", i, str[i]);
-        printf("str[i:%d]: %c\n", i+1, str[i+1]);
-		if (str[i] == '\'' && str[i + 1] != '\'')	// If ' not continuously located.
+		if (str[i] == '\'' && str[i + 1] != '\'')
 			m_str[j++] = str[i++];
-		else if (str[i] == '\"' && str[i + 1] != '\"')	// If " not continuously located.
+		else if (str[i] == '\"' && str[i + 1] != '\"')
 			m_str[j++] = str[i++];
 		else
 			i += 2;
-        printf("m_str[j:%d]: %c\n", j - 1, m_str[j-1]);
-        printf("i: %d, j: %d\n\n", i, j);
 	}
 	m_str[j] = '\0';
-    printf("1. m_str: %s\n", m_str);
 	if (ft_strlen(m_str) > 3 && m_str[0] == m_str[2] && m_str[0] != '\0')
 	{
 		free(m_str);
 		return (-1);
 	}
-	if (check_unescaped_quote(m_str) == -1)		// Check unescaped_quote.
+	if (check_unescaped_quote(m_str) == -1)
 		return (-1);
 	free(m_str);
+	return (0);
+}
+
+/* [F]
+// 만약 문자열이 비어 있거나
+// 유효하지 않은 따옴표 배열을 가지고 있다면 -1 반환 -> 에러.
+// Check unescaped quote: ' or " not pair but alone.
+*/
+int	check_unescaped_quote(char *str)
+{
+	if (str[0] != '\0')
+	{
+		if (check_quote_arrangement(str, 0) == -1)
+		{
+			free(str);
+			return (-1);
+		}
+	}
 	return (0);
 }
 
@@ -127,6 +128,13 @@ int	check_quote_arrangement(char *str, int i)
 //
 // Param(3, 4) == index.
 //	To make the code short below 25 lines.
+//
+// Example
+// 	"ls -la | cat 'abc' -e"
+//
+// If find \' or \" in str, cpy it to tmp_allocated_quote[k]
+//
+// tmp_allocated_quote[k] = ["]['][']["][\0]
 */
 int	check_quote_order(char *user_input, t_data *data, int i, int k)
 {
@@ -135,21 +143,21 @@ int	check_quote_order(char *user_input, t_data *data, int i, int k)
 	tmp_allocated_quote = malloc((data->n_sq + data->n_dq + 1) * sizeof(char));
 	if (tmp_allocated_quote == NULL)
 		return (NULL);
-	while (user_input[i])					// (ex) "ls -la | cat 'abc' -e"
+	while (user_input[i])
 	{
-		if (user_input[i] == '\'')			// If find ' in input
+		if (user_input[i] == '\'')
 		{
 			tmp_allocated_quote[k] = '\'';
 			k++;
 		}
-		else if (user_input[i] == '\"')		// If find " in input
+		else if (user_input[i] == '\"')
 		{
 			tmp_allocated_quote[k] = '\"';
 			k++;
 		}
 		i++;
 	}
-	tmp_allocated_quote[k] = '\0';			// tmp_allocated_quote[k] = ["]['][']["][\0]
+	tmp_allocated_quote[k] = '\0';
 	if (check_quote_arrangement(tmp_allocated_quote, 0) == -1)
 	{
 		free(tmp_allocated_quote);
@@ -159,6 +167,7 @@ int	check_quote_order(char *user_input, t_data *data, int i, int k)
 	return (0);
 }
 
+/*  [ main for test ]
 int main(void)
 {
     int i = -1;
@@ -171,8 +180,8 @@ int main(void)
     res_cqa = check_quote_arrangement(str, 0);
     printf("\nres_cqa: %d\n", res_cqa);
 }
-
-/* From sanghun.
+*/
+/* sanghun practice
 int	check_quotes(char *cmd, int index, int status)
 {
 	int	i;
@@ -295,7 +304,7 @@ int	main(int argc, char *argv[], char *envp[])
 }
 */
 
-/* From rkost
+/* rkost practice
 int	ft_isspace(char c)
 {
 	if (c == '\t' || c == '\n' || c == '\v' || \
@@ -318,13 +327,17 @@ int	get_margc(char *cmd)
 	while (cmd[++i])
 	{
 		if (cmd[i] == '\'' && quote_d != 1)
-			quote_s ^= 1;						// Bool, toggle (turn on:1 & turn off: 0)
+			quote_s ^= 1;
+		// Bool, toggle (turn on:1 & turn off: 0)
 		else if (cmd[i] == '\"' && quote_s != 1)
-			quote_d ^= 1;						// Bool, toggle (turn on:1 & turn off: 0)
+			quote_d ^= 1;
+		// Bool, toggle (turn on:1 & turn off: 0)
 		if (quote_s == 0 && quote_d == 0)
 		{
 			if (!ft_isspace(cmd[i]) && \
-				(ft_isspace(cmd[i + 1]) || !(cmd[i + 1]) || cmd[i + 1] == '|'))
+				(ft_isspace(cmd[i + 1])
+				|| !(cmd[i + 1])
+				|| cmd[i + 1] == '|'))
 				cnt++;
 			else if (cmd[i] == '|')
 				cnt++;
