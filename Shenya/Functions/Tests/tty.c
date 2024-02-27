@@ -47,7 +47,7 @@ void ft_ttyname(void)
 	printf("fd==10 : %s errno: %d\n", ttyname(10), errno);
 
 }
-
+/*
 int main (void)
 {
 	printf("initial errno: %d\n", errno);
@@ -55,5 +55,26 @@ int main (void)
 	printf("initial errno: %d\n", errno);
 	ft_ttyname();
 	printf("final errno: %d\n", errno);
+	return (0);
+}*/
+
+/* How to test isatty
+./a.out
+./a.out < cwd.c
+*/
+
+int main (void)
+{
+	int ret;
+	char *name;
+
+	name = NULL;
+	ret = 0;
+	ret = isatty(STDIN);
+	printf("ret: 	%d\n", ret);
+	printf("errno: 	%d\n", errno);
+	name = ttyname(STDIN);
+	printf("name: 	%s\n", name);
+	printf("errno: 	%d\n", errno);
 	return (0);
 }
