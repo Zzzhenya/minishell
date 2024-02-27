@@ -76,5 +76,7 @@ int main (void)
 	name = ttyname(STDIN);
 	printf("name: 	%s\n", name);
 	printf("errno: 	%d\n", errno);
+	if (ret != 1)
+		return (errno);
 	return (0);
 }
