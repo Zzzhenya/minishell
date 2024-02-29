@@ -21,7 +21,6 @@ char	*get_pwd(void)
  is 127 the correct exit code for when getcwd fails? 
  */
 
-
 void	exec_pwd(void)
 {  
 	char	*path;
