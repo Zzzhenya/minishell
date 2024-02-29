@@ -2,16 +2,16 @@
 
 char	*get_pwd(void)
 {
-	char *path;
+	char	*path;
 
-    path = NULL;
+	path = NULL;
 	path = getcwd(path, PATH_MAX);
 	if (!path)
 	{
 		g_exit_status = EX_CMD_NOT_FOUND;
-        return (NULL);
+		return (NULL);
 	}
-    else
+	else
 		return (path);
 }
 
@@ -22,20 +22,19 @@ char	*get_pwd(void)
  */
 
 
-
 void	exec_pwd(void)
 {  
-	char *path;
+	char	*path;
 
-    path = NULL;
+	path = NULL;
 	path = getcwd(path, PATH_MAX);
 	if (!path)
 	{
 		g_exit_status = EX_CMD_NOT_FOUND;
 		return;
-        //exit(g_exit_status);
+		//exit(g_exit_status);
 	}
-    else
+	else
 	{
 		ft_putstr_fd(path, 1);
 		ft_putchar_fd('\n', 1);
