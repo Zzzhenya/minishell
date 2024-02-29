@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+int		g_exit_status = 0;
 //char *readline (char *prompt);
 //char **envp
 
@@ -187,6 +188,7 @@ int main (int argc, char **argv, char **envp)
 			(void)envp;
 	}
 	//system("leaks minishell"); 
+	printf("exit: %d\n", g_exit_status);
 	return (0);
 }
 /* Removing error handling for isatty for now because;

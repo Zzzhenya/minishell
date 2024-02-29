@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+//extern int  g_exit_status;
 /*
 man bash
 
@@ -33,10 +34,9 @@ man bash
               status is 0 unless an error occurs while reading the name of the current directory  or  an  invalid
               option is supplied.
 
-*/
 
-#define PATH_MAX 4
-//#include <limits.h>
+PATH_MAX is defined in limits.h
+
 
 void	exec_pwd(void)
 {  
@@ -45,16 +45,14 @@ void	exec_pwd(void)
     buf = NULL;
 	buf = getcwd(buf, PATH_MAX);
 	if (!buf)
-    {
-        exit(EXIT_FAILURE);
-        // set error no value
-    }
+        exit(EXIT_CMD_NOT_FOUND);
     else
 	{
 		printf("%s\n", buf);
 		free (buf);
 	}
 }
+*/
 
 void    exec_cd(void)
 {

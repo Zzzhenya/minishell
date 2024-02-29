@@ -10,14 +10,18 @@
 # include <unistd.h>
 /* wait wait2 wait3*/
 # include <sys/wait.h>
-
 #if __linux__ 
 # include <sys/errno.h>
 #else
 # include <errno.h>
 #endif
-
+# include <limits.h>
 # include "libft/libft.h"
+
+
+# define EX_CMD_NOT_FOUND 127
+
+extern int	g_exit_status;
 
 char	**ft_splitbyspace(char *str);
 
@@ -33,5 +37,8 @@ void clean_argv(char **argv, int argc);
 
 /* Built-ins*/
 void	exec_builtin(char **argv);
+
+/* builtins/pwd.c */
+void	exec_pwd(void);
 
 #endif

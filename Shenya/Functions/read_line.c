@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-//extern int errno;
-
 int get_arg_count(char **argv)
 {
 	int len = 0;
