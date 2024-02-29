@@ -27,12 +27,11 @@ void	exec_pwd(void)
 	char	*path;
 
 	path = NULL;
-	path = getcwd(path, PATH_MAX);
+	path = get_pwd();
 	if (!path)
 	{
-		g_exit_status = EX_CMD_NOT_FOUND;
-		return;
 		//exit(g_exit_status);
+		return;
 	}
 	else
 	{
