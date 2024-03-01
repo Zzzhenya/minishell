@@ -64,15 +64,15 @@ RETURN VALUES
 if (S_ISDIR(statbuf.st_mode))
 */
 
-int  is_a_dir(char	*path)
+int  not_a_dir(char	*path)
 {
 	struct	stat statbuf;
 
 	stat(path, &statbuf);
 	if (S_ISREG(statbuf.st_mode))
-		return (0);
-	else
 		return (1);
+	else
+		return (0);
 }
 
 void	print_cd_error(char *path, char *message)
@@ -84,7 +84,7 @@ void	print_cd_error(char *path, char *message)
 
 void    exec_cd(char **argv)
 {
-	if (!is_a_dir(argv[1]))
+	if (not_a_dir(argv[1]))
 	{
 		g_exit_status = 1;
 		print_cd_error(argv[1], ": Not a directory\n");
