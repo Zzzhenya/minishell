@@ -59,6 +59,9 @@ The chdir()
 RETURN VALUES
      Upon successful completion, a value of 0 is returned.  Otherwise, a value
      of -1 is returned and errno is set to indicate the error.
+
+
+if (S_ISDIR(statbuf.st_mode))
 */
 
 int  is_a_dir(char	*path)
@@ -66,10 +69,10 @@ int  is_a_dir(char	*path)
 	struct	stat statbuf;
 
 	stat(path, &statbuf);
-    if (S_ISDIR(statbuf.st_mode))
-    	return (1);
-    else
-    	return (0);
+	if (S_ISREG(statbuf.st_mode))
+		return (0);
+	else
+		return (1);
 }
 
 void	print_cd_error(char *path, char *message)
