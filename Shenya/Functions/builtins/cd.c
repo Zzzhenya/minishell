@@ -1,5 +1,6 @@
 #include "../minishell.h"
-
+#include <sys/types.h>
+#include <sys/stat.h>
 /*
 
 cd [-L|-P] [direcory]
@@ -33,6 +34,12 @@ cd
 
 cd ..
 
+cd ~-
+
+cd -
+
+cd +
+
 */
 
 /*
@@ -54,15 +61,39 @@ RETURN VALUES
      of -1 is returned and errno is set to indicate the error.
 */
 
+int  is_a_dir(char	*path)
+{
+	struct	stat statbuf;
+
+	stat(path, &statbuf);
+    if (S_ISDIR(statbuf.st_mode))
+    	return (1);
+    else
+    	return (0);
+}
+
+void	print_cd_error(char *path, char *message)
+{
+	ft_putstr_fd("bash: cd: ", 1);
+	ft_putstr_fd(path, 1);
+	ft_putstr_fd(message, 1);
+}
+
 void    exec_cd(char **argv)
 {
-
-	if (chdir(argv[1]) == -1)
+	if (!is_a_dir(argv[1]))
 	{
 		g_exit_status = 1;
-		ft_putstr_fd("bash: cd: ", 1);
-		ft_putstr_fd(argv[1], 1);
-		ft_putstr_fd(": No such file or directory\n", 1);
+		print_cd_error(argv[1], ": Not a directory\n");
+		return;
+	}
+	else if (chdir(argv[1]) == -1)
+	{
+		g_exit_status = 1;
+		if (errno == EACCES)
+			print_cd_error(argv[1], ": Permission denied\n");
+		else
+			print_cd_error(argv[1], ": No such file or directory\n");
 		return;
 		//exit(g_exit_status);
 	}
