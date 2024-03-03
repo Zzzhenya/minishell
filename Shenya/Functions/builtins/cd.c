@@ -84,6 +84,7 @@ void	print_cd_error(char *path, char *message)
 
 void		change_to_home(void)
 {
+	printf("Home");
 	/*
 
 	get HOME="" value from env
@@ -96,7 +97,7 @@ void		change_to_home(void)
 void    exec_cd(char **argv)
 {
 	if (!argv[1] || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
-		chage_to_home();
+		change_to_home();
 	if (not_a_dir(argv[1]))
 	{
 		g_exit_status = 1;
