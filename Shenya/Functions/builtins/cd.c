@@ -82,8 +82,21 @@ void	print_cd_error(char *path, char *message)
 	ft_putstr_fd(message, 1);
 }
 
+void		change_to_home(void)
+{
+	/*
+
+	get HOME="" value from env
+	create the absolute pathto HOME
+	go to HOME
+
+	*/
+}
+
 void    exec_cd(char **argv)
 {
+	if (!argv[1] || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
+		chage_to_home();
 	if (not_a_dir(argv[1]))
 	{
 		g_exit_status = 1;
