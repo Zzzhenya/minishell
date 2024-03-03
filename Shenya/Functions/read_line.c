@@ -62,6 +62,7 @@ int run_command(char **argv)
 int run_command1(char *cmd, char **argv)
 {
 	pid_t	pid;
+	int status;
 
 	if (access(cmd, 1) != 0)
 	{
@@ -89,7 +90,8 @@ int run_command1(char *cmd, char **argv)
 	}
 	else
 	{
-		wait(NULL);
+		wait(&status);
+		printf("%d\n", status);
 	}
 	return (0);
 }
