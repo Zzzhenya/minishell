@@ -84,19 +84,19 @@ void	print_cd_error(char *path, char *message)
 
 char		*change_to_home(t_envp	*my_data)
 {
-	int i = 0;
+	int i;
 	char *temp;
 	char *path;
 
 	temp = NULL;
 	path = NULL;
+	i = 0;
 	while (my_data->envp[i] != NULL)
 	{
 		if (!ft_strncmp(my_data->envp[i], "HOME=", ft_strlen("HOME=")))
 			temp = my_data->envp[i];
 		i ++;
 	}
-	i = 0;
 	if (!temp)
 		return (NULL);
 	while (*temp)
@@ -118,20 +118,8 @@ char		*change_to_home(t_envp	*my_data)
 	*/
 }
 
-void    exec_cd(char **argv, t_envp *my_data)
+void		execute_path(char	*path)
 {
-	//(void )my_data;
-	char *path;
-
-	path = NULL;
-	if (my_data->cd_hist != NULL && !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
-		path = my_data->cd_hist;
-	else if (!argv[1] || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
-		path = change_to_home(my_data);
-	else
-		path = argv[1];
-	//if (my_data->cd_hist == NULL)
-	my_data->cd_hist = get_pwd();
 	if (not_a_dir(path))
 	{
 		g_exit_status = 1;
@@ -156,4 +144,32 @@ void    exec_cd(char **argv, t_envp *my_data)
 		free(path);
 		return;
 	}
+
+}
+
+void    exec_cd(char **argv, t_envp *my_data)
+{
+	//(void )my_data;
+	char *path;
+
+	path = NULL;
+	if (my_data->cd_hist != NULL && !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
+	{
+		path = my_data->cd_hist;
+		printf("%s\n",path);
+	}
+	else if (my_data->cd_hist == NULL && !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
+	{
+		g_exit_status = 1;
+		print_cd_error(path, ": OLDPWD not set\n");
+		free(path);
+		return;
+	}
+	else if (!argv[1] || ft_strncmp(argv[1], "~", ft_strlen(argv[1])) == 0)
+		path = change_to_home(my_data);
+	else
+		path = argv[1];
+	//if (my_data->cd_hist == NULL)
+	my_data->cd_hist = get_pwd();
+	execute_path(path);
 }
