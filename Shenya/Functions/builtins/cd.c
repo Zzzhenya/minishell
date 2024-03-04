@@ -82,11 +82,17 @@ void	print_cd_error(char *path, char *message)
 	ft_putstr_fd(message, 1);
 }
 
+/* 
+
+Should I use local env or call and get new env?
+What if HOME in global env has changed ?
+ */
+
 char		*change_to_home(t_envp	*my_data)
 {
-	int i;
-	char *temp;
-	char *path;
+	int		i;
+	char		*temp;
+	char		*path;
 
 	temp = NULL;
 	path = NULL;
@@ -109,13 +115,6 @@ char		*change_to_home(t_envp	*my_data)
 		temp ++;
 	}
 	return (path);
-	/*
-
-	get HOME="" value from env
-	create the absolute pathto HOME
-	go to HOME
-
-	*/
 }
 
 void		execute_path(char	*path)
@@ -147,9 +146,11 @@ void		execute_path(char	*path)
 
 }
 
+
+/* Why is there a sigsev for cd without parameter? */
+
 void    exec_cd(char **argv, t_envp *my_data)
 {
-	//(void )my_data;
 	char *path;
 
 	path = NULL;
@@ -165,7 +166,7 @@ void    exec_cd(char **argv, t_envp *my_data)
 		free(path);
 		return;
 	}
-	else if (!argv[1] || ft_strncmp(argv[1], "~", ft_strlen(argv[1])) == 0)
+	else if (argv[1] == NULL || ft_strncmp(argv[1], "~", ft_strlen(argv[1])) == 0)
 		path = change_to_home(my_data);
 	else
 		path = argv[1];
