@@ -82,9 +82,20 @@ void	print_cd_error(char *path, char *message)
 	ft_putstr_fd(message, 1);
 }
 
-void		change_to_home(void)
+char		*change_to_home(void)
 {
-	printf("Home");
+	char *path;
+	char *temp ="Home";
+	int i = 0;
+
+	path = malloc(sizeof(char)* 5);
+	path[4] = '\0';
+	while (i < 4)
+	{
+		path[i] = temp[i];
+		i ++;
+	}
+	return (path);
 	/*
 
 	get HOME="" value from env
@@ -96,22 +107,31 @@ void		change_to_home(void)
 
 void    exec_cd(char **argv, t_envp *my_data)
 {
-	(void )my_data;
-	if (!argv[1] || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
-		change_to_home();
-	if (not_a_dir(argv[1]))
+	//(void )my_data;
+	char *path;
+
+	path = NULL;
+	if (my_data->cd_hist != NULL && !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
+		path = my_data->cd_hist;
+	else if (!argv[1] || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
+		path = change_to_home();
+	else
+		path = argv[1];
+	//if (my_data->cd_hist == NULL)
+	my_data->cd_hist = get_pwd();
+	if (not_a_dir(path))
 	{
 		g_exit_status = 1;
-		print_cd_error(argv[1], ": Not a directory\n");
+		print_cd_error(path, ": Not a directory\n");
 		return;
 	}
-	else if (chdir(argv[1]) == -1)
+	else if (chdir(path) == -1)
 	{
 		g_exit_status = 1;
 		if (errno == EACCES)
-			print_cd_error(argv[1], ": Permission denied\n");
+			print_cd_error(path, ": Permission denied\n");
 		else
-			print_cd_error(argv[1], ": No such file or directory\n");
+			print_cd_error(path, ": No such file or directory\n");
 		return;
 		//exit(g_exit_status);
 	}

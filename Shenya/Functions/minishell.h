@@ -50,6 +50,7 @@ void	exec_builtin(char **argv, t_envp *my_data);
 
 /* builtins/pwd.c */
 void	exec_pwd(void);
+char	*get_pwd(void);
 
 /* builtins/cd.c */
 //void    exec_cd(char **argv);
