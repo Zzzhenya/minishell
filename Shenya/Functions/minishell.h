@@ -24,6 +24,12 @@
 
 # define EX_CMD_NOT_FOUND 127
 
+typedef struct s_envp
+{
+	char	**envp;
+	char	*cd_hist;
+}	t_envp;
+
 extern int	g_exit_status;
 
 char	**ft_splitbyspace(char *str);
@@ -39,12 +45,14 @@ int run_command1(char *cmd, char **argv);
 void clean_argv(char **argv, int argc);
 
 /* Built-ins*/
-void	exec_builtin(char **argv);
+//void	exec_builtin(char **argv);
+void	exec_builtin(char **argv, t_envp *my_data);
 
 /* builtins/pwd.c */
 void	exec_pwd(void);
 
 /* builtins/cd.c */
-void    exec_cd(char **argv);
+//void    exec_cd(char **argv);
+void    exec_cd(char **argv, t_envp *mydata);
 
 #endif

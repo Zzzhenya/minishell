@@ -123,15 +123,19 @@ int cmd_is_builtin(char	**argv)
 		return (0);
 }
 
-void	child_process(char **envp, char **argv)
+//void	child_process(char **envp, char **argv)
+void	child_process(t_envp *my_data, char **argv)
 {
+	char **envp;
+
+	envp = my_data->envp;
 	/*Check whether it's a built in
 	if a built in run the built in function
 	else convert command to absolute path
 	( File names will be coupled with redirections in the struct)
 	*/
 	if (cmd_is_builtin(argv))
-		exec_builtin(argv);
+		exec_builtin(argv, my_data);
 	else
 	{
 		/* handle errors??? What errors? Are they already
@@ -141,9 +145,12 @@ void	child_process(char **envp, char **argv)
 }
 
 
-void interactive_bash(char **argv, char *line, int argc, char **envp)
+void interactive_bash(char **argv, char *line, int argc, t_envp *my_data)
 {
-	(void)envp;
+	//char **envp
+
+	//envp = my_data->envp;
+	//(void)envp;
 	//cmd = NULL;
 	while (1)
 	{
@@ -156,7 +163,8 @@ void interactive_bash(char **argv, char *line, int argc, char **envp)
 		}
 		argv = ft_splitbyspace(line);
 		argc = get_arg_count(argv);
-		child_process(envp, argv);
+		//child_process(envp, argv);
+		child_process(my_data, argv);
 		//get_env_var(argv[0]);
 		clean_argv(argv, argc);
 		free (line);
@@ -174,8 +182,12 @@ void	non_interactive_bash(char *arg, char **envp)
 
 int main (int argc, char **argv, char **envp)
 {
+	t_envp	my_data;
+
+	my_data.envp = envp;
+	my_data.cd_hist = NULL;
 	if (argc == 2)
-		non_interactive_bash(argv[1], envp);
+		non_interactive_bash(argv[1], my_data.envp);
 	else
 	{ 
 		(void)argc;
@@ -183,7 +195,7 @@ int main (int argc, char **argv, char **envp)
 		/* check if stdin is a tty, why only stdin checked for tty?
 			why shouldnt stdin be a tty?*/
 		if (isatty(0) == 1)
-			interactive_bash(NULL, NULL, 0, envp);
+			interactive_bash(NULL, NULL, 0, &my_data);
 		else
 			(void)envp;
 	}

@@ -54,12 +54,12 @@ void	exec_pwd(void)
 }
 */
 
-void	exec_builtin(char **argv)
+void	exec_builtin(char **argv, t_envp *my_data)
 {
 	if (!ft_strncmp(argv[0], "pwd", ft_strlen(argv[0])))
 		exec_pwd();
 	else if (!ft_strncmp(argv[0], "cd", ft_strlen(argv[0])))
-		exec_cd(argv);
+		exec_cd(argv, my_data);
 	else
 		printf("%s\n", argv[0]);
 }

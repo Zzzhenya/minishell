@@ -94,8 +94,9 @@ void		change_to_home(void)
 	*/
 }
 
-void    exec_cd(char **argv)
+void    exec_cd(char **argv, t_envp *my_data)
 {
+	(void )my_data;
 	if (!argv[1] || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
 		change_to_home();
 	if (not_a_dir(argv[1]))
