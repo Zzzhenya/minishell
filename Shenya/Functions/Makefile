@@ -1,7 +1,7 @@
 NAME = minishell
 
 SRC = 	read_line.c ft_splitbyspace.c main.c exec_builtin.c \
-		builtins/pwd.c builtins/cd.c
+		builtins/pwd.c builtins/cd.c builtins/env.c
 
 CFLAGS = -Wall -Werror -Wextra -g
 
