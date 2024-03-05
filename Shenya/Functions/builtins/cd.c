@@ -123,7 +123,7 @@ void		execute_path(char	*path)
 	{
 		g_exit_status = 1;
 		print_cd_error(path, ": Not a directory\n");
-		free(path);
+		//free(path);
 		return;
 	}
 	else if (chdir(path) == -1)
@@ -133,14 +133,14 @@ void		execute_path(char	*path)
 			print_cd_error(path, ": Permission denied\n");
 		else
 			print_cd_error(path, ": No such file or directory\n");
-		free(path);
+		//free(path);
 		return;
 		//exit(g_exit_status);
 	}
 	else
 	{
 		g_exit_status = 0;
-		free(path);
+		//free(path);
 		return;
 	}
 
@@ -154,23 +154,25 @@ void    exec_cd(char **argv, t_envp *my_data)
 	char *path;
 
 	path = NULL;
-	if (my_data->cd_hist != NULL && !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
+	if (my_data->cd_hist != NULL && argv[1] && !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
 	{
 		path = my_data->cd_hist;
 		printf("%s\n",path);
 	}
 	else if (my_data->cd_hist == NULL && argv[1] && !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
 	{
-		g_exit_status = 1;
-		print_cd_error(path, ": OLDPWD not set\n");
-		free(path);
+		path = get_pwd();
+		printf("%s\n",path);
+		//g_exit_status = 1;
+		//print_cd_error(argv[1], ": OLDPWD not set\n");
+		//free(path);
 		return;
 	}
-	else if (argv[1] == NULL || ft_strncmp(argv[1], "~", ft_strlen(argv[1])) == 0)
+	else if (argv[1] == NULL || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
 		path = change_to_home(my_data);
 	else
 		path = argv[1];
-	//if (my_data->cd_hist == NULL)
 	my_data->cd_hist = get_pwd();
+	//if (my_data->cd_hist == NULL)
 	execute_path(path);
 }
