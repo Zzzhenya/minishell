@@ -60,8 +60,10 @@ void	exec_builtin(char **argv, t_envp *my_data)
 		exec_pwd();
 	else if (!ft_strncmp(argv[0], "cd", ft_strlen(argv[0])))
 		exec_cd(argv, my_data);
-      else if (!ft_strncmp(argv[0], "env", ft_strlen(argv[0])))
-            exec_env(argv, my_data);
+    else if (!ft_strncmp(argv[0], "env", ft_strlen(argv[0])))
+        exec_env(argv, my_data);
+    else if (!ft_strncmp(argv[0], "echo", ft_strlen(argv[0])))
+        exec_echo(argv, my_data);
 	else
 		printf("%s\n", argv[0]);
 }

@@ -56,6 +56,10 @@ char	*get_pwd(void);
 //void    exec_cd(char **argv);
 void    exec_cd(char **argv, t_envp *mydata);
 
+/* builtins/env.c */
 void	exec_env(char **argv, t_envp *my_data);
+
+/* builtins/echo.c */
+void	exec_echo(char **argv);
 
 #endif
