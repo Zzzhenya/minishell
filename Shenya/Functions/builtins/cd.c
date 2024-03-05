@@ -159,7 +159,7 @@ void    exec_cd(char **argv, t_envp *my_data)
 		path = my_data->cd_hist;
 		printf("%s\n",path);
 	}
-	else if (my_data->cd_hist == NULL && !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
+	else if (my_data->cd_hist == NULL && argv[1] && !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
 	{
 		g_exit_status = 1;
 		print_cd_error(path, ": OLDPWD not set\n");
