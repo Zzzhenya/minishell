@@ -91,7 +91,7 @@ int run_command1(char *cmd, char **argv)
 	else
 	{
 		wait(&status);
-		printf("%d\n", status);
+		//printf("%d\n", status);
 	}
 	return (0);
 }
