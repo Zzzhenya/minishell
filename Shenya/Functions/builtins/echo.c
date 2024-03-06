@@ -11,6 +11,10 @@ void	exec_echo(char **argv)
     {
         if (i == 1 && !ft_strncmp(argv[i], "-n", ft_strlen(argv[i])))
             opt = 1;
+        else if (argv[i][0] == '$' && argv[i][1] == '?')
+            ft_putnbr_fd(g_exit_status, 1);
+        else if (argv[i][0] == '$' && argv[i][1] == '$')
+            ft_putnbr_fd(getpid(), 1);
         else
         {
             ft_putstr_fd(argv[1], 1);
@@ -25,5 +29,7 @@ void	exec_echo(char **argv)
 
 /* 
 manage env variables like $HOME - Expanded in parsing so its an array of strings
-manage exceptions line $? $$ - Here
+manage exceptions line $? $$ - Here 
+
+It is assumed the $? is a seperate string in the char ** array ( for now)
 */
