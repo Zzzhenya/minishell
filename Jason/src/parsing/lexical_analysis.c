@@ -65,7 +65,7 @@ int	count_row_2d_array(char **array)
 
 /*	[F]
 	[Param]
-	param(1) token_data(validated_token);
+	param(1) token_malloc(validated_token);
 			= char **validated_token
 			= The rsult of the 2D-array after chopping.
 
@@ -75,7 +75,7 @@ int	count_row_2d_array(char **array)
 	3. Check the type of token and copy it to res[i]
 	4. Return (*res)
 */
-int	*token_data(char **after_chopping)
+int	*token_malloc(char **after_chopping)
 {
 	int	i;
 	int	n_token;
