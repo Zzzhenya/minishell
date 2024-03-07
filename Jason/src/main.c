@@ -36,6 +36,9 @@ char	*get_allocated_cwd(void)
 	return (cwd);						// Pointer, which save cwd's absolute path.
 }
 
+/*	[ ]
+
+*/
 void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 {
 	char	*user_input;
@@ -59,6 +62,9 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 	}
 }
 
+/*	[ ]
+
+*/
 void	non_interactive_mode(t_cmd **tree, char *input, char **envp, t_envp *env)
 {
 	char	**user_inputs;
@@ -108,10 +114,10 @@ void	non_interactive_mode(t_cmd **tree, char *input, char **envp, t_envp *env)
 					tree[2]: 	"new_directory"	T_WORD
 */
 
-/* 
-[Option]
-	(1): Non_interactive_mode
-	(2): Interactive_mode
+/*	[ ]
+	[Option]
+		(1): Non_interactive_mode
+		(2): Interactive_mode
 */
 int	main(int argc, char **argv, char **envs)
 {
@@ -147,67 +153,4 @@ int	main(int argc, char **argv, char **envs)
 // [Q3]
 //	Goal of "non_interactive_mode" function?? No idea
 //
-*/
-
-
-
-
-
-/* [Original code]
-void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
-{
-	char	*tmp;
-	char	*cwd;
-
-	env->cd_hist = NULL;
-	while (1)
-	{
-		set_signals_interactive(-1);
-		cwd = print_prompt();
-		tmp = readline(cwd);
-		add_history(tmp);
-		if (!tmp)
-			exit(0);
-		*tree = parse_user_input(tmp, env);
-		search_tree(*tree, envp, env);
-		write(1, "\0", 1);
-		wait_each_commands(*tree);
-		free_tree(*tree);
-		free(tmp);
-		free(cwd);
-	}
-}
-
-void	non_interactive_mode(t_cmd **tree, char *input, char **envp, t_envp *env)
-{
-	char	**user_inputs;
-	int		i;
-
-	user_inputs = ft_split(input, ';');
-	i = 0;
-	while (user_inputs[i])
-	{
-		*tree = parse_user_input(user_inputs[i], env);
-		search_tree(*tree, envp, env);
-		i++;
-		free_tree(*tree);
-	}
-	free_2d(user_inputs);
-}
-
-int	main(int argc, char **argv, char **envs)
-{
-	t_cmd	*tree;
-	t_envp	env;
-	char	**paths;
-
-	env.env = envs;
-	(void)argc;
-	paths = save_all_env_paths(envs);
-	if (argc == 2)
-		non_interactive_mode(&tree, argv[1], paths, &env);
-	else if (isatty(STDIN_FILENO))
-		interactive_mode(&tree, paths, &env);
-	free_2d(paths);
-}
 */
