@@ -100,9 +100,6 @@ void		execute_path(char	*path)
 
 }
 
-
-/* Why is there a sigsev for cd without parameter? */
-
 void    exec_cd(char **argv, t_envp *my_data)
 {
 	char *path;
@@ -111,12 +108,14 @@ void    exec_cd(char **argv, t_envp *my_data)
 	if (my_data->cd_hist != NULL && argv[1] && !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
 	{
 		path = my_data->cd_hist;
-		printf("%s\n",path);
+		ft_putstr_fd(path, 1);
+          ft_putchar_fd("\n", 1);
 	}
 	else if (my_data->cd_hist == NULL && argv[1] && !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
 	{
 		path = get_pwd();
-		printf("%s\n",path);
+		ft_putstr_fd(path, 1);
+          ft_putchar_fd("\n", 1);
 		//g_exit_status = 1;
 		//print_cd_error(argv[1], ": OLDPWD not set\n");
 		//free(path);
