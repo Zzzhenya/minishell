@@ -1,46 +1,6 @@
 #include "../minishell.h"
 #include <sys/types.h>
 #include <sys/stat.h>
-/*
-
-cd [-L|-P] [direcory]
-cd -
-
-cd nonexisting_dir/file 
-bash: cd: b: No such file or directory -> bash: 1: command not found
-
-cd exiting dir/nonexistant dir or file 
-bash: cd: Functions/haha: No such file or directory -> bash: 1: command not found
-
-
-cd exiting_file
-bash: cd: Makefile: Not a directory -> bash: 1: command not found
-
-chmod 666 dirname
-cd restricted_dir
-bash: cd: restricted: Permission denied -> bash: 1: command not found
-
-cd builtins(dir) -> bash: 0: command not found
-
-cd Functions/builtins/ -> bash: 0: command not found
-
-cd /
-
-cd /sdas/sads/ the absolute path
-
-cd ~
-
-cd
-
-cd ..
-
-cd ~-
-
-cd -
-
-cd +
-
-*/
 
 /*
 
@@ -81,12 +41,6 @@ void	print_cd_error(char *path, char *message)
 	ft_putstr_fd(path, 1);
 	ft_putstr_fd(message, 1);
 }
-
-/* 
-
-Should I use local env or call and get new env?
-What if HOME in global env has changed ?
- */
 
 char		*change_to_home(t_envp	*my_data)
 {
