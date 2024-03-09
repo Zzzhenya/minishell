@@ -64,8 +64,10 @@ void	exec_builtin(char **argv, t_envp *my_data)
         exec_env(argv, my_data);
     else if (!ft_strncmp(argv[0], "echo", ft_strlen(argv[0])))
         exec_echo(argv);
-    //else if (!ft_strncmp(argv[0], "export", ft_strlen(argv[0])))
-    //    exec_export(argv, my_data);
+    else if (!ft_strncmp(argv[0], "export", ft_strlen(argv[0])))
+        exec_export(argv, my_data);
+    else if (!ft_strncmp(argv[0], "unset", ft_strlen(argv[0])))
+        exec_unset(argv, my_data);
 	else
 		printf("%s\n", argv[0]);
 }

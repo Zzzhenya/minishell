@@ -1,4 +1,4 @@
-//#include "minishell.h"
+#include "../minishell.h"
 
 /*
 PARAMETERS
@@ -18,3 +18,29 @@ PARAMETERS
        an arithmetic expression even if the $((...)) expansion is not used (see Arithmetic Expansion below).  Word  splitting  is  not  performed,  with  the
        exception  of  "$@" as explained below under Special Parameters.  Pathname expansion is not performed.  Assignment statements may also appear as argu-
        ments to the alias, declare, typeset, export, readonly, and local builtin commands.*/
+
+// export varname=varval
+// export varname="varval"
+// export varname=""
+// export varname=
+void    exec_export(char **argv, t_envp *my_data)
+{
+      char **arr;
+      char *var;
+      char *val;
+
+      arr = NULL;
+      arr = ft_split(argv[1], '=');
+      var = arr[0];
+      val = arr[1];
+      printf("var %s\n", var);
+      printf("val %s\n", val);
+      /*if val is null make it an empty string*/
+      /*if var exists in env, remove it - unset */
+      /* add the variable and set value */
+      free(var);
+      free(val);
+      free(arr);
+      (void)my_data;
+
+}
