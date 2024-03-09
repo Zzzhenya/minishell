@@ -184,8 +184,10 @@ int main (int argc, char **argv, char **envp)
 {
 	t_envp	my_data;
 
-	my_data.envp = envp;
+	//my_data.envp = envp;
 	my_data.cd_hist = NULL;
+	if (store_envp(&my_data, envp) < 0)
+		return (1);
 	if (argc == 2)
 		non_interactive_bash(argv[1], my_data.envp);
 	else
@@ -199,6 +201,7 @@ int main (int argc, char **argv, char **envp)
 		else
 			(void)envp;
 	}
+	free_arr(my_data.envp, my_data.count);
 	//system("leaks minishell"); 
 	printf("exit: %d\n", g_exit_status);
 	return (0);

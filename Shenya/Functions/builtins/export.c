@@ -1,4 +1,4 @@
-#include "minishell.h"
+//#include "minishell.h"
 
 /*
 PARAMETERS
@@ -18,4 +18,3 @@ PARAMETERS
        an arithmetic expression even if the $((...)) expansion is not used (see Arithmetic Expansion below).  Word  splitting  is  not  performed,  with  the
        exception  of  "$@" as explained below under Special Parameters.  Pathname expansion is not performed.  Assignment statements may also appear as argu-
        ments to the alias, declare, typeset, export, readonly, and local builtin commands.*/
-

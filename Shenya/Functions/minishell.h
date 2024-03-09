@@ -28,9 +28,17 @@ typedef struct s_envp
 {
 	char	**envp;
 	char	*cd_hist;
+	int		count;
 }	t_envp;
 
-extern int	g_exit_status;
+/*
+typedef struct s_list
+{
+	void			*content;
+	struct s_list	*next;
+}					t_list;*/
+
+extern int	g_exit_status;	
 
 char	**ft_splitbyspace(char *str);
 
@@ -45,6 +53,9 @@ int run_command1(char *cmd, char **argv);
 void clean_argv(char **argv, int argc);
 
 /* envp_actions.c */
+int store_envp(t_envp *vars, char **envp);
+void free_arr(char **env, int len);
+
 
 /* Built-ins*/
 //void	exec_builtin(char **argv);
