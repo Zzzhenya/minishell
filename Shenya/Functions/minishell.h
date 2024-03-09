@@ -62,4 +62,7 @@ void	exec_env(char **argv, t_envp *my_data);
 /* builtins/echo.c */
 void	exec_echo(char **argv);
 
+/* builtins/export.c */
+void    exec_export(char **argv, t_envp *my_data);
+
 #endif
