@@ -128,9 +128,9 @@ int cmd_is_builtin(char	**argv)
 //void	child_process(char **envp, char **argv)
 void	child_process(t_envp *my_data, char **argv)
 {
-	char **envp;
+	//char **envp;
 
-	envp = my_data->envarr;
+	//envp = my_data->envarr;
 	/*Check whether it's a built in
 	if a built in run the built in function
 	else convert command to absolute path
@@ -140,9 +140,10 @@ void	child_process(t_envp *my_data, char **argv)
 		exec_builtin(argv, my_data);
 	else
 	{
+		extract_envarr(my_data);
 		/* handle errors??? What errors? Are they already
 		handled by lexer parser? */
-		exec_from_path(envp, argv);
+		exec_from_path(my_data->envarr, argv);
 	}
 }
 
@@ -186,7 +187,7 @@ int main (int argc, char **argv, char **envp)
 {
 	t_envp	my_data;
 
-	//my_data.envp = envp;
+	my_data.envarr = NULL;
 	my_data.cd_hist = NULL;
 	if (store_envp(&my_data, envp) < 0)
 		return (1);
