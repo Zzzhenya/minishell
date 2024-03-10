@@ -1,6 +1,6 @@
 #include "minishell.h"
-/*
- frees the heap envp array from the given position
+
+//frees the heap envp array from the given position
 void free_arr(char **env, int len)
 {
 	int i = 0;
@@ -14,6 +14,8 @@ void free_arr(char **env, int len)
 	free(env);
 	env = NULL;
 }
+/*
+
 
  counts the number of items in envp array 
 static int get_len(char **envp)
