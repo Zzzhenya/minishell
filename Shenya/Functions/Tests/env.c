@@ -2,12 +2,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+typedef struct s_list
+{
+	void			*content;
+	struct s_list	*next;
+}					t_list;
+
 typedef struct s_envp
 {
-	char	**env;
-	char	*cd_hist;
-	int		count;
+	//char	**env;
+	t_list	**envlst; // 8
+	char 	**envarr; // 8
+	char	*cd_hist; // 12
+	int		count; // 4
 }	t_envp;
+
 
 size_t	ft_strlen(const char *s)
 {
@@ -52,6 +61,7 @@ char	*ft_strdup(const char *s)
 	ft_strlcpy(ptr, s, ft_strlen(s) + 1);
 	return (ptr);
 }
+/*
 int get_len(char **envp)
 {
 	int i = 0;
@@ -100,22 +110,62 @@ int store_envp(t_envp *vars, char **envp)
 	vars->count = len;
 	return (0);
 }
+*/
+
+t_list	*ft_lstnew(void *content)
+{
+	t_list	*new_node;
+
+	new_node = malloc(sizeof(t_list));
+	if (!new_node)
+		return (0);
+	new_node->content = content;
+	new_node->next = 0;
+	return (new_node);
+}
+
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	t_list	*temp;
+
+	if (*lst == 0)
+		*lst = new;
+	else
+	{
+		temp = *lst;
+		while (temp->next != 0)
+			temp = temp->next;
+		temp->next = new;
+	}
+}
+
+void	print_stack(t_list *stack)
+{
+	t_list	*current;
+	int i = 0;
+
+	current = stack;
+	printf("List data\n");
+	while (current != NULL)
+	{
+		printf("    %d: %s\n", i, (char *)current->content);
+		i ++;
+		current = current->next;
+	}
+}
 
 int main(int argc, char **argv, char **envp)
 {
 	t_envp	vars;
 	int i = 0;
 
-	//env.envp = envp;
-	vars.cd_hist = NULL;
-	vars.count = 0;
-	store_envp(&vars, envp);
-	printf("%d\n", argc);
-	(void)argv;
-	while (i  < vars.count)
+	printf("%p\n", vars.envlst);
+	*(vars.envlst) = NULL;
+	while (envp[i] != NULL)
 	{
-		printf("%s\n", vars.env[i]);
+		ft_lstadd_back(vars.envlst, ft_lstnew(ft_strdup(envp[i])));
 		i ++;
 	}
+	print_stack(*(vars.envlst));
 	return (0);
 }
