@@ -59,6 +59,7 @@ int store_envp(t_envp *vars, char **envp);
 void free_arr(char **env, int len);
 void clear_envlist(t_envp *my_data);
 int extract_envarr(t_envp *my_data);
+void free_string(void	*input);
 
 
 /* Built-ins*/
