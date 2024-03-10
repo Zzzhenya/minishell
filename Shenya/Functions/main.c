@@ -111,13 +111,13 @@ void	exec_from_path(char **envp, char **argv)
 
 int cmd_is_builtin(char	**argv)
 {
-	if (!ft_strncmp(argv[0], "echo", ft_strlen(argv[0]))
-		|| !ft_strncmp(argv[0], "cd", ft_strlen(argv[0]))
-		|| !ft_strncmp(argv[0], "pwd", ft_strlen(argv[0]))
-		|| !ft_strncmp(argv[0], "export", ft_strlen(argv[0]))
-		|| !ft_strncmp(argv[0], "unset", ft_strlen(argv[0]))
-		|| !ft_strncmp(argv[0], "env", ft_strlen(argv[0]))
-		|| !ft_strncmp(argv[0], "exit", ft_strlen(argv[0])))
+	if (!ft_strncmp(argv[0], "echo", 5)
+		|| !ft_strncmp(argv[0], "cd", 3)
+		|| !ft_strncmp(argv[0], "pwd", 4)
+		|| !ft_strncmp(argv[0], "export", 7)
+		|| !ft_strncmp(argv[0], "unset", 6)
+		|| !ft_strncmp(argv[0], "env", 4)
+		|| !ft_strncmp(argv[0], "exit", 5))
 		return (1);
 	else
 		return (0);
@@ -144,6 +144,7 @@ void	child_process(t_envp *my_data, char **argv)
 		/* handle errors??? What errors? Are they already
 		handled by lexer parser? */
 		exec_from_path(my_data->envarr, argv);
+		free_arr(my_data->envarr, my_data->count);
 	}
 }
 
@@ -171,7 +172,6 @@ void interactive_bash(char **argv, char *line, int argc, t_envp *my_data)
 		//get_env_var(argv[0]);
 		clean_argv(argv, argc);
 		free (line);
-		free_arr(my_data->envarr, my_data->count);
 		//get_env_var(cmd);
 		//ft_printf("errno %d\n", errno);
 	}
