@@ -42,21 +42,31 @@ void	print_cd_error(char *path, char *message)
 	ft_putstr_fd(message, 1);
 }
 
+
 char		*change_to_home(t_envp	*my_data)
 {
-	int		i;
+	//int		i;
 	char		*temp;
 	char		*path;
+	t_list	*lst;
 
 	temp = NULL;
 	path = NULL;
-	i = 0;
+	//i = 0;
+	lst = *(my_data->envlist);
+	while (lst)
+	{
+		if (!ft_strncmp((char *)lst->content, "HOME=", ft_strlen("HOME=")))
+			temp = (char *)lst->content;
+		lst = lst->next;
+	}
+	/*
 	while (my_data->envp[i] != NULL)
 	{
 		if (!ft_strncmp(my_data->envp[i], "HOME=", ft_strlen("HOME=")))
 			temp = my_data->envp[i];
 		i ++;
-	}
+	}*/
 	if (!temp)
 		return (NULL);
 	while (*temp)
