@@ -1,6 +1,6 @@
 #include "minishell.h"
-
-/* frees the heap envp array from the given position*/
+/*
+ frees the heap envp array from the given position
 void free_arr(char **env, int len)
 {
 	int i = 0;
@@ -15,7 +15,7 @@ void free_arr(char **env, int len)
 	env = NULL;
 }
 
-/* counts the number of items in envp array */
+ counts the number of items in envp array 
 static int get_len(char **envp)
 {
 	int i;
@@ -26,7 +26,7 @@ static int get_len(char **envp)
 	return (i);
 }
 
-/* Copies the envp array from static memory to heap */
+ Copies the envp array from static memory to heap 
 int store_envp(t_envp *vars, char **envp)
 {
 	int len;
@@ -50,4 +50,43 @@ int store_envp(t_envp *vars, char **envp)
 	}
 	vars->count = len;
 	return (0);
+}*/
+
+void free_string(void	*input)
+{
+	char *str;
+
+	str = (char *)input;
+	free (str);
+	str = NULL;
 }
+
+void clear_envlist(t_envp *my_data)
+{
+	ft_lstclear(my_data->envlist, free_string);
+}
+
+int store_envp(t_envp *vars, char **envp)
+{
+	int 	i;
+	char *temp;
+
+	i = 0;
+	temp = NULL;
+	while (envp[i] != NULL)
+	{
+		temp = ft_strdup(envp[i]);
+		if (!temp)
+		{
+			//free_list(vars->envlist);
+			return (-1);
+		}
+		ft_lstadd_back(vars->envlist, ft_lstnew(temp));
+		temp = NULL;
+		i ++;
+	}
+	return (0);
+}
+
+
+
