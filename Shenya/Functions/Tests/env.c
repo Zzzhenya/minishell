@@ -154,18 +154,41 @@ void	print_stack(t_list *stack)
 	}
 }
 
+void	ft_lstclear(t_list **lst)
+{
+	t_list	*current;
+
+	printf("Cleaning list\n");
+	while (*lst)
+	{
+		free ((*lst)->content);
+		(*lst)->content = NULL;
+		current = *lst;
+		*lst = current->next;
+		free(current);
+	}
+	*lst = 0;
+}
+
 int main(int argc, char **argv, char **envp)
 {
 	t_envp	vars;
 	int i = 0;
+	char	*temp;
 
 	printf("%p\n", vars.envlst);
-	*(vars.envlst) = NULL;
+	//*(vars.envlst) = NULL;
 	while (envp[i] != NULL)
 	{
-		ft_lstadd_back(vars.envlst, ft_lstnew(ft_strdup(envp[i])));
+		temp = ft_strdup(envp[i]);
+		ft_lstadd_back(vars.envlst, ft_lstnew(temp));
+		temp = NULL;
 		i ++;
 	}
 	print_stack(*(vars.envlst));
+	ft_lstclear(vars.envlst);
+	print_stack(*(vars.envlst));
+	printf("%d\n", argc);
+	(void)argv;
 	return (0);
 }
