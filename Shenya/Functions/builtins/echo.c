@@ -7,17 +7,20 @@ void	exec_echo(char **argv)
     
     i = 1;
     opt = 0;
+    if (argv[i] != NULL && i == 1 && !ft_strncmp(argv[i], "-n", 3))
+    {
+        opt = 1;
+        i ++;
+    }
     while (argv[i] != NULL)
     {
-        if (i == 1 && !ft_strncmp(argv[i], "-n", ft_strlen(argv[i])))
-            opt = 1;
-        else if (argv[i][0] == '$' && argv[i][1] == '?')
+        if (argv[i][0] == '$' && argv[i][1] == '?')
             ft_putnbr_fd(g_exit_status, 1);
         else if (argv[i][0] == '$' && argv[i][1] == '$')
             ft_putnbr_fd(getpid(), 1);
         else
         {
-            ft_putstr_fd(argv[1], 1);
+            ft_putstr_fd(argv[i], 1);
             ft_putchar_fd(' ', 1);
         }
         i ++;
