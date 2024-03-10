@@ -26,7 +26,9 @@
 
 typedef struct s_envp
 {
-	char	**envp;
+	//char	**envp;
+	t_list	**envlist;
+	char	**envarr;
 	char	*cd_hist;
 	int		count;
 }	t_envp;
