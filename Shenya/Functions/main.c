@@ -123,12 +123,14 @@ int cmd_is_builtin(char	**argv)
 		return (0);
 }
 
+
+/* Need to convert linked list envp to envp arr */
 //void	child_process(char **envp, char **argv)
 void	child_process(t_envp *my_data, char **argv)
 {
 	char **envp;
 
-	envp = my_data->envp;
+	envp = my_data->envarr;
 	/*Check whether it's a built in
 	if a built in run the built in function
 	else convert command to absolute path
@@ -189,7 +191,7 @@ int main (int argc, char **argv, char **envp)
 	if (store_envp(&my_data, envp) < 0)
 		return (1);
 	if (argc == 2)
-		non_interactive_bash(argv[1], my_data.envp);
+		non_interactive_bash(argv[1], my_data.envarr);
 	else
 	{ 
 		(void)argc;
@@ -201,8 +203,10 @@ int main (int argc, char **argv, char **envp)
 		else
 			(void)envp;
 	}
-	free_arr(my_data.envp, my_data.count);
+	/* Need to figure out how to free_arr */
+	//free_arr(my_data.envarr, my_data.count);
 	//system("leaks minishell"); 
+	clear_envlist(&my_data);
 	printf("exit: %d\n", g_exit_status);
 	return (0);
 }
