@@ -171,6 +171,7 @@ void interactive_bash(char **argv, char *line, int argc, t_envp *my_data)
 		//get_env_var(argv[0]);
 		clean_argv(argv, argc);
 		free (line);
+		free_arr(my_data->envarr, my_data->count);
 		//get_env_var(cmd);
 		//ft_printf("errno %d\n", errno);
 	}
