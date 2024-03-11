@@ -137,7 +137,9 @@ void	child_process(t_envp *my_data, char **argv)
 	( File names will be coupled with redirections in the struct)
 	*/
 	if (cmd_is_builtin(argv))
+	{
 		exec_builtin(argv, my_data);
+	}
 	else
 	{
 		extract_envarr(my_data);
