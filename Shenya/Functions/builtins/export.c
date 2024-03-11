@@ -25,23 +25,32 @@ PARAMETERS
 // export varname=
 void    exec_export(char **argv, t_envp *my_data)
 {
-      
       char **arr;
+      char **av;
       char *var;
       char *val;
+      char *str;
 
       arr = NULL;
       arr = ft_split(argv[1], '=');
       var = arr[0];
       val = arr[1];
-      printf("var %s\n", var);
-      printf("val %s\n", val);
       /*if val is null make it an empty string*/
+      if (val == NULL)
+            val = ft_strdup("");
+      av = malloc(sizeof(char *) * 3);
+      av[2] = NULL;
+      av[0] = val;
+      av[1] = var;
+      exec_unset(av, my_data);
+      str = ft_strjoin(var, ft_strdup("="));
+      str = ft_strjoin(str, val);
+      ft_lstadd_back(my_data->envlist, ft_lstnew(str));
       /*if var exists in env, remove it - unset */
       /* add the variable and set value */
-      free(var);
-      free(val);
+      //free(var);
+      //free(val);
+      free(av);
       free(arr);
-      (void)my_data;
-
+      g_exit_status = 0;
 }
