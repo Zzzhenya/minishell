@@ -68,6 +68,8 @@ void	exec_builtin(char **argv, t_envp *my_data)
         exec_export(argv, my_data);
     else if (!ft_strncmp(argv[0], "unset", ft_strlen(argv[0])))
         exec_unset(argv, my_data);
+    else if (!ft_strncmp(argv[0], "exit", ft_strlen(argv[0])))
+        exec_exit(argv, my_data);
 	else
 		printf("%s\n", argv[0]);
 }
