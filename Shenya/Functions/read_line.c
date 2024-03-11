@@ -4,6 +4,8 @@ int get_arg_count(char **argv)
 {
 	int len = 0;
 
+	if (!argv)
+		return (len);
 	while (argv[len])
 		len ++;
 	return (len);
