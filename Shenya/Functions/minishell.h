@@ -86,4 +86,7 @@ void    exec_export(char **argv, t_envp *my_data);
 /* builtins/unset.c */
 void    exec_unset(char **argv, t_envp *my_data);
 
+/* builtins/exit.c */
+void	exec_exit(char **argv, t_envp *my_data);
+
 #endif
