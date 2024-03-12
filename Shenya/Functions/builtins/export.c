@@ -47,7 +47,7 @@ void   export_one_var(char **arr, t_envp *my_data)
       /* add the variable and set value */
       str = ft_strjoin(var, ft_strdup("="));
       str = ft_strjoin(str, val);
-      ft_lstadd_back(my_data->envlist, ft_lstnew(str));
+      ft_lstadd_back(&my_data->envlist, ft_lstnew(str));
       g_exit_status = 0;
 }
 

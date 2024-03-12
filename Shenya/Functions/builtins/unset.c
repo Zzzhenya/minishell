@@ -43,7 +43,7 @@ void unset_one_var(char *var, t_envp *my_data)
 	t_list	*prev;
 	char 	**arr;
 
-	current = *(my_data->envlist);
+	current = (my_data->envlist);
 	prev = current;
 	while (current != NULL)
 	{

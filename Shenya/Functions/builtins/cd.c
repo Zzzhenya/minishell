@@ -53,7 +53,7 @@ char		*change_to_home(t_envp	*my_data)
 	temp = NULL;
 	path = NULL;
 	//i = 0;
-	lst = *(my_data->envlist);
+	lst = (my_data->envlist);
 	while (lst)
 	{
 		if (!ft_strncmp((char *)lst->content, "HOME=", ft_strlen("HOME=")))

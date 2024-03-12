@@ -66,7 +66,7 @@ void free_string(void	*input)
 
 void clear_envlist(t_envp *my_data)
 {
-	ft_lstclear(my_data->envlist, free_string);
+	ft_lstclear(&my_data->envlist, free_string);
 }
 
 int store_envp(t_envp *vars, char **envp)
@@ -84,7 +84,7 @@ int store_envp(t_envp *vars, char **envp)
 			//free_list(vars->envlist);
 			return (-1);
 		}
-		ft_lstadd_back(vars->envlist, ft_lstnew(temp));
+		ft_lstadd_back(&vars->envlist, ft_lstnew(temp));
 		temp = NULL;
 		i ++;
 	}
@@ -100,7 +100,7 @@ int extract_envarr(t_envp *my_data)
 
 	int len = 0;
 
-	current = *(my_data->envlist);
+	current = (my_data->envlist);
 	len = ft_lstsize(current);
 	//current = *(my_data->envlist);
 	my_data->envarr = malloc(sizeof(char *) * len + 1);

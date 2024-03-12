@@ -14,7 +14,7 @@ void	exec_env(char **argv, t_envp *my_data)
 	t_list *lst;
 
 	(void)argv;
-	lst = *(my_data->envlist);
+	lst = (my_data->envlist);
 	while (lst)
 	{
 		ft_putstr_fd((char *)lst->content, 1);

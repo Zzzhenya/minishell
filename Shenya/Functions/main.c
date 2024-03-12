@@ -192,6 +192,7 @@ int main (int argc, char **argv, char **envp)
 
 	my_data.envarr = NULL;
 	my_data.cd_hist = NULL;
+	my_data.envlist = NULL;
 	if (store_envp(&my_data, envp) < 0)
 		return (1);
 	if (argc == 2)
