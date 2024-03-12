@@ -172,22 +172,38 @@ void	ft_lstclear(t_list **lst)
 
 int main(int argc, char **argv, char **envp)
 {
-	t_envp	vars;
 	int i = 0;
-	char	*temp;
+	t_list *lst;
+	char *temp;
+	t_list *node;
 
-	printf("%p\n", vars.envlst);
-	//*(vars.envlst) = NULL;
+	temp = NULL;
+	lst = NULL;
 	while (envp[i] != NULL)
 	{
 		temp = ft_strdup(envp[i]);
-		ft_lstadd_back(vars.envlst, ft_lstnew(temp));
+		ft_lstadd_back(&lst, ft_lstnew(temp));
 		temp = NULL;
+		printf("%s\n", envp[i]);
 		i ++;
 	}
-	print_stack(*(vars.envlst));
+	while (lst)
+	{
+		node = lst;
+		lst = node->next;
+		printf("%s\n", (char *)(node)->content);
+		free ((char *)node->content);
+		node->content = NULL;
+		free (node);
+		node = NULL;
+	}
+	lst = NULL;
+	temp = NULL;
+	free (node);
+	node = NULL;
+	/*print_stack(*(vars.envlst));
 	ft_lstclear(vars.envlst);
-	print_stack(*(vars.envlst));
+	print_stack(*(vars.envlst));*/
 	printf("%d\n", argc);
 	(void)argv;
 	return (0);
