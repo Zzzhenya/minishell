@@ -69,7 +69,7 @@ void	exec_exit(char **argv, t_envp *my_data)
 	else
 	{
 		print_exit_error(argv[1], ": numeric argument required\n");
-		g_exit_status = 255;
+		g_exit_status = 2;
 		// free stuff
 		exit(g_exit_status);
 	}
