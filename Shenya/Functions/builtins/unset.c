@@ -61,7 +61,6 @@ void unset_one_var(char *var, t_envp *my_data)
 		prev = current;
 		current = current->next;
 	}
-	g_exit_status = 0;
 }
 
 /* TESTTTTT */
@@ -72,6 +71,7 @@ void    exec_unset(char **argv, t_envp *my_data)
 	int i;
 
 	i = 1;
+	g_exit_status = 0;
 	while (argv[i] != NULL)
 	{
 		unset_one_var(argv[i], my_data);
