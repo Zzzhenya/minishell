@@ -48,3 +48,48 @@ void	skip_space_in_str(char *str, int *i)
 		*i += 1;
 	return ;
 }
+
+/*	[F]
+	Put the (c & '\0') to the end of the string.
+*/
+char	*strjoin_c(char *str, char c)
+{
+	char	*res;
+	int		i;
+
+	i = 0;
+	res = malloc((ft_strlen(str) + 2) * sizeof(char));
+	if (!res)
+		return (NULL);
+	while (str[i])
+	{
+		res[i] = str[i];
+		i++;
+	}
+	res[i] = c;
+	res[i + 1] = 0;
+	return (res);
+}
+
+/*	[F]
+	Same as strjoin_c // param: str, c
+	Difference: // param: str, str
+*/
+char	*strrjoin(char *s1, char *s2)
+{
+	char	*res;
+	int		i;
+
+	i = 0;
+	if (!s1)
+		return (s2);
+	else
+	{
+		while (s2 && s2[i])
+		{
+			res = strjoin_c(s1, s2[i]);
+			i++;
+		}
+	}
+	return (res);
+}

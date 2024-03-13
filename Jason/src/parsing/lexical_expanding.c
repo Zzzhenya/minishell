@@ -245,7 +245,8 @@ int	expand_env(t_data *data, char **env, int i)
 			row_env = find_matching_env_row(data->token[i] + i_dollar + 1, env);
 			if (row_env == -1)
 			{
-				data->token[i] = replace_substring(data->token[i], "\n", i_dollar);
+				data->token[i]
+					= replace_substring(data->token[i], "\n", i_dollar);
 				return (0);
 			}
 			data->token[i]

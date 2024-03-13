@@ -12,6 +12,29 @@
 
 #include "libft.h"
 
+/*	[F]	
+	Duplicate cmd_line.
+	Make the copy cmd_line of the given cmd_line
+*/
+char	*ft_strdup(const char *str)
+{
+	int		i;
+	char	*res;
+
+	i = 0;
+	res = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (res == NULL)
+		return (NULL);
+	while (str[i] != '\0')
+	{
+		res[i] = str[i];
+		i++;
+	}
+	res[i] = '\0';
+	return (res);
+}
+/*
+[Original]
 char	*ft_strdup(const char *src)
 {
 	size_t	i;
@@ -31,8 +54,6 @@ char	*ft_strdup(const char *src)
 	p[i] = '\0';
 	return (p);
 }
-
-/*
 int	main(void)
 {
 	char	*src;
