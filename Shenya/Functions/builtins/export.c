@@ -49,7 +49,6 @@ int is_valid_var_start(unsigned char c)
             return (1);
       else
             return (0);
-
 }
 
 int is_valid_var_char(char *var)
@@ -58,7 +57,7 @@ int is_valid_var_char(char *var)
 
       while (var[i] != '\0')
       {
-            if (!(ft_isalpha((unsigned char)var[i]) && var[i] == '_'))
+            if (!(ft_isalpha((unsigned char)var[i]) || var[i] == '_'))
                   return (0);
             i ++;
       }

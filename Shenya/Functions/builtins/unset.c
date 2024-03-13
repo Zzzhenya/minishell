@@ -65,7 +65,6 @@ void unset_one_var(char *var, t_envp *my_data)
 
 /* TESTTTTT */
 
-//void    exec_unset(char *var, t_envp *my_data)
 void    exec_unset(char **argv, t_envp *my_data)
 {
 	int i;
