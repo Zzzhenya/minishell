@@ -31,6 +31,42 @@ echo $?  -> 1
 
 */
 
+void  print_export_error(char *path, char *message)
+{
+
+      ft_putstr_fd("bash: export: `", 2);
+      ft_putstr_fd(path, 2);
+      ft_putstr_fd(message, 2);
+      ft_putstr_fd("\n", 2);
+}
+
+int is_invalid_id(char *var)
+{
+      if (!var)
+            return (1);
+      if (ft_isdigit(var[0]))
+            return (1);
+      else if (var[0] == '\'' || var[0] == '\"')
+            return (1);
+      else if (var[0] == '-')
+            return (1);
+      else
+            return (0);
+}
+
+char *remove_one_quote_set(char *str)
+{
+      size_t end;
+
+      end = 0;
+      end = ft_strlen(str) - 1;
+      if (str[0] == '\'' && str[end] == '\'')
+            str = ft_strtrim(str, "\'");
+      else if (str[0] == '\"' && str[end] == '\"')
+            str = ft_strtrim(str, "\"");
+      return (str);
+}
+
 void   export_one_var(char **arr, t_envp *my_data)
 {
       char *var;
@@ -39,38 +75,49 @@ void   export_one_var(char **arr, t_envp *my_data)
 
       var = arr[0];
       val = arr[1];
-      /* strip the " " && ' ' from var and val*/
-      if (var)
-            var = ft_strtrim(var, "\"\'");
-      if (val)
-            val = ft_strtrim(val, "\"\'");
       /*if val is null make it an empty string*/
       if (val == NULL)
             val = ft_strdup("");
-      /*if var exists in env, remove it - unset */
-      unset_one_var(var, my_data);
-      /* add the variable and set value */
+      /* join the variable and set value */
       str = ft_strjoin(var, ft_strdup("="));
       str = ft_strjoin(str, val);
+      /*if var exists in env, remove it - unset */
+      unset_one_var(var, my_data);
       ft_lstadd_back(&my_data->envlist, ft_lstnew(str));
-      g_exit_status = 0;
 }
+
+/* The double and single quotes wrapping the entire export command
+string will be removed by parser/lexer*/
 
 void    exec_export(char **argv, t_envp *my_data)
 {
       int i = 1;
       char **arr;
+      int ret = 0;
 
       arr = NULL;
+      g_exit_status = 0;
       while (argv[i] != NULL)
       {
             if (ft_strchr(argv[i], '='))
             {
                   arr = ft_split(argv[i], '=');
-                  export_one_var(arr, my_data);
+                  /* strip the " " && ' ' from var and val*/
+                  if (arr[0])
+                        arr[0] = remove_one_quote_set(arr[0]);
+                  if (arr[1])
+                        arr[1] = remove_one_quote_set(arr[1]);
+                  /*check for invalid var identifiers*/
+                  ret = is_invalid_id(arr[0]);
+                  if (ret)
+                  {
+                        g_exit_status = 1;
+                        print_export_error(argv[i]," : not a valid identifier");
+                  }
+                  else
+                        export_one_var(arr, my_data);
                   free_arr(arr, get_arg_count(arr));
             }
             i ++;
       }
-      g_exit_status = 0;  
 }
