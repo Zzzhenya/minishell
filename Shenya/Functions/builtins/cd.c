@@ -37,9 +37,9 @@ int  not_a_dir(char	*path)
 
 void	print_cd_error(char *path, char *message)
 {
-	ft_putstr_fd("bash: cd: ", 1);
-	ft_putstr_fd(path, 1);
-	ft_putstr_fd(message, 1);
+	ft_putstr_fd("bash: cd: ", 2);
+	ft_putstr_fd(path, 2);
+	ft_putstr_fd(message, 2);
 }
 
 
