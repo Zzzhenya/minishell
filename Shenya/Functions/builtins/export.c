@@ -39,6 +39,11 @@ void   export_one_var(char **arr, t_envp *my_data)
 
       var = arr[0];
       val = arr[1];
+      /* strip the " " && ' ' from var and val*/
+      if (var)
+            var = ft_strtrim(var, "\"\'");
+      if (val)
+            val = ft_strtrim(val, "\"\'");
       /*if val is null make it an empty string*/
       if (val == NULL)
             val = ft_strdup("");
@@ -66,5 +71,6 @@ void    exec_export(char **argv, t_envp *my_data)
                   free_arr(arr, get_arg_count(arr));
             }
             i ++;
-      }     
+      }
+      g_exit_status = 0;  
 }
