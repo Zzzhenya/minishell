@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   syntax_analysis.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkwak <tkwak@student.42berlin.de>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/13 11:11:48 by tkwak             #+#    #+#             */
+/*   Updated: 2024/03/13 11:24:07 by tkwak            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include "../../include/minishell.h"
 
 /*	[F]
@@ -34,8 +45,10 @@ int	syntax_simple_cmd(char **cmd_line, int *token, int *i, t_cmd **node)
 int	syntax_simple_redirect(char **cmd_line, int *i, t_cmd **node)
 {
 	*node = create_tree_node(N_SIMPLE_REDIREC, -1);
-	(*node)->l_child = create_leaf_node(cmd_line, N_REDIREC_TYPE, i[0], i[0] + 1);
-	(*node)->r_child = create_leaf_node(cmd_line, N_FILE_NAME, i[0] + 1, i[1]);
+	(*node)->l_child
+		= create_leaf_node(cmd_line, N_REDIREC_TYPE, i[0], i[0] + 1);
+	(*node)->r_child
+		= create_leaf_node(cmd_line, N_FILE_NAME, i[0] + 1, i[1]);
 	return (1);
 }
 
@@ -136,38 +149,36 @@ int	syntax_cmds(char **cmd_line, int *token, int *i, t_cmd **node)
 	Param(1):	ls -la | cat -e		// cmd_line
 	Param(2):	W  W  P  W  W		// Token from cmd_line
 	param(3):	Pointer to integer	// Token's sequence
-				i[0]: 0				// Index of first token.
-				i[1]: 5				// Index of last token.
-	Param(4):	(cmd_tree)			// From [f] parse_cmd_line
-									// (curr) t_cmd *cmd_tree == NULL;
+				i[0]: 0		// Index of first token.
+				i[1]: 5		// Index of last token.
+	Param(4):	(cmd_tree)		// From [f] parse_cmd_line
+						// (curr) t_cmd *cmd_tree == NULL;
 
 	[Progress]
 	1. find_index_pipe		// Find the position of 'PIPE'
-								No 'PIPE'?
-								-> Don't need to run this function
-								-> Return.
+						No 'PIPE'?
+						-> Don't need to run this function
+						-> Return.
 
 	2. create_tree_node(N_CMD)	// Allocate tree struct.
-								-> Just declaration
-								-> It doesn't point to anything yet.
+						-> Just declaration
+						-> It doesn't point to anything yet.
 
 	3. i[1] = pipe_index;	// Index of last token is changed to 'PIPE'.
-								(Before) ls -la | cat -e	// last token: "-e"
-								(After)	 ls -la |			// last token: "|"
+				(Before) ls -la | cat -e	// last token: "-e"
+				(After)	 ls -la |			// last token: "|"
 
 	4. pipe_index == i[0]	// If 'PIPE' located first -> ERROR.
-							   (ex) '| ls -la' -> grammatically strange.
+				  (ex) '| ls -la' -> grammatically strange.
 
-	5. syntax_cmds			// Make "l_child" (CMD)
-	
+	5. syntax_cmds		// Make "l_child" (CMD)
 	6. update_pipe_index	// Renew the pipe's index
-
-	7. syntax_pipe			// Make "r_child" (PIPE) // Recursive function.
+	7. syntax_pipe		// Make "r_child" (PIPE) // Recursive function.
 */
 int	syntax_pipe(char **cmd_line, int *token, int *i, t_cmd **node)
 {
-	int		tmp;
-	int		pipe_index;
+	int	tmp;
+	int	pipe_index;
 
 	tmp = i[1];
 	*node = create_tree_node(N_CMD, pipe_index);
@@ -178,7 +189,7 @@ int	syntax_pipe(char **cmd_line, int *token, int *i, t_cmd **node)
 			return (-1);
 	}
 	else
-	{		
+	{
 		i[1] = pipe_index;
 		if (pipe_index == i[0])
 		{
