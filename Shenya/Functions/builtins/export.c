@@ -31,27 +31,38 @@ echo $?  -> 1
 
 */
 
-void  print_export_error(char *path, char *message)
+void  print_export_error(char *var, char *val, char *message)
 {
 
       ft_putstr_fd("bash: export: `", 2);
-      ft_putstr_fd(path, 2);
+      ft_putstr_fd(var, 2);
+      ft_putchar_fd('=', 2);
+      ft_putstr_fd(val, 2);
+      ft_putchar_fd('\'', 2);
       ft_putstr_fd(message, 2);
       ft_putstr_fd("\n", 2);
 }
 
-int is_invalid_id(char *var)
+int is_valid_var_start(unsigned char c)
 {
-      if (!var)
-            return (1);
-      if (ft_isdigit(var[0]))
-            return (1);
-      else if (var[0] == '\'' || var[0] == '\"')
-            return (1);
-      else if (var[0] == '-')
+      if (ft_isalnum(c) || c == '_')
             return (1);
       else
             return (0);
+
+}
+
+int is_valid_var_char(char *var)
+{
+      int i = 0;
+
+      while (var[i] != '\0')
+      {
+            if (!(ft_isalpha((unsigned char)var[i]) && var[i] == '_'))
+                  return (0);
+            i ++;
+      }
+      return (1);
 }
 
 char *remove_one_quote_set(char *str)
@@ -93,7 +104,6 @@ void    exec_export(char **argv, t_envp *my_data)
 {
       int i = 1;
       char **arr;
-      int ret = 0;
 
       arr = NULL;
       g_exit_status = 0;
@@ -108,11 +118,10 @@ void    exec_export(char **argv, t_envp *my_data)
                   if (arr[1])
                         arr[1] = remove_one_quote_set(arr[1]);
                   /*check for invalid var identifiers*/
-                  ret = is_invalid_id(arr[0]);
-                  if (ret)
+                  if (!is_valid_var_start(arr[0][0]) || !is_valid_var_char(arr[0]))
                   {
                         g_exit_status = 1;
-                        print_export_error(argv[i]," : not a valid identifier");
+                        print_export_error(arr[0], arr[1]," : not a valid identifier");
                   }
                   else
                         export_one_var(arr, my_data);
