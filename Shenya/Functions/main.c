@@ -162,20 +162,24 @@ void interactive_bash(char **argv, char *line, int argc, t_envp *my_data)
 	while (1)
 	{
 		line = readline ("Minishell > ");
-		if (line)
+		if (line[0] != '\0')
+		{
 			add_history(line);
+		
 		/*if (!line)
 		{
 			// What is the exit code?
 			exit (0);
 		}*/
-		argv = ft_splitbyspace(line);
-		argc = get_arg_count(argv);
+			argv = ft_splitbyspace(line);
+			argc = get_arg_count(argv);
 		//child_process(envp, argv);
-		child_process(my_data, argv);
+			child_process(my_data, argv);
 		//get_env_var(argv[0]);
-		clean_argv(argv, argc);
-		free (line);
+			clean_argv(argv, argc);
+		}
+		if (line)
+			free (line);
 		//get_env_var(cmd);
 		//ft_printf("errno %d\n", errno);
 	}
