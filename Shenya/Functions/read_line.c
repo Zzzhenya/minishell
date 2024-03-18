@@ -61,7 +61,7 @@ int run_command(char **argv)
 	return (0);
 }
 
-int run_command1(char *cmd, char **argv)
+int run_command1(char *cmd, char **argv, char **envp)
 {
 	pid_t	pid;
 	int status;
@@ -83,7 +83,7 @@ int run_command1(char *cmd, char **argv)
 	{
 		// Do execve stuff to call first command(/bin/ls -la)
 		/* have to string together cmd and flags as second arg to execve */
-		if (execve(cmd, argv, NULL) == -1)
+		if (execve(cmd, argv, envp) == -1)
 		{
 			printf("%d :execve error\n", errno);
 			//system("leaks read_line");
