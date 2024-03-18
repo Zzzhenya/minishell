@@ -104,7 +104,7 @@ void	exec_from_path(char **envp, char **argv)
 	else
 	{
 		//run_command(argv);
-		run_command1(cmd, argv);
+		run_command1(cmd, argv, envp);
 	}
 
 }
@@ -162,6 +162,12 @@ void interactive_bash(char **argv, char *line, int argc, t_envp *my_data)
 	while (1)
 	{
 		line = readline ("Minishell > ");
+		if (!line)
+		{
+			g_exit_status = 1;
+			printf("exit\n");
+			exit(g_exit_status);
+		}
 		if (line[0] != '\0')
 		{
 			add_history(line);
