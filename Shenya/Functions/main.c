@@ -158,10 +158,12 @@ void interactive_bash(char **argv, char *line, int argc, t_envp *my_data)
 	//envp = my_data->envp;
 	//(void)envp;
 	//cmd = NULL;
+	install_signals();
 	while (1)
 	{
 		line = readline ("Minishell > ");
-		add_history(line);
+		if (line)
+			add_history(line);
 		if (!line)
 		{
 			/* What is the exit code?*/
