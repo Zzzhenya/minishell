@@ -164,11 +164,11 @@ void interactive_bash(char **argv, char *line, int argc, t_envp *my_data)
 		line = readline ("Minishell > ");
 		if (line)
 			add_history(line);
-		if (!line)
+		/*if (!line)
 		{
-			/* What is the exit code?*/
+			// What is the exit code?
 			exit (0);
-		}
+		}*/
 		argv = ft_splitbyspace(line);
 		argc = get_arg_count(argv);
 		//child_process(envp, argv);
