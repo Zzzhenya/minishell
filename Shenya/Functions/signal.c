@@ -17,6 +17,8 @@ void install_signals(void)
 {
 	if (signal(SIGINT, sig_handler)!= 0)
 		printf("SIGNALS NOT WORKING\n");
+	if (signal(SIGQUIT, SIG_IGN)!= 0)
+		printf("SIGNALS NOT WORKING\n");
 	//ctrl + d -> print exit, exit(1)
 	// ctrl + \ -> do nothing
 }
