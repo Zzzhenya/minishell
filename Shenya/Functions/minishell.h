@@ -17,7 +17,7 @@
 #endif
 # include <limits.h>
 
-#include <sys/ioctl.h>
+# include <sys/ioctl.h>
 
 # include "libft/libft.h"
 
@@ -99,6 +99,7 @@ void 	unset_one_var(char *var, t_envp *my_data);
 void	exec_exit(char **argv, t_envp *my_data);
 
 /* signals.c */
-int install_signals(void);
+void install_signals(void);
+void	sig_handler(int sig);
 
 #endif
