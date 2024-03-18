@@ -7,6 +7,8 @@ SRC = 	read_line.c ft_splitbyspace.c main.c exec_builtin.c \
 
 CFLAGS = -Wall -Werror -Wextra -g
 
+LDFLAGS=-L/usr/local/opt/readline/lib
+
 INCLUDE= libft/libft.h minishell.h
 
 LIBFT_DIR= libft
@@ -24,7 +26,7 @@ all : $(NAME)
 	@echo "...Compiling $(notdir $<)."
 
 $(NAME): $(LIBFT) $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -lreadline -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(LDFLAGS) -lreadline -o $(NAME)
 	@echo "...Linking minishell OBJs."
 
 $(LIBFT):
