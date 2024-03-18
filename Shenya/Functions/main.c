@@ -153,42 +153,29 @@ void	child_process(t_envp *my_data, char **argv)
 
 void interactive_bash(char **argv, char *line, int argc, t_envp *my_data)
 {
-	//char **envp
-
-	//envp = my_data->envp;
-	//(void)envp;
-	//cmd = NULL;
 	install_signals();
 	while (1)
 	{
 		line = readline ("Minishell > ");
 		if (!line)
 		{
-			g_exit_status = 1;
+			g_exit_status = 0;
 			printf("exit\n");
-			exit(g_exit_status);
+			// free stuff and exit
+			break;
 		}
 		if (line[0] != '\0')
 		{
 			add_history(line);
-		
-		/*if (!line)
-		{
-			// What is the exit code?
-			exit (0);
-		}*/
 			argv = ft_splitbyspace(line);
 			argc = get_arg_count(argv);
-		//child_process(envp, argv);
 			child_process(my_data, argv);
-		//get_env_var(argv[0]);
 			clean_argv(argv, argc);
 		}
 		if (line)
 			free (line);
-		//get_env_var(cmd);
-		//ft_printf("errno %d\n", errno);
 	}
+	return ;
 }
 
 void	non_interactive_bash(char *arg, char **envp)
@@ -224,8 +211,7 @@ int main (int argc, char **argv, char **envp)
 	//free_arr(my_data.envarr, my_data.count);
 	//system("leaks minishell"); 
 	clear_envlist(&my_data);
-	printf("exit: %d\n", g_exit_status);
-	return (0);
+	exit(g_exit_status);
 }
 /* Removing error handling for isatty for now because;
 
