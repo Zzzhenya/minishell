@@ -5,9 +5,10 @@ void	sig_handler(int sig)
 	if (sig == SIGINT) // ctrl + c  -> new line
 	{
 		g_exit_status = sig;
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		rl_replace_line ("", 0);
+		ft_putchar_fd('\n', 1);
 		rl_on_new_line();
+		rl_replace_line ("", 0);
+		rl_redisplay();
 	}
 	//ctrl + d -> print exit, exit(1)
 	// ctrl + \ -> do nothing
