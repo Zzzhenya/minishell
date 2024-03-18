@@ -16,6 +16,9 @@
 # include <errno.h>
 #endif
 # include <limits.h>
+
+#include <sys/ioctl.h>
+
 # include "libft/libft.h"
 
 # include <signal.h>
@@ -55,6 +58,9 @@ int run_command(char **argv);
 int run_command1(char *cmd, char **argv);
 
 void clean_argv(char **argv, int argc);
+
+/* readline */
+void rl_replace_line(const char *text, int clear_undo);
 
 /* envp_actions.c */
 int store_envp(t_envp *vars, char **envp);
