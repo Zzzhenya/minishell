@@ -18,6 +18,8 @@
 # include <limits.h>
 # include "libft/libft.h"
 
+# include <signal.h>
+
 #ifndef PATH_MAX
 # define PATH_MAX 2048
 #endif
@@ -89,5 +91,8 @@ void 	unset_one_var(char *var, t_envp *my_data);
 
 /* builtins/exit.c */
 void	exec_exit(char **argv, t_envp *my_data);
+
+/* signals.c */
+int install_signals(void);
 
 #endif
