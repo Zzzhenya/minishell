@@ -66,6 +66,7 @@ int run_command1(char *cmd, char **argv, char **envp)
 	pid_t	pid;
 	int status;
 
+	(void)envp;
 	if (access(cmd, 1) != 0)
 	{
 		printf("%d :Do not have access\n", errno);

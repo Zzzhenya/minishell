@@ -14,11 +14,11 @@ void	free_2d(char **arr)
 	while (arr[i] != NULL)
 	{
 		free(arr[i]);
-		//arr[i] = NULL;
+		arr[i] = NULL;
 		i++;
 	}
 	free (arr);
-	//arr = NULL;
+	arr = NULL;
 }
 
 char	**save_all_env_paths(char **envp)
@@ -41,6 +41,8 @@ char	*convert_command_absolute_path(char **path_array, int i, char *command)
 	char	*part_path;
 	char	*absolute_path;
 
+	part_path = NULL;
+	absolute_path = NULL;
 	part_path = ft_strjoin(path_array[i], "/");
 	if (part_path == NULL)
 	{
@@ -210,6 +212,7 @@ int main (int argc, char **argv, char **envp)
 	/* Need to figure out how to free_arr */
 	//free_arr(my_data.envarr, my_data.count);
 	//system("leaks minishell"); 
+	rl_clear_history();
 	clear_envlist(&my_data);
 	exit(g_exit_status);
 }
