@@ -12,10 +12,6 @@
 
 #include "../../include/minishell.h"
 
-/*	[F]
-	If "c" is !!!not!!! in "str"	->	return (-1)
-	Else							->	return (i)
-*/
 int	ft_strchr_m(char *str, char c)
 {
 	int	i;
@@ -28,10 +24,6 @@ int	ft_strchr_m(char *str, char c)
 	return (i);
 }
 
-/*	[F]
-	If compare s1 != s2	-> return (s1-s2)
-	Else				-> return (0)
-*/
 int	ft_strcmp(char *s1, char *s2)
 {
 	while (*s1 == *s2 && *s2)
@@ -44,20 +36,12 @@ int	ft_strcmp(char *s1, char *s2)
 	return (0);
 }
 
-/*	[F]
-    For "echo" function.
-	If "c" is not in "str"	->	return (-1)
-	Else					->	return (i)
-*/
 int	ft_putstr_m(char *str)
 {
 	write(1, str, ft_strlen(str));
 	return (0);
 }
 
-/* [F]
-    cpy (str) to data.token
-*/
 int	ft_strcpy_m1(t_data *data, char *str, int len, int j)
 {
 	int	i;
@@ -80,10 +64,6 @@ int	ft_strcpy_m1(t_data *data, char *str, int len, int j)
 	return (len);
 }
 
-/* [F]
-    Same with (ft_strcpy_m1)
-	But only use for normal character (!= |, >, <, ', "..)
-*/
 int	ft_strcpy_m2(t_data *data, char *str, int len, int j)
 {
 	int	i;

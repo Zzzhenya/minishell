@@ -185,8 +185,7 @@ typedef struct s_stdio
 
 // [FUNCTIONS]
 
-/* [ LEXER ]*/
-// INPUT_VALIDATE  & TOKENIZATION
+/* [ LEXER ] INPUT_VALIDATE  & TOKENIZATION */
 // [ lexical_qoute.c ]
 int		count_quote(char *str, t_data *data);
 int		check_quote_arrangement(char *str, int i);
@@ -219,14 +218,12 @@ int		check_redirections(char *str);
 int		check_token_type(char *str);
 int		count_row_2d_array(char **array);
 int		*token_malloc(char **after_chopping);
-/////////////////////////////////////////////////////////////////////////////
 
-/* [ EXIT STATUS ] */
-char	*convert_status_to_ascii(void);
+// [ change_exit_status.c ] //
 void	if_dollar_q_mark(char **tmp, char *status, int *flag, int *i);
 void	if_tmp(int *flag, char *tmp, char **argv);
+char	*convert_status_to_ascii(void);
 void	replace_exit_status(char ***argv, int i, int flag, int j);
-/////////////////////////////////////////////////////////////////////////////
 
 /* [ PASER ]*/
 // [ syntax_analysis.c ]
@@ -250,7 +247,6 @@ void	update_pipe_index(int *i, int pipe_index, int tmp);
 
 // [ get_cmds.c ]
 t_cmd	*parse_user_input(char *user_input, t_envp *env);
-/////////////////////////////////////////////////////////////////////////////
 
 /* [ UTILS ] */
 // [ util_skip.c ]
