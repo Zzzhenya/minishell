@@ -11,27 +11,27 @@
 /* ************************************************************************** */
 #include "../include/minishell.h"
 
-/*	[F]
+/*	[M]
+	사용자 입력을 파싱하여 조건에 맞는지 확인하고, 그 결과에 따라 명령어 트리를 생성하는 기능을 구현
+	Implements a function that parses user input to check,
+	if it meets the conditions and creates a command tree based on the results.
+
 	[Progress]
-	1. cmd_tree = NULL;		// Initiailzing cmd_tree struct
-	2. validate_input		// Copy all values from "user_input" to "t_data struct".
-							   And dividing inputs to token.
-	3. replace_exit_status	// Handling ($?: exit status)
-	4. token_malloc			// Handling (token): convert value to "token macro".
-	5. check_token_length	// Check how many token it is.
-	6. syntax_pipe			// Make parse tree
-	7. free_tree			// Error handling for [f] syntax_pipe
-	8. freeing_norminette	// 
-	9. 
-
-	[Difference between "validated_input" vs "token"]
-		validated_input:
-			T1		T2		T3		T4		T5
-			ls		-la		|		cat		-e
-
-		token: 
-			T1		T2		T3		T4		T5
-			W		W		P		W		W
+	1. NULL check for 'user_input'
+		Check if user_input is NULL or empty.
+	2. validate_input
+		count_quote (Check pair & how many)
+		count_word (How many)
+		check_quote's order
+		ft_chopper // seperate one by one as token.
+		expansion // $? make it others.
+	3. replace_exit_status
+		Replace the string 'exit' with a specific value.
+	4. token_malloc
+		allocate memory for each tokens.
+	5. syntax_parsing
+		Parses the pipe based on it and constructs a command tree.
+	6. Free memory and return for no more useful things.
 */
 t_cmd	*parse_user_input(char *user_input, t_envp *env)
 {

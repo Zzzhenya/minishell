@@ -47,33 +47,38 @@ int	tool4free(char **str, int i4str)
 	return (1);
 }
 
+// [M]
 char	**linebyline(char **str, char const *s, char c)
 {
-	int	index;
+	int	i;
 	int	i4str;
 	int	start;
 
-	index = 0;
+	i = 0;
 	i4str = 0;
-	while (s[index])
+	while (s[i])
 	{
-		if (s[index] != c)
+		if (s[i] != c)
 		{
-			start = index;
-			while (s[index] != c && s[index])
-				index ++;
-			str[i4str] = ft_substr(s, start, index - start);
-			if (tool4free(str, i4str) < 0)
+			start = i;
+			while (s[i] && s[i] != c)
+				i++;
+			str[i4str] = ft_substr(s, start, i - start);
+			if (str[i4str] == NULL)
+			{
+				tool4free(str, i4str);	// 할당 실패 시 메모리 해제 후 종료
 				return (NULL);
-			i4str ++;
+			}
+			i4str++;
 		}
 		else
-			index ++;
+			i++;
 	}
 	str[i4str] = NULL;
 	return (str);
 }
 
+// [M]
 char	**ft_split(char const *s, char c)
 {
 	char	**str;
@@ -84,5 +89,10 @@ char	**ft_split(char const *s, char c)
 	if (!str || !s)
 		return (NULL);
 	str = linebyline(str, s, c);
+	if (str == NULL) // linebyline 호출 실패 시 메모리 해제
+	{
+		free (str);
+		return (NULL);
+	}
 	return (str);
 }

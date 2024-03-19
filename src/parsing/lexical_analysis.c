@@ -11,9 +11,6 @@
 /* ************************************************************************** */
 #include "../../include/minishell.h"
 
-/*	[F]
-	Check the length of token, with using ft_strcmp.
-*/
 int	check_token_length(int *token)
 {
 	int	i;
@@ -24,10 +21,6 @@ int	check_token_length(int *token)
 	return (i);
 }
 
-/*	[F]
-	Check the type of token, whether it is (redirection) or not
-	4Types of redirections // < << > >>
-*/
 int	check_redirections(char *str)
 {
 	if (ft_strcmp(str, "<") == 0)
@@ -42,9 +35,6 @@ int	check_redirections(char *str)
 		return (1);
 }
 
-/*	[F]
-	Check the type of token, with using ft_strcmp.
-*/
 int	check_token_type(char *str)
 {
 	if (ft_strcmp(str, "|") == 0)
@@ -59,9 +49,6 @@ int	check_token_type(char *str)
 		return (T_WORD);
 }
 
-/*	[F]
-	count rows from 2d_array
-*/
 int	count_row_2d_array(char **array)
 {
 	int	i;
@@ -74,18 +61,6 @@ int	count_row_2d_array(char **array)
 	return (i);
 }
 
-/*	[F]
-	[Param]
-	param(1) token_malloc(validated_token);
-			= char **validated_token
-			= The rsult of the 2D-array after chopping.
-
-	[Progress]
-	1. Count tokens (n_token)
-	2. Allocate memory for token (+1: NULL for last digit)
-	3. Check the type of token and copy it to res[i]
-	4. Return (*res)
-*/
 int	*token_malloc(char **after_chopping)
 {
 	int	i;

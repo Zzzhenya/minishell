@@ -12,9 +12,6 @@
 
 #include "../../include/minishell.h"
 
-/* [F]
-    If meet with space -> return (1)
-*/
 int	ft_isspace(char c)
 {
 	if (c == ' ' || c == '\n')
@@ -26,9 +23,6 @@ int	ft_isspace(char c)
 	return (0);
 }
 
-/* [F]
-	skip normal character on the string.
-*/
 void	skip_normal_char(char *str, int *i)
 {
 	while (str[*i] != '\0' && str[*i] != ' ' && str[*i] != '='
@@ -39,9 +33,6 @@ void	skip_normal_char(char *str, int *i)
 		*i += 1;
 }
 
-/* [F]
-	skip ' 'space in str
-*/
 void	skip_space_in_str(char *str, int *i)
 {
 	while (ft_isspace(str[*i]) == -1)
@@ -49,9 +40,6 @@ void	skip_space_in_str(char *str, int *i)
 	return ;
 }
 
-/*	[F]
-	Put the (c & '\0') to the end of the string.
-*/
 char	*strjoin_c(char *str, char c)
 {
 	char	*res;
@@ -71,10 +59,6 @@ char	*strjoin_c(char *str, char c)
 	return (res);
 }
 
-/*	[F]
-	Same as strjoin_c // param: str, c
-	Difference: // param: str, str
-*/
 char	*strrjoin(char *s1, char *s2)
 {
 	char	*res;
