@@ -28,6 +28,7 @@ int  not_a_dir(char	*path)
 {
 	struct	stat statbuf;
 
+	statbuf.st_mode = 0;
 	stat(path, &statbuf);
 	if (S_ISREG(statbuf.st_mode))
 		return (1);
@@ -117,7 +118,7 @@ void    exec_cd(char **argv, t_envp *my_data)
 	path = NULL;
 	if (my_data->cd_hist != NULL && argv[1] && !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
 	{
-		path = my_data->cd_hist;
+		path = ft_strdup(my_data->cd_hist);
 		ft_putstr_fd(path, 1);
           ft_putchar_fd('\n', 1);
 	}
@@ -128,14 +129,18 @@ void    exec_cd(char **argv, t_envp *my_data)
           ft_putchar_fd('\n', 1);
 		//g_exit_status = 1;
 		//print_cd_error(argv[1], ": OLDPWD not set\n");
-		//free(path);
-		return;
 	}
 	else if (argv[1] == NULL || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
 		path = change_to_home(my_data);
 	else
-		path = argv[1];
+		path = ft_strdup(argv[1]);
+	if (my_data->cd_hist != NULL)
+	{
+		free(my_data->cd_hist);
+		my_data->cd_hist = NULL;
+	}
 	my_data->cd_hist = get_pwd();
 	//if (my_data->cd_hist == NULL)
 	execute_path(path);
+	free (path);
 }
