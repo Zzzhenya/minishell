@@ -212,7 +212,7 @@ int main (int argc, char **argv, char **envp)
 	/* Need to figure out how to free_arr */
 	//free_arr(my_data.envarr, my_data.count);
 	//system("leaks minishell"); 
-	rl_clear_history();
+	//rl_clear_history();
 	clear_envlist(&my_data);
 	exit(g_exit_status);
 }
