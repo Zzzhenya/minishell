@@ -214,6 +214,11 @@ int main (int argc, char **argv, char **envp)
 	//system("leaks minishell"); 
 	//rl_clear_history();
 	clear_envlist(&my_data);
+	if (my_data.cd_hist != NULL)
+	{
+		free(my_data.cd_hist);
+		my_data.cd_hist = NULL;
+	}
 	exit(g_exit_status);
 }
 /* Removing error handling for isatty for now because;
