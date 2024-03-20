@@ -94,6 +94,7 @@ int run_command1(char *cmd, char **argv, char **envp)
 	else
 	{
 		wait(&status);
+		free (cmd);
 		//printf("%d\n", status);
 	}
 	return (0);
