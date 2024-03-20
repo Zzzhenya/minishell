@@ -102,11 +102,10 @@ int extract_envarr(t_envp *my_data)
 	current = NULL;
 	current = (my_data->envlist);
 	len = ft_lstsize(current);
-	//current = *(my_data->envlist);
-	my_data->envarr = (char **)malloc(sizeof(char *) * len + 1);
+	my_data->envarr = (char **)malloc(sizeof(char *) * (len + 1));
 	if (!my_data->envarr)
 		return (-1);
-	//my_data->envarr[len] = NULL;
+	my_data->envarr[len] = NULL;
 	while (current != NULL)
 	{
 		my_data->envarr[i] = ft_strdup((char *)current->content);
