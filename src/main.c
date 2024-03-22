@@ -36,7 +36,14 @@ int	main(int argc, char **argv, char **envs)
 	char	**paths;
 	char	user_input[1000];
 
-	env.envp = envs;
+	//env.envp = envs;
+	env.envarr = NULL;
+	env.cd_hist = NULL;
+	env.envlist = NULL;
+	if (store_envp(&env, envs) < 0)
+		return (1);
+	if (extract_envarr(&env) < 0)
+		return (2);
 	(void)argv;
 	(void)argc;
 	paths = save_all_env_paths(envs);
@@ -47,6 +54,8 @@ int	main(int argc, char **argv, char **envs)
 		printf("Successfully created\n");
 	else
 		printf("Error: Failed to create command tree.\n");
+	free_2d(env.envarr);
+	clear_envlist(&env);
 	free_tree(tree);
 	free_2d(paths);
 	return (0);
