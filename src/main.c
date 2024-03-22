@@ -40,6 +40,7 @@ int	main(int argc, char **argv, char **envs)
 	env.envarr = NULL;
 	env.cd_hist = NULL;
 	env.envlist = NULL;
+	env.count = 0;
 	if (store_envp(&env, envs) < 0)
 		return (1);
 	if (extract_envarr(&env) < 0)
@@ -54,7 +55,7 @@ int	main(int argc, char **argv, char **envs)
 		printf("Successfully created\n");
 	else
 		printf("Error: Failed to create command tree.\n");
-	free_2d(env.envarr);
+	free_arr(env.envarr, env.count);
 	clear_envlist(&env);
 	free_tree(tree);
 	free_2d(paths);
