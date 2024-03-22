@@ -168,12 +168,31 @@ typedef struct s_cmd
 	int					pre_flag;
 }	t_cmd;
 
-// [ ]??
+// [STRUCT]
+/* [F]
+	[Description]
+	structure to store envp related data 
+
+	envlist:	environmental variables stored in a linked list.
+	envarr:		a pointer array of environmental variables. Created before calling execve
+	cd_hist:	last directory visited with cd. Required for cd -
+	count:		number of env variables stored in the envlist
+*/
+
+typedef struct s_envp
+{
+	t_list 	*envlist;
+	char	**envarr;
+	char	*cd_hist;
+	int		count;
+}	t_envp;
+
+/* [ ]??
 typedef struct s_envp
 {
 	char	**envp;
 	char	*cd_hist;
-}	t_envp;
+}	t_envp; */
 
 // [ ]??
 typedef struct s_stdio
@@ -275,6 +294,7 @@ void	free_2d(char **arr);
 void	free_stdios(t_stdio *stdios);
 void	free_tree(t_cmd	*tree);
 void	freeing_norminette(char **validated_input, int *token);
+void	free_arr(char **arr, int loc);
 
 /* [ STARTING POINT ] */
 // [ main.c ]
@@ -286,6 +306,12 @@ void	non_interactive_mode(t_cmd **tree,
 int		main(int argc, char **argv, char **envs);
 
 /* [ SHENYA] */
+
+/* [ ENV ] */
+// [ envp_actions.c ]
+int		store_envp(t_envp *env, char **envs);
+void	clear_envlist(t_envp *env);
+int		extract_envarr(t_envp *my_data);
 
 // [ Executing ]
 /*
