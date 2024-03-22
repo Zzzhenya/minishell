@@ -50,3 +50,21 @@ void	free_stdios(t_stdio *stdios)
 		curr = next;
 	}
 }
+
+/* 
+	frees a heap array upto a specified location
+*/
+void	free_arr(char **arr, int loc)
+{
+	int i;
+
+	i = 0;
+	while (i < loc)
+	{
+		free (arr[i]);
+		arr[i] = NULL;
+		i ++;
+	}
+	free (arr);
+	arr = NULL;
+}
