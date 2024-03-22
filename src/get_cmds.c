@@ -44,7 +44,8 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	if (user_input == NULL || user_input[0] == 0)
 		return (NULL);
 	cmd_tree = NULL;
-	validated_input = validate_input(user_input, env->envp);
+	//validated_input = validate_input(user_input, env->envp);
+	validated_input = validate_input(user_input, env->envarr);
 	if (!validated_input)
 		return (NULL);
 	replace_exit_status(&validated_input, 0, 0, 0);
