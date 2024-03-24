@@ -328,6 +328,8 @@ int		extract_envarr(t_envp *my_data);
 /*
 	set_signals_interactive
 */
+// [signals.c]
+void install_signals(void);
 
 // [ BUILD-IN ] 
 /*
@@ -348,5 +350,8 @@ File descriptor of STDIN, relating with input source like Key-board.
 STDOUT_FILENO:
 File descriptor of STDIN, relating with input source like Key-board.
 */
+
+/* readline */
+void rl_replace_line(const char *text, int clear_undo);
 
 #endif
