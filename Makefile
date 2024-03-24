@@ -4,10 +4,10 @@ LIBFT		= libft.a
 LIBFT_DIR	= libft
 LIBFT_PATH	= $(LIBFT_DIR)/$(LIBFT)
 
-CCFLAGS = -Wall -Werror -Wextra
-LDFLAGS = -L/usr/lib/x86_64-linux-gnu -lreadline
+CCFLAGS = -Wall -Werror -Wextra -g
+LDFLAGS = -L/usr/local/opt/readline/lib -L/usr/lib/x86_64-linux-gnu -lreadline
 
-CC = cc -g
+CC = cc
 
 SRCS = src/parsing/change_exit_status.c\
  src/parsing/lexical_analysis.c\
@@ -24,7 +24,8 @@ SRCS = src/parsing/change_exit_status.c\
  src/util/util_str.c\
  src/get_cmds.c\
  src/main.c\
- src/envp_actions.c
+ src/envp_actions.c\
+ src/signals/signal.c
 
 OBJS = $(SRCS:.c=.o)
 
