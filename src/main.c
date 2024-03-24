@@ -33,6 +33,7 @@ void	interactive_bash(t_cmd **tree, char **paths, t_envp *env)
 {
 	char	user_input[1000];
 
+	install_signals();
 	printf("INTERACTIVE BASH\n");
 	if (extract_envarr(env) < 0)
 		return ;
