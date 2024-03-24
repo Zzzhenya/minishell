@@ -29,35 +29,63 @@ char	**save_all_env_paths(char **envp)
 	exit(EXIT_FAILURE);
 }
 
+void	interactive_bash(t_cmd **tree, char **paths, t_envp *env)
+{
+	char	user_input[1000];
+
+	printf("INTERACTIVE BASH\n");
+	if (extract_envarr(env) < 0)
+		return ;
+	fgets(user_input, sizeof(user_input), stdin);
+	user_input[strcspn(user_input, "\n")] = 0;
+	tree = (t_cmd **)parse_user_input(user_input, env);
+	if (tree != NULL)
+	{
+		printf("Successfully created\n");
+	}
+	else
+		printf("Error: Failed to create command tree.\n");
+	(void)paths;
+}
+
+void	non_interactive_bash(t_cmd **tree, char **paths, t_envp *env, char *script)
+{
+	(void)tree;
+	(void)paths;
+	(void)env;
+	(void)script;
+	printf("NON INTERACTIVE BASH\n");
+}
+
 int	main(int argc, char **argv, char **envs)
 {
 	t_cmd	*tree;
 	t_envp	env;
 	char	**paths;
-	char	user_input[1000];
 
-	//env.envp = envs;
 	env.envarr = NULL;
 	env.cd_hist = NULL;
 	env.envlist = NULL;
+	tree = NULL;
 	env.count = 0;
+	paths = save_all_env_paths(envs);
 	if (store_envp(&env, envs) < 0)
 		return (1);
-	if (extract_envarr(&env) < 0)
-		return (2);
-	(void)argv;
-	(void)argc;
-	paths = save_all_env_paths(envs);
-	fgets(user_input, sizeof(user_input), stdin);
-	user_input[strcspn(user_input, "\n")] = 0;
-	tree = parse_user_input(user_input, &env);
-	if (tree != NULL)
-		printf("Successfully created\n");
+	if (argc == 2)
+		non_interactive_bash(&tree, paths, &env, argv[1]);
 	else
-		printf("Error: Failed to create command tree.\n");
-	free_arr(env.envarr, env.count);
+	{
+		(void)argv;
+		if (isatty(STDIN_FILENO) == 1)
+		{
+			interactive_bash(&tree, paths, &env);
+		}
+	}
+	if (env.envarr)
+		free_arr(env.envarr, env.count);
 	clear_envlist(&env);
-	free_tree(tree);
+	if (tree)
+		free_tree(tree);
 	free_2d(paths);
 	return (0);
 }
