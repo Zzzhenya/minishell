@@ -49,6 +49,7 @@ void	print_node(t_cmd *node)
 
 	printf("%d 	", node->pre_flag);
 	printf("%d 	", node->pipe_exist);
+	printf("%d 	", node->node_type);
 	if (!node->cmdstr)
 	{
 		printf("Empty\n");
@@ -74,8 +75,28 @@ void	print_leaves(t_cmd *node, char **paths, t_envp *env)
 		print_leaves(node->r_child, paths, env);
 }
 
+// Pre-order DFS - Pre-order Depth First Search/Traveral
 void	search_tree(t_cmd *node, char **paths, t_envp *env)
 {
-	print_leaves(node, paths, env);
+	//print_leaves(node, paths, env);
+	if (!node)
+		return;
+	if (!node->l_child && !node->r_child)
+	{
+		node->pre_flag = 1;
+		print_node(node);
+	}
+	if (node->l_child )
+	{
+		node->pre_flag = 1;
+		print_node(node);
+		search_tree(node->l_child, paths, env);
+	}
+	if (node->r_child )
+	{
+		node->pre_flag = 1;
+		print_node(node);
+		search_tree(node->r_child, paths, env);
+	}
 
 }

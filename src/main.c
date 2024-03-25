@@ -43,6 +43,7 @@ void	interactive_bash(t_cmd **tree, char **paths, t_envp *env)
 	if (tree != NULL)
 	{
 		printf("Successfully created\n");
+		printf("flag	pipe 	type\n");
 		search_tree(*tree, paths, env);
 	}
 	else
