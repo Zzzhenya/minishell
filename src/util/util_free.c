@@ -37,18 +37,19 @@ void	free_tree(t_cmd	*tree)
 	}
 }
 
-void	free_stdios(t_stdio *stdios)
+void	free_stdios(t_redirec *stdios)
 {
-	t_stdio	*curr;
-	t_stdio	*next;
+	t_redirec	*curr;
+	t_redirec	*next;
 
 	curr = stdios;
 	while (curr)
 	{
-		next = curr->next_stdio;
+		next = curr->next_redirec;
 		free(curr);
 		curr = next;
 	}
+<<<<<<< HEAD
 }
 
 /* 
@@ -67,4 +68,6 @@ void	free_arr(char **arr, int loc)
 	}
 	free (arr);
 	arr = NULL;
+=======
+>>>>>>> f9de3f2 (update executing part and header file, which is jason's part)
 }
