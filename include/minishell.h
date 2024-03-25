@@ -318,6 +318,8 @@ int		extract_envarr(t_envp *my_data);
 	search_tree
 	wait_each_commands
 */
+// [search_tree.c]
+void	search_tree(t_cmd *node, char **paths, t_envp *env);
 
 // [ FORK ]
 /*

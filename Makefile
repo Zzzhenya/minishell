@@ -25,7 +25,8 @@ SRCS = src/parsing/change_exit_status.c\
  src/get_cmds.c\
  src/main.c\
  src/envp_actions.c\
- src/signals/signal.c
+ src/signals/signal.c\
+ src/executing/search_tree.c
 
 OBJS = $(SRCS:.c=.o)
 

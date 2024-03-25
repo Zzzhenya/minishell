@@ -34,18 +34,21 @@ void	interactive_bash(t_cmd **tree, char **paths, t_envp *env)
 	char	user_input[1000];
 
 	install_signals();
-	printf("INTERACTIVE BASH\n");
 	if (extract_envarr(env) < 0)
 		return ;
+	/* Replace these two lines with the radline functions */
 	fgets(user_input, sizeof(user_input), stdin);
 	user_input[strcspn(user_input, "\n")] = 0;
 	tree = (t_cmd **)parse_user_input(user_input, env);
 	if (tree != NULL)
 	{
 		printf("Successfully created\n");
+		search_tree(*tree, paths, env);
 	}
 	else
 		printf("Error: Failed to create command tree.\n");
+	if (tree)
+		free_tree(*tree);
 	(void)paths;
 }
 
@@ -85,8 +88,6 @@ int	main(int argc, char **argv, char **envs)
 	if (env.envarr)
 		free_arr(env.envarr, env.count);
 	clear_envlist(&env);
-	if (tree)
-		free_tree(tree);
 	free_2d(paths);
 	return (0);
 }
