@@ -24,7 +24,7 @@
 # define T_S_QUOTE 4
 # define T_D_QUOTE 5
 
-/* [F]
+/*	[F]
 	2. macro for "tree_node"
 
 	TREE				LEAF
@@ -58,11 +58,13 @@
 # define N_REDIREC_TYPE 7
 # define N_FILE_NAME 8
 
-// 3. ????
-# define REL_TYPE_R 1
-# define REL_TYPE_RR 2
-# define REL_TYPE_L 3
-# define REL_TYPE_LL 4
+/*	[F]
+	3. macro for types of "redirection".
+*/
+# define REDIREC_R 1	// '>'
+# define REDIREC_RR 2	// '>>'
+# define REDIREC_L 3	// '<'
+# define REDIREC_LL 4	// '<<'
 
 // 4. ????
 # define _XOPEN_SOURCE 700
@@ -168,6 +170,7 @@ typedef struct s_cmd
 	int					pre_flag;
 }	t_cmd;
 
+<<<<<<< HEAD
 // [STRUCT]
 /* [F]
 	[Description]
@@ -188,19 +191,31 @@ typedef struct s_envp
 }	t_envp;
 
 /* [ ]??
+=======
+/*	[?????]
+	
+*/
+>>>>>>> f9de3f2 (update executing part and header file, which is jason's part)
 typedef struct s_envp
 {
 	char	**envp;
 	char	*cd_hist;
 }	t_envp; */
 
-// [ ]??
-typedef struct s_stdio
+/*	[F]
+	[Field]
+	1. redirec_type: Type of redirection.
+	2. filename: Pointer to file name(address),
+				 which is ridirected by redirection.
+				 해당 파일의 경로가 이 변수에 저장된다.
+	3. next_redirec: Pointer to the next redirection.
+*/
+typedef struct s_redirec
 {
-	int				re_type;
+	int				redirec_type;
 	char			*filename;
-	struct s_stdio	*next_stdio;
-}	t_stdio;
+	struct s_redirec	*next_redirec;
+}	t_redirec;
 
 // [FUNCTIONS]
 
