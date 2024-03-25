@@ -49,7 +49,23 @@ void	print_node(t_cmd *node)
 
 	printf("%d 	", node->pre_flag);
 	printf("%d 	", node->pipe_exist);
-	printf("%d 	", node->node_type);
+	if (node->node_type == N_CMD)
+		printf("%s 	", "N_CMD");
+	else if (node->node_type == N_SIMPLE_CMD)
+		printf("%s 	", "N_SIMPLE_CMD");
+	else if (node->node_type == N_FILE_PATH)
+		printf("%s 	", "N_FILE_PATH");
+	else if (node->node_type == N_ARGV)
+		printf("%s 	", "N_ARGV");
+	else if (node->node_type == N_REDIREC)
+		printf("%s 	", "N_REDIREC");
+	else if (node->node_type == N_SIMPLE_REDIREC)
+		printf("%s 	", "N_SIMPLE_REDIREC");
+	else if (node->node_type == N_REDIREC_TYPE)
+		printf("%s 	", "N_REDIREC_TYPE");
+	else
+		printf("%s 	", "N_FILE_NAME");
+	//printf("%d 	", node->node_type);
 	if (!node->cmdstr)
 	{
 		printf("Empty\n");
@@ -81,17 +97,21 @@ void	search_tree(t_cmd *node, char **paths, t_envp *env)
 	//print_leaves(node, paths, env);
 	if (!node)
 		return;
+	// If node has no children print the node and return;
 	if (!node->l_child && !node->r_child)
 	{
 		node->pre_flag = 1;
 		print_node(node);
+		return ;
 	}
+	// if the node has left child search left child tree
 	if (node->l_child )
 	{
 		node->pre_flag = 1;
 		print_node(node);
 		search_tree(node->l_child, paths, env);
 	}
+	// if the node has right child search right child tree
 	if (node->r_child )
 	{
 		node->pre_flag = 1;
