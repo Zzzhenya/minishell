@@ -98,9 +98,9 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 			*tree = parse_user_input(user_input, env);
 			search_tree(*tree, envp, env);
 			//wait_each_commands(*tree);
+			if (*tree)
+				free_tree(*tree);
 		}
-		if (*tree)
-			free_tree(*tree);
 		if (user_input)
 			free (user_input);
 	}
