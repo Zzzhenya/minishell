@@ -94,12 +94,16 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 		}
 		if (user_input[0] != '\0')
 		{
+			extract_envarr(env);
+			envp = save_all_env_paths(env->envarr);
 			add_history(user_input);
 			*tree = parse_user_input(user_input, env);
 			search_tree(*tree, envp, env);
 			//wait_each_commands(*tree);
 			if (*tree)
 				free_tree(*tree);
+			free_arr(env->envarr, env->count);
+			free_2d(envp);
 		}
 		if (user_input)
 			free (user_input);
@@ -147,12 +151,13 @@ int	main(int argc, char **argv, char **envs)
 		return (1);
 	(void)argv;
 	(void)argc;
-	paths = save_all_env_paths(envs);
+	paths = NULL;
+	//paths = save_all_env_paths(envs);
 	if (argc == 2)
 		non_interactive_mode(&tree, argv[1], paths, &env);
 	else if (isatty(STDIN_FILENO))
 		interactive_mode(&tree, paths, &env);
-	free_2d(paths);
+	//free_2d(paths);
 	clear_envlist(&env);
 	if (env.cd_hist != NULL)
 	{
