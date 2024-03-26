@@ -49,9 +49,7 @@ void	free_stdios(t_redirec *stdios)
 		free(curr);
 		curr = next;
 	}
-<<<<<<< HEAD
 }
-
 /* 
 	frees a heap array upto a specified location
 */
@@ -68,6 +66,4 @@ void	free_arr(char **arr, int loc)
 	}
 	free (arr);
 	arr = NULL;
-=======
->>>>>>> f9de3f2 (update executing part and header file, which is jason's part)
 }
