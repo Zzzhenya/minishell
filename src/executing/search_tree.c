@@ -42,7 +42,7 @@
 		There is more nodes from r_child's node
 		= search more about r_child node.
 */
-
+/*
 void	print_node(t_cmd *node)
 {
 	int i = 0;
@@ -119,4 +119,4 @@ void	search_tree(t_cmd *node, char **paths, t_envp *env)
 		search_tree(node->r_child, paths, env);
 	}
 
-}
+}*/
