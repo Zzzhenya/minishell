@@ -170,7 +170,6 @@ typedef struct s_cmd
 	int					pre_flag;
 }	t_cmd;
 
-<<<<<<< HEAD
 // [STRUCT]
 /* [F]
 	[Description]
@@ -189,18 +188,6 @@ typedef struct s_envp
 	char	*cd_hist;
 	int		count;
 }	t_envp;
-
-/* [ ]??
-=======
-/*	[?????]
-	
-*/
->>>>>>> f9de3f2 (update executing part and header file, which is jason's part)
-typedef struct s_envp
-{
-	char	**envp;
-	char	*cd_hist;
-}	t_envp; */
 
 /*	[F]
 	[Field]
@@ -306,7 +293,7 @@ void	syntax_pipe_error_print(void);
 
 // [ util_free.c ]
 void	free_2d(char **arr);
-void	free_stdios(t_stdio *stdios);
+void	free_stdios(t_redirec *stdios);
 void	free_tree(t_cmd	*tree);
 void	freeing_norminette(char **validated_input, int *token);
 void	free_arr(char **arr, int loc);
