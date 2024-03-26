@@ -142,7 +142,7 @@ char	*convert_command_absolute_path(char **path_array, int i, char *command)
 	5. exit			// <stdlib.h>
 
 	Already used in the project, PIPEX (Verification completed)
-*/
+
 char	**save_all_env_paths(char **envp)
 {
 	int	i;
@@ -156,7 +156,7 @@ char	**save_all_env_paths(char **envp)
 	}
 	perror("save_all_env_paths: ");
 	exit(EXIT_FAILURE);
-}
+}*/
 
 /*	[F]
 	[Role]
@@ -226,7 +226,7 @@ void	print_error_cmd(t_cmd *file_path, char **envp)
 
 /*	[F]
 	Reference, in "util_str.c"
-*/
+
 int	ft_strcmp(char *s1, char *s2)
 {
 	while (*s1 == *s2 && *s2)
@@ -237,13 +237,14 @@ int	ft_strcmp(char *s1, char *s2)
 	if (*s1 != *s2)
 		return (*s1 - *s2);
 	return (0);
-}
+}*/
 
 /*	[F]
 	Reference, in "lexical_expanding.c"
 	Search Param(1): "str" from
 	Param(2): "env", which number of line does it in ENV.
-*/
+
+
 int	find_matching_env_row(char *str, char **env)
 {
 	int	i;
@@ -258,7 +259,7 @@ int	find_matching_env_row(char *str, char **env)
 		i++;
 	}
 	return (-1);
-}
+}*/
 
 /*	[F]
 	[Role]
@@ -339,7 +340,10 @@ void	exec(char **cmd, char **env, t_envp *envo)
 	path_cmd = NULL;
 	if (access(cmd[0], X_OK) == 0)
 		path_cmd = cmd[0];
-	else if (find_matching_env_row("PATH", envo->envp) != -1)
+	// Changed based on env struct
+	//else if (find_matching_env_row("PATH", envo->envp) != -1)
+	//	path_cmd = check_cmd_in_path(env, cmd[0]);
+	else if (find_matching_env_row("PATH", envo->envarr) != -1)
 		path_cmd = check_cmd_in_path(env, cmd[0]);
 	if (!path_cmd)
 		exit(2);
@@ -365,11 +369,13 @@ void	exec(char **cmd, char **env, t_envp *envo)
 */
 void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env)
 {
-	if (check_builtin(cmd->l_child))
-		builtin_action(cmd->r_child, cmd->r_child->cmdstr, env);
-	else
+	/* Function needs to be built - Shenya */
+	//if (check_builtin(cmd->l_child))
+	//	builtin_action(cmd->r_child, cmd->r_child->cmdstr, env);
+	//else
 	{
-		red_error_handle(cmd->l_child, 0);
+		// Function needs to be built
+		//red_error_handle(cmd->l_child, 0);
 		print_error_cmd(cmd->l_child, envp);
 		exec(cmd->r_child->cmdstr, envp, env);
 	}
@@ -468,6 +474,9 @@ t_redirec	*find_last_in(t_redirec *stdios)
 		2-2. free (current t_redirec)
 		2-3. cpy next to curr. // go to the next node in struct.
 */
+/*
+Commenting this function out - Already available in src/util/util_free.c
+
 void	free_stdios(t_redirec *stdios)
 {
 	t_redirec	*curr;
@@ -480,7 +489,7 @@ void	free_stdios(t_redirec *stdios)
 		free(curr);
 		curr = next;
 	}
-}
+}*/
 
 /*	[F]
 	[Role]
@@ -616,14 +625,16 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		return (perror("fork: "));
 	else if (pid == 0)
 	{
-		set_signals_interactive(pid);
-		update_redirfd(*stdios);
+		/* Function needs to be built - Shenya*/
+		//set_signals_interactive(pid);
+		//update_redirfd(*stdios);
 		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
 		pid_zero_exec(cmd, envp, env);
 	}
 	else
 	{
-		pid_pid_builtin_n_set(cmd, env);
+		/* Function needs to be built - Shenya*/
+		//pid_pid_builtin_n_set(cmd, env);
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
 		waiting_child_process(stdios);
 	}
@@ -848,7 +859,7 @@ void	search_tree(t_cmd *node, char **envp, t_envp *env)
 	1. Validate input and convert it to token.
 	2. Input is divided based on the pipe(|).
 	3. returned in the form of a tree for token.
-*/
+
 t_cmd	*parse_user_input(char *user_input, t_envp *env)
 {
 	t_cmd	*cmd_tree;
@@ -860,7 +871,8 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	if (user_input == NULL || user_input[0] == 0)
 		return (NULL);
 	cmd_tree = NULL;
-	validated_input = validate_input(user_input, env->envp);
+	//validated_input = validate_input(user_input, env->envp);
+	validated_input = validate_input(user_input, env->envarr);
 	if (!validated_input)
 		return (NULL);
 	replace_exit_status(&validated_input, 0, 0, 0);
@@ -877,7 +889,7 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	free_2d(validated_input);
 	free(token);
 	return (cmd_tree);
-}
+}*/
 
 /*	[F]
 	[Example]
@@ -896,7 +908,7 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	4. No more tree to execute (= finish to search tree)
 		-> free_tree(tree)
 		-> free_2d(user_input)
-*/
+
 void	non_interactive_mode(t_cmd **tree,
 								char *input, char **envp, t_envp *env)
 {
@@ -914,3 +926,4 @@ void	non_interactive_mode(t_cmd **tree,
 	}
 	free_2d(user_inputs);
 }
+*/
