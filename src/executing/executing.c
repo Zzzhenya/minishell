@@ -176,7 +176,8 @@ char	*check_cmd_in_path(char **envp, char *command)
 	char	*path;
 	int		i;
 
-	path_array = save_all_env_paths(envp);
+	//path_array = save_all_env_paths(envp);
+	path_array = envp;
 	i = 0;
 	while (path_array[i] != NULL)
 	{
