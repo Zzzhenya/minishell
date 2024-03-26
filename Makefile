@@ -26,7 +26,15 @@ SRCS = src/parsing/change_exit_status.c\
  src/main.c\
  src/envp_actions.c\
  src/signals/signal.c\
- src/executing/executing.c
+ src/executing/executing.c\
+ src/executing/temp.c\
+ src/builtins/cd.c\
+ src/builtins/echo.c\
+ src/builtins/env.c\
+ src/builtins/exit.c\
+ src/builtins/export.c\
+ src/builtins/pwd.c\
+ src/builtins/unset.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -4,7 +4,7 @@
 	Clear the content of the envlist node
 */
 
-static void	free_string(void *input)
+void	free_string(void *input)
 {
 	char	*str;
 

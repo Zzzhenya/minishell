@@ -99,7 +99,8 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 			add_history(user_input);
 			*tree = parse_user_input(user_input, env);
 			search_tree(*tree, envp, env);
-			//wait_each_commands(*tree);
+			//temp
+			wait_each_commands(*tree);
 			if (*tree)
 				free_tree(*tree);
 			free_arr(env->envarr, env->count);

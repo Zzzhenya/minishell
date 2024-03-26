@@ -370,12 +370,13 @@ void	exec(char **cmd, char **env, t_envp *envo)
 void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env)
 {
 	/* Function needs to be built - Shenya */
-	//if (check_builtin(cmd->l_child))
-	//	builtin_action(cmd->r_child, cmd->r_child->cmdstr, env);
-	//else
+	if (check_builtin(cmd->l_child))
+		builtin_action(cmd->r_child, cmd->r_child->cmdstr, env);
+	else
 	{
 		// Function needs to be built
-		//red_error_handle(cmd->l_child, 0);
+		//temp
+		red_error_handle(cmd->l_child, 0);
 		print_error_cmd(cmd->l_child, envp);
 		exec(cmd->r_child->cmdstr, envp, env);
 	}
@@ -627,14 +628,16 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	{
 		/* Function needs to be built - Shenya*/
 		//set_signals_interactive(pid);
-		//update_redirfd(*stdios);
+		//temp
+		update_redirfd(*stdios);
 		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
 		pid_zero_exec(cmd, envp, env);
 	}
 	else
 	{
 		/* Function needs to be built - Shenya*/
-		//pid_pid_builtin_n_set(cmd, env);
+		// temp
+		pid_pid_builtin_n_set(cmd, env);
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
 		waiting_child_process(stdios);
 	}

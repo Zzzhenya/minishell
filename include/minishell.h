@@ -13,6 +13,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# define EX_CMD_NOT_FOUND 127
+
 //	[DEFINE MACRO]
 /*	[F]
 	1. macro for "token"
@@ -314,6 +316,7 @@ int		main(int argc, char **argv, char **envs);
 int		store_envp(t_envp *env, char **envs);
 void	clear_envlist(t_envp *env);
 int		extract_envarr(t_envp *my_data);
+void	free_string(void *input);
 
 // [ Executing ]
 /*
@@ -345,6 +348,15 @@ void install_signals(void);
 	6. UNSET
 	7. EXPORT
 */
+void    exec_cd(char **argv, t_envp *my_data);
+void	exec_env(char **argv, t_envp *my_data);
+void	exec_pwd(void);
+void	exec_echo(char **argv);
+void	exec_exit(char **argv, t_envp *my_data);
+void    exec_unset(char **argv, t_envp *my_data);
+void    exec_export(char **argv, t_envp *my_data);
+char	*get_pwd(void);
+void unset_one_var(char *var, t_envp *my_data);
 
 // [MEMO]
 /*
@@ -357,5 +369,21 @@ File descriptor of STDIN, relating with input source like Key-board.
 
 /* readline */
 void rl_replace_line(const char *text, int clear_undo);
+
+/* temp.c*/
+void	wait_each_commands(t_cmd *tree);
+void	builtin_action(t_cmd *builtin, char **cmdline, t_envp *env);
+int	check_builtin(t_cmd *file_path);
+void	pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env);
+int	red_error_handle(t_cmd *type, pid_t pid);
+void	update_redirfd(t_redirec *stdios);
+t_redirec	*find_last_in(t_redirec *stdios);
+t_redirec	*find_last_out(t_redirec *stdios);
+void	connect_last_out(t_redirec *last_out);
+void	re_type_r_pipes(int filefd);
+void	connect_last_in(t_redirec *last_in);
+void	re_type_l_pipes(int filefd);
+void	heredoc_input(int filefd, char *word);
+int get_arg_count(char **argv);
 
 #endif
