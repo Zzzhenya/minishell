@@ -150,14 +150,15 @@ int	main(int argc, char **argv, char **envs)
 	env.count = 0;
 	if (store_envp(&env, envs) < 0)
 		return (1);
-	(void)argv;
-	(void)argc;
 	paths = NULL;
 	//paths = save_all_env_paths(envs);
 	if (argc == 2)
 		non_interactive_mode(&tree, argv[1], paths, &env);
 	else if (isatty(STDIN_FILENO))
+	{
+		(void)argv;
 		interactive_mode(&tree, paths, &env);
+	}
 	//free_2d(paths);
 	clear_envlist(&env);
 	if (env.cd_hist != NULL)
