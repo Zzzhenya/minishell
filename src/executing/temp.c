@@ -39,6 +39,7 @@ void	wait_each_commands(t_cmd *tree)
 	}
 }
 
+/*
 void	heredoc_input(int filefd, char *word)
 {
 	char	*line;
@@ -148,6 +149,7 @@ t_redirec	*find_last_out(t_redirec *stdios)
 	}
 	return (last_out);
 }
+*/
 /*
 t_redirec	*find_last_in(t_redirec *stdios)
 {
@@ -164,7 +166,7 @@ t_redirec	*find_last_in(t_redirec *stdios)
 	}
 	return (last_in);
 }*/
-
+/*
 void	update_redirfd(t_redirec *stdios)
 {
 	t_redirec	*last_in;
@@ -179,7 +181,7 @@ void	update_redirfd(t_redirec *stdios)
 	if (last_out != NULL)
 		connect_last_out(last_out);
 }
-
+*/
 int	red_error_handle(t_cmd *type, pid_t pid)
 {
 	if (type->cmdstr[0][0] == '<' || type->cmdstr[0][0] == '>')

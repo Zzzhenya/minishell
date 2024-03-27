@@ -458,14 +458,12 @@ t_redirec	*find_last_in(t_redirec *stdios)
 	curr = stdios;
 	while (curr)
 	{
-		//printf("type: %d | filename: %s\n", curr->redirec_type, curr->filename);
 		if (curr->redirec_type == REDIREC_L || curr->redirec_type == REDIREC_LL)
 		{
 			last_redirec = curr;
 		}
 		curr = curr->next_redirec;
 	}
-	printf("LAST: type: %d | filename: %s\n", last_redirec->redirec_type, last_redirec->filename);
 	return (last_redirec);
 }
 
@@ -541,8 +539,10 @@ void	free_stdios(t_redirec *stdios)
 void	waiting_child_process(t_redirec **stdios)
 {
 	waitpid(-1, &g_exit_status, WNOHANG);
-	if (find_last_in(*(stdios)) != NULL
-		&& find_last_in(*(stdios))->redirec_type == REDIREC_LL)
+	if (find_last(*stdios, 'l') != NULL
+		&& find_last(*stdios, 'l')->redirec_type == REDIREC_LL)
+	//if (find_last_in(*(stdios)) != NULL
+		//&& find_last_in(*(stdios))->redirec_type == REDIREC_LL)
 		waitpid(-1, &g_exit_status, 0);
 	else
 		free_stdios(*stdios);

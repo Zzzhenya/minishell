@@ -334,6 +334,7 @@ void	search_tree(t_cmd *node, char **envp, t_envp *env);
 // [ REDIRECTIONS ]
 // [setup_redirections.c]
 void	setup_redirections(t_redirec *stdios);
+t_redirec 	*find_last(t_redirec *stdios, char c);
 
 // [ SIGNAL ]
 /*
