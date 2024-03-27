@@ -331,6 +331,10 @@ void	search_tree(t_cmd *node, char **envp, t_envp *env);
 
 */
 
+// [ REDIRECTIONS ]
+// [setup_redirections.c]
+void	setup_redirections(t_redirec *stdios);
+
 // [ SIGNAL ]
 /*
 	set_signals_interactive
@@ -373,17 +377,9 @@ void rl_replace_line(const char *text, int clear_undo);
 /* temp.c*/
 void	wait_each_commands(t_cmd *tree);
 void	builtin_action(t_cmd *builtin, char **cmdline, t_envp *env);
-int	check_builtin(t_cmd *file_path);
+int		check_builtin(t_cmd *file_path);
 void	pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env);
-int	red_error_handle(t_cmd *type, pid_t pid);
-void	update_redirfd(t_redirec *stdios);
-t_redirec	*find_last_in(t_redirec *stdios);
-t_redirec	*find_last_out(t_redirec *stdios);
-void	connect_last_out(t_redirec *last_out);
-void	re_type_r_pipes(int filefd);
-void	connect_last_in(t_redirec *last_in);
-void	re_type_l_pipes(int filefd);
-void	heredoc_input(int filefd, char *word);
-int get_arg_count(char **argv);
+int		red_error_handle(t_cmd *type, pid_t pid);
+int 	get_arg_count(char **argv);
 
 #endif
