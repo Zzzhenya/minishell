@@ -458,10 +458,14 @@ t_redirec	*find_last_in(t_redirec *stdios)
 	curr = stdios;
 	while (curr)
 	{
+		//printf("type: %d | filename: %s\n", curr->redirec_type, curr->filename);
 		if (curr->redirec_type == REDIREC_L || curr->redirec_type == REDIREC_LL)
+		{
 			last_redirec = curr;
+		}
 		curr = curr->next_redirec;
 	}
+	printf("LAST: type: %d | filename: %s\n", last_redirec->redirec_type, last_redirec->filename);
 	return (last_redirec);
 }
 
@@ -627,11 +631,10 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		return (perror("fork: "));
 	else if (pid == 0)
 	{
-		/* Function needs to be built - Shenya*/
+		/* Function needs to be built - Shenya*/ 
 		//set_signals_interactive(pid);
-		//temp
-		update_redirfd(*stdios);
 		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
+		setup_redirections(*stdios);
 		pid_zero_exec(cmd, envp, env);
 	}
 	else
