@@ -92,6 +92,7 @@ void   export_one_var(char **arr, t_envp *my_data)
       /* join the variable and set value */
       str = ft_strjoin(var, ft_strdup("="));
       str = ft_strjoin(str, val);
+      printf("%s\n", str);
       /*if var exists in env, remove it - unset */
       unset_one_var(var, my_data);
       ft_lstadd_back(&my_data->envlist, ft_lstnew(str));
@@ -112,42 +113,24 @@ void  print_variables_list(char **arr)
       }
 }
 
-void real_export(int count, char **argv, t_envp *my_data)
+void real_export(char **argv, t_envp *my_data)
 {
       char *arr[3];
+      int i = 1;
+      char **temp = NULL;
 
       arr[2] = NULL;
-      if (count == 3 && ft_strchr(argv[2], '='))
+      if (ft_strchr(argv[i], '='))
       {
-            if (!is_valid_var_start(argv[1][0]) || !is_valid_var_char(argv[1]))
-            {
-                  g_exit_status = 1;
-                  print_export_error(argv[1], argv[2],": not a valid identifier");
-            }
-            else
-            {
-                  arr[0] = ft_strdup(argv[1]);
-                  arr[2] = NULL;
-                  export_one_var(arr, my_data);
-            }
-      }
-      // export "vaaar=" -> vaar=
-      if (count == 3 && ft_strchr(argv[1], '='))
-      {
+            temp = ft_split(argv[i], '=');
 
-            if (!is_valid_var_start(argv[1][0]) || !is_valid_var_char(argv[1]))
-            {
-                  g_exit_status = 1;
-                  print_export_error(argv[1], argv[2],": not a valid identifier");
-            }
-            else
-            {
-                  arr[0] = ft_strdup(argv[1]);
-                  arr[2] = NULL;
-                  export_one_var(arr, my_data);
-            }
+            arr[0] = ft_strdup(temp[0]);
+            arr[1] = ft_strdup(temp[1]);
       }
-
+      else
+            arr[0] = ft_strdup(argv[1]);
+            arr[1] = ft_strdup(argv[3]);
+      export_one_var(arr, my_data);
 }
 
 
@@ -157,15 +140,7 @@ string will be removed by parser/lexer*/
 void    exec_export(char **argv, t_envp *my_data)
 {
       int count;
-      int i = 1;
-      int loc = 0;
-      g_exit_status = 0;
-      while (argv[i])
-      {
-            printf("%s\n", argv[i]);
-            i ++;
-      }
-      i = 1;
+      
       count = 0;
       count = get_arg_count(argv);
       printf("%d\n", count);
@@ -178,78 +153,8 @@ void    exec_export(char **argv, t_envp *my_data)
       }
       else
       {
-            if (argv[i] == NULL)
-            {
-                  printf("NULL\n");
-                  return;
-            }
-            while (argv[i] != NULL)
-            {
-                  if (argv[i][0] == '\0')
-                        i ++;
-            }
-            loc = i;
-            if (argv[loc] == NULL)
-            {
-                  g_exit_status = 1;
-                  print_export_error(NULL, argv[i],": not a valid identifier");
-                  return;
-            }
-            while (argv[i] != NULL && !ft_strchr(argv[i], '='))
-                  i ++;
-            if (argv[i] == NULL)
-            {
-                  if (!is_valid_var_start(argv[loc][0]) || !is_valid_var_char(argv[loc]))
-                  {
-                        g_exit_status = 1;
-                        print_export_error(NULL, argv[loc],": not a valid identifier");
-                  }
-                  else
-                        return;
-            }
-            else
-                  real_export(count, argv, my_data);
-      }          
-      /*
-      
-      char *str;
-
-      
-      var = argv[1];
-      eq = argv[2];
-      val = argv[3];
-      //if val is null make it an empty string
-      if (val == NULL)
-            val = ft_strdup("");
-      // join the variable and set value
-      str = ft_strjoin(var, eq);
-      str = ft_strjoin(str, val);
-      //if var exists in env, remove it - unset
-      unset_one_var(var, my_data);
-      ft_lstadd_back(&my_data->envlist, ft_lstnew(str));
-      my_data->count++; */
-            /*if (ft_strchr(argv[i], '='))
-            {
-                  arr = ft_split(argv[i], '=');
-                  // strip the " " && ' ' from var and val
-                  //if (arr[0])
-                   //     arr[0] = remove_one_quote_set(arr[0]);
-                  //if (arr[1])x
-                        //arr[1] = remove_one_quote_set(arr[1]);
-                  printf("arr[0]%s\n", arr[0]);
-                  printf("arr[1]%s\n", arr[1]);
-                  //check for invalid var identifiers
-                  if (!is_valid_var_start(arr[0][0]) || !is_valid_var_char(arr[0]))
-                  {
-                        g_exit_status = 1;
-                        print_export_error(arr[0], arr[1]," : not a valid identifier");
-                  }
-                  else
-                        export_one_var(arr, my_data);
-                  free_arr(arr, get_arg_count(arr));
-            }
-            i ++;
+            real_export(argv, my_data);
+            return ;
       }
-            */
-      
+      // When there is no =
 }
