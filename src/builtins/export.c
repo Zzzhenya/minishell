@@ -102,22 +102,44 @@ string will be removed by parser/lexer*/
 
 void    exec_export(char **argv, t_envp *my_data)
 {
-      int i = 1;
-      char **arr;
-
-      arr = NULL;
+      //int i = 1;;
+      //char **arr;
+      //arr = NULL;
       g_exit_status = 0;
+      char *val;
+      char *var;
+      char *str;
+      char *eq;
+
+      val = NULL; str=NULL; val = NULL; eq = NULL;
+      var = argv[1];
+      eq = argv[2];
+      val = argv[3];
+      /*if val is null make it an empty string*/
+      if (val == NULL)
+            val = ft_strdup("");
+      /* join the variable and set value */
+      str = ft_strjoin(var, eq);
+      str = ft_strjoin(str, val);
+      /*if var exists in env, remove it - unset */
+      unset_one_var(var, my_data);
+      ft_lstadd_back(&my_data->envlist, ft_lstnew(str));
+      my_data->count++;
+
+      /*
       while (argv[i] != NULL)
       {
             if (ft_strchr(argv[i], '='))
             {
                   arr = ft_split(argv[i], '=');
-                  /* strip the " " && ' ' from var and val*/
+                  // strip the " " && ' ' from var and val
                   if (arr[0])
                         arr[0] = remove_one_quote_set(arr[0]);
-                  if (arr[1])
+                  if (arr[1])x
                         arr[1] = remove_one_quote_set(arr[1]);
-                  /*check for invalid var identifiers*/
+                  printf("arr[0]%s\n", arr[0]);
+                  printf("arr[1]%s\n", arr[1]);
+                  //check for invalid var identifiers
                   if (!is_valid_var_start(arr[0][0]) || !is_valid_var_char(arr[0]))
                   {
                         g_exit_status = 1;
@@ -129,4 +151,5 @@ void    exec_export(char **argv, t_envp *my_data)
             }
             i ++;
       }
+      */
 }
