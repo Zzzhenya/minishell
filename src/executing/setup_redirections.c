@@ -1,5 +1,7 @@
 #include "../../include/minishell.h"
 
+# define HEREDOCNAME  ".___tmp__4heredoc"
+
 /*	[F]
 	[Field]
 	1. redirec_type: Type of redirection.
@@ -55,7 +57,6 @@ void	heredoc_input(int fd, char *word)
 			write(fd, line, ft_strlen(line));
 			write(fd, "\n", 1);
 		}
-
 		i ++;
 	}
 	free (line);
@@ -73,11 +74,11 @@ void	dup_and_redirect(int oldfd, int newfd)
 {
 	int	ret;
 
-	ret = -1;
+	// ret = -1;
 	ret = dup2 (oldfd, newfd);
 	if (ret == -1)
 	{
-		close (ret);
+		close (oldfd);
 		exit (errno);
 	}
 }
@@ -168,14 +169,15 @@ void	setup_last_l(t_redirec *last_l)
 	}
 	else if (last_l->redirec_type == REDIREC_LL)
 	{
-		fd = open(".___tmp__4heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		//fd = open(HEREDOCNAME, O_CREAT | O_WRONLY | O_TRUNC, 0777);
+		fd = open(HEREDOCNAME, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (!fd)
 			exit(errno);
 		heredoc_input(fd, last_l->filename);
 		close(fd);
-		fd = open(".___tmp__4heredoc", O_RDONLY);
+		fd = open(HEREDOCNAME, O_RDONLY);
 		dup_and_redirect(fd, STDIN_FILENO);
-		unlink(".___tmp__4heredoc");
+		unlink(HEREDOCNAME);
 	}
 }
 
