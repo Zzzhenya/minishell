@@ -36,7 +36,10 @@ SRCS = src/parsing/change_exit_status.c\
  src/builtins/export.c\
  src/builtins/pwd.c\
  src/builtins/unset.c\
- src/executing/setup_redirections.c
+ src/executing/setup_redirections.c\
+ src/executing/child_process.c\
+ src/executing/route_builtins.c\
+ src/executing/redirection_syntax_error.c\
 
 OBJS = $(SRCS:.c=.o)
 

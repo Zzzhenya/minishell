@@ -358,33 +358,6 @@ void	exec(char **cmd, char **env, t_envp *envo)
 
 /*	[F]
 	[Role]
-	If built-in function -> execute [f] "builtin_action".
-	Else external function -> execute [f] "exec". (= system call).
-
-	[progress]
-	check_builtin
-	1. yes	-> builtin_action
-	2. no	-> redirection_error_handle [f]red_error_handle
-			-> print error message about cmd.
-			-> exec
-*/
-void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env)
-{
-	/* Function needs to be built - Shenya */
-	if (check_builtin(cmd->l_child))
-		builtin_action(cmd->r_child, cmd->r_child->cmdstr, env);
-	else
-	{
-		// Function needs to be built
-		//temp
-		red_error_handle(cmd->l_child, 0);
-		print_error_cmd(cmd->l_child, envp);
-		exec(cmd->r_child->cmdstr, envp, env);
-	}
-}
-
-/*	[F]
-	[Role]
 	파이프의 write fd를 modify하여 데이터를 파이프에 쓰는 과정을 수행.
 
 	[Hint]
@@ -635,13 +608,13 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		//set_signals_interactive(pid);
 		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
 		setup_redirections(*stdios);
-		pid_zero_exec(cmd, envp, env);
+		pid_zero_exec(cmd, envp, env, pid);
 	}
 	else
 	{
 		/* Function needs to be built - Shenya*/
 		// temp
-		pid_pid_builtin_n_set(cmd, env);
+		pid_pid_builtin_n_set(cmd, env, pid);
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
 		waiting_child_process(stdios);
 	}

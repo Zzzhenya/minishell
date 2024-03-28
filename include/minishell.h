@@ -323,6 +323,9 @@ void	free_string(void *input);
 	search_tree
 	wait_each_commands
 */
+// [executing.c]
+void	print_error_cmd(t_cmd *file_path, char **envp);
+void	exec(char **cmd, char **env, t_envp *envo);
 // [search_tree.c]
 void	search_tree(t_cmd *node, char **envp, t_envp *env);
 
@@ -364,7 +367,7 @@ void	exec_exit(char **argv, t_envp *my_data);
 void    exec_unset(char **argv, t_envp *my_data);
 void    exec_export(char **argv, t_envp *my_data);
 char	*get_pwd(void);
-void unset_one_var(char *var, t_envp *my_data);
+void 	unset_one_var(char *var, t_envp *my_data);
 
 // [MEMO]
 /*
@@ -375,15 +378,22 @@ STDOUT_FILENO:
 File descriptor of STDIN, relating with input source like Key-board.
 */
 
+// [redirection_syntax_error.c]
+int	redirection_syntax_error(t_cmd *type, pid_t pid);
+
+// [child_process.c]
+void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, pid_t pid);
+
+// [route_builtins.c]
+void	builtin_action(t_cmd *builtin, char **cmdline, t_envp *env);
+int		check_builtin(t_cmd *file_path);
+void	pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env, pid_t pid);
+
 /* readline */
 void rl_replace_line(const char *text, int clear_undo);
 
 /* temp.c*/
 void	wait_each_commands(t_cmd *tree);
-void	builtin_action(t_cmd *builtin, char **cmdline, t_envp *env);
-int		check_builtin(t_cmd *file_path);
-void	pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env);
-int		red_error_handle(t_cmd *type, pid_t pid);
 int 	get_arg_count(char **argv);
 
 #endif
