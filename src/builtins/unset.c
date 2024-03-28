@@ -49,7 +49,8 @@ void unset_one_var(char *var, t_envp *my_data)
 	{
 		arr = NULL;
       	arr = ft_split((char *)current->content, '=');
-		if (!ft_strncmp(arr[0], var, ft_strlen(var)))
+		if (!ft_strncmp(arr[0], var, ft_strlen(arr[0])) 
+			&& !ft_strncmp(arr[0], var, ft_strlen(var)))
 		{
 			prev->next = current->next;
 			ft_lstdelone(current, free_string);
