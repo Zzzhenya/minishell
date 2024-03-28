@@ -94,6 +94,7 @@ void   export_one_var(char **arr, t_envp *my_data)
       /*if var exists in env, remove it - unset */
       unset_one_var(var, my_data);
       ft_lstadd_back(&my_data->envlist, ft_lstnew(str));
+      my_data->count++;
 }
 
 /* The double and single quotes wrapping the entire export command

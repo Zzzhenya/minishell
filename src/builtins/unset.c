@@ -53,9 +53,10 @@ void unset_one_var(char *var, t_envp *my_data)
 		{
 			prev->next = current->next;
 			ft_lstdelone(current, free_string);
+			my_data->count --;
 			free_arr(arr, get_arg_count(arr));
 			g_exit_status = 0;
-			return;
+			return ;
 		}
 		free_arr(arr, get_arg_count(arr));
 		prev = current;
