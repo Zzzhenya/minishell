@@ -22,6 +22,7 @@ SRCS = src/parsing/change_exit_status.c\
  src/util/util_free.c\
  src/util/util_skip.c\
  src/util/util_str.c\
+ src/util/util_debug.c\
  src/get_cmds.c\
  src/main.c\
  src/envp_actions.c\
