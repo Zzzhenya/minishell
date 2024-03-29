@@ -311,6 +311,7 @@ int		main(int argc, char **argv, char **envs);
 
 /* [ SHENYA] */
 
+
 /* [ ENV ] */
 // [ envp_actions.c ]
 int		store_envp(t_envp *env, char **envs);
@@ -341,35 +342,33 @@ t_redirec 	*find_last(t_redirec *stdios, char c);
 
 // util_debug.c
 void	print_tree(t_cmd *node);
+int 	get_arg_count(char **argv);
 
 // [ SIGNAL ]
-/*
-	set_signals_interactive
-*/
 // [signals.c]
-void install_signals(void);
+void install_signals(pid_t pid);
 
-// [ BUILD-IN ] 
-/*
-	1. CD
-	2. ENV
-	3. PWD
-	4. ECHO
-	5. EXIT
-	6. UNSET
-	7. EXPORT
-*/
+// [ BUILT-IN ] 
+// [cd.c]
 void    exec_cd(char **argv, t_envp *my_data);
+// [env.c]
 void	exec_env(char **argv, t_envp *my_data);
+// [pwd.c]
 void	exec_pwd(void);
-void	exec_echo(char **argv);
-void	exec_exit(char **argv, t_envp *my_data);
-void    exec_unset(char **argv, t_envp *my_data);
-void    exec_export(char **argv, t_envp *my_data);
-char	**strip_empty_strings(char **cmdstr);
-int	count_non_empty_strings(char **cmdstr);
 char	*get_pwd(void);
+// [echo.c]
+void	exec_echo(char **argv);
+// [exit.c]
+void	exec_exit(char **argv, t_envp *my_data);
+// [unset.c]
+void    exec_unset(char **argv, t_envp *my_data);
 void 	unset_one_var(char *var, t_envp *my_data);
+// [export.c]
+void    exec_export(char **argv, t_envp *my_data);
+// [export_utils.c]
+char	**strip_empty_strings(char **cmdstr);
+int		count_non_empty_strings(char **cmdstr);
+
 
 // [MEMO]
 /*
@@ -380,11 +379,14 @@ STDOUT_FILENO:
 File descriptor of STDIN, relating with input source like Key-board.
 */
 
-// [redirection_syntax_error.c]
-int	redirection_syntax_error(t_cmd *type, pid_t pid);
+// [redirection_error_handle.c]
+int	redirection_error_handle(t_cmd *type, pid_t pid);
 
 // [child_process.c]
 void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, pid_t pid);
+
+// [wait_blocked_cmds.c]
+void	wait_each_command(t_cmd *tree);
 
 // [route_builtins.c]
 void	builtin_action(t_cmd *builtin, char **cmdline, t_envp *env);
@@ -394,8 +396,5 @@ void	pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env, pid_t pid);
 /* readline */
 void rl_replace_line(const char *text, int clear_undo);
 
-/* temp.c*/
-void	wait_each_commands(t_cmd *tree);
-int 	get_arg_count(char **argv);
 
 #endif

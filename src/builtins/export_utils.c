@@ -1,5 +1,9 @@
 #include "../../include/minishell.h"
 
+/*
+	Count the number of non-NULL but empty strings in
+	the cmdstr array
+*/
 int	count_non_empty_strings(char **cmdstr)
 {
 	int i;
@@ -18,7 +22,10 @@ int	count_non_empty_strings(char **cmdstr)
 	return (count);
 }
 
-
+/* 
+	Remove non-NULL but empty strings from the 
+	cmdstr array
+*/
 char	**strip_empty_strings(char **cmdstr)
 {
 	char	**arr;

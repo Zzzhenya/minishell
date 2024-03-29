@@ -1,9 +1,13 @@
 #include "../../include/minishell.h"
 
+/* 
+	Builtin router for parent process
+*/
 void	pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env, pid_t pid)
 {
 	//set_signals_interactive(pid);
-	if (redirection_syntax_error(cmd->l_child, pid))
+	install_signals(1);
+	if (redirection_error_handle(cmd->l_child, pid))
 		return ;
 	if (!ft_strcmp(cmd->r_child->cmdstr[0], "exit"))
 	{
@@ -44,6 +48,10 @@ int	check_builtin(t_cmd *file_path)
 	else
 		return (0);
 }
+
+/*
+	builtin router for child processes
+*/
 
 void	builtin_action(t_cmd *builtin, char **cmdline, t_envp *env)
 {

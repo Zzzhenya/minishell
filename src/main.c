@@ -29,20 +29,6 @@ char	**save_all_env_paths(char **envp)
 	exit(EXIT_FAILURE);
 }
 /*
-
-
-void	non_interactive_bash(t_cmd **tree, char **paths, t_envp *env, char *script)
-{
-	(void)tree;
-	(void)paths;
-	(void)env;
-	(void)script;
-	printf("NON INTERACTIVE BASH\n");
-}
-
-
-*/
-
 char	*get_allocated_cwd(void)
 {
 	int		i;
@@ -57,6 +43,7 @@ char	*get_allocated_cwd(void)
 	cwd[i + 1] = '\0';
 	return (cwd);
 }
+*/
 
 void	non_interactive_mode(t_cmd **tree,
 								char *input, char **envp, t_envp *env)
@@ -70,7 +57,7 @@ void	non_interactive_mode(t_cmd **tree,
 	envp = save_all_env_paths(env->envarr);
 	while (user_inputs[i])
 	{
-		*tree = parse_user_input(user_inputs[i], env->envarr);
+		*tree = parse_user_input(user_inputs[i], env);
 		search_tree(*tree, envp, env);
 		i++;
 		free_tree(*tree);
@@ -85,9 +72,9 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 	char	*user_input;
 
 	user_input = NULL;
-	install_signals();
 	while (1)
 	{
+		install_signals(1);
 		user_input = readline ("Minishell > ");
 		if (!user_input)
 		{
@@ -102,8 +89,7 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 			add_history(user_input);
 			*tree = parse_user_input(user_input, env);
 			search_tree(*tree, envp, env);
-			//temp
-			wait_each_commands(*tree);
+			wait_each_command(*tree);
 			if (*tree)
 				free_tree(*tree);
 			free_arr(env->envarr, env->count);

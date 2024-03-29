@@ -28,7 +28,6 @@ SRCS = src/parsing/change_exit_status.c\
  src/envp_actions.c\
  src/signals/signal.c\
  src/executing/executing.c\
- src/executing/temp.c\
  src/builtins/cd.c\
  src/builtins/echo.c\
  src/builtins/env.c\
@@ -40,7 +39,8 @@ SRCS = src/parsing/change_exit_status.c\
  src/executing/setup_redirections.c\
  src/executing/child_process.c\
  src/executing/route_builtins.c\
- src/executing/redirection_syntax_error.c\
+ src/executing/redirection_error_handle.c\
+ src/executing/wait_blocked_cmds.c
 
 OBJS = $(SRCS:.c=.o)
 

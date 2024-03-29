@@ -20,21 +20,15 @@ exit status in mac is 258 check for linux
 */
 
 
-int	redirection_syntax_error(t_cmd *type, pid_t pid)
+int	redirection_error_handle(t_cmd *type, pid_t pid)
 {
 	if (type->cmdstr[0][0] == '<' || type->cmdstr[0][0] == '>')
 	{
 		g_exit_status = 0;
 		if (pid == 0)
-		{
-			printf("CHILD\n");
 			exit (g_exit_status);
-		}
 		else
-		{
-			printf("PARENT\n");
 			return (1);
-		}
 	}
 	else
 		return (0);

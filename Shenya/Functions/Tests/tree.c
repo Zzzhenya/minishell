@@ -3,23 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct s_cmd
-{
-	struct s_cmd		*l_child;
-	struct s_cmd		*r_child;
-	char 				*str;
-//	char				**cmdstr;
-//	int					node_type;
-//	int					pipe_exist;
-	int					pre_flag;
-}	t_cmd;
-
-void	print_node(t_cmd *node)
-{
-	//int i = 0;
-
-	printf("%d 	", node->pre_flag);
-	/*printf("%d 	", node->pipe_exist);
+/*
+	printf("%d 	", node->pipe_exist);
 	if (node->node_type == N_CMD)
 		printf("%s 	", "N_CMD");
 	else if (node->node_type == N_SIMPLE_CMD)
@@ -36,21 +21,36 @@ void	print_node(t_cmd *node)
 		printf("%s 	", "N_REDIREC_TYPE");
 	else
 		printf("%s 	", "N_FILE_NAME");
-	//printf("%d 	", node->node_type);*/
+	//printf("%d 	", node->node_type);*
+*/
+
+typedef struct s_cmd
+{
+	struct s_cmd		*l_child;
+	struct s_cmd		*r_child;
+	char 				*str;
+//	char				**cmdstr;
+//	int					node_type;
+//	int					pipe_exist;
+	int					pre_flag;
+}	t_cmd;
+
+void	print_node(t_cmd *node)
+{
+	int i = 0;
+
+	printf("%d 	", node->pre_flag);
 	if (!node->str)
 	{
 		printf("Empty\n");
 		return ;
 	}
-	else
-		printf("%s\n", node->str);
-	/*
 	while (node->cmdstr[i])
 	{
 		printf("%s 	", node->cmdstr[i]);
 		i ++;
 	}
-	printf("\n");*/
+	printf("\n");
 }
 
 void	search_tree(t_cmd *node)

@@ -1,25 +1,35 @@
 #include "../../include/minishell.h"
 
+/*
+	signal handler for ctrl + c : SIGINT - Parent
+	ctrl + d -> print exit, exit(1) <- from interactive_bash
+	main readline loop
+*/
 void	sig_handler(int sig)
 {
-	if (sig == SIGINT) // ctrl + c  -> new line
+	if (sig == SIGINT)
 	{
 		g_exit_status = sig;
+		g_exit_status = 130;
 		ft_putchar_fd('\n', 1);
 		rl_on_new_line();
 		rl_replace_line ("", 0);
 		rl_redisplay();
 	}
-	//ctrl + d -> print exit, exit(1)
-	// ctrl + \ -> do nothing
 }
+/*
+	Ignore ctrl + \ : SIGQUIT -> do nothing for
+		all processes
+	ctrl + c : SIGINT - Child -> behave normally
+	ctrl + c : SIGINT - Parent-> behave as mentioned
+		in sig_handler
+*/
 
-void install_signals(void)
+void install_signals(pid_t pid)
 {
-	if (signal(SIGINT, sig_handler)!= 0)
-		printf("SIGNALS NOT WORKING\n");
-	if (signal(SIGQUIT, SIG_IGN)!= 0)
-		printf("SIGNALS NOT WORKING\n");
-	//ctrl + d -> print exit, exit(1)
-	// ctrl + \ -> do nothing
+	signal(SIGQUIT, SIG_IGN);
+	if (pid <= 0)
+		signal(SIGINT, NULL);
+	else
+		signal(SIGINT, sig_handler);
 }

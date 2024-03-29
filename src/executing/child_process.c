@@ -20,7 +20,7 @@ void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, pid_t pid)
 		builtin_action(cmd->r_child, cmd->r_child->cmdstr, env);
 	else
 	{
-		redirection_syntax_error(cmd->l_child, pid);
+		redirection_error_handle(cmd->l_child, pid);
 		print_error_cmd(cmd->l_child, envp);
 		exec(cmd->r_child->cmdstr, envp, env);
 	}

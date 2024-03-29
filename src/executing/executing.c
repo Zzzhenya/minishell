@@ -608,17 +608,14 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		return (perror("fork: "));
 	else if (pid == 0)
 	{
-		/* Function needs to be built - Shenya*/ 
-		//set_signals_interactive(pid);
-		
+		install_signals(pid);
 		setup_redirections(*stdios);
 		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
 		pid_zero_exec(cmd, envp, env, pid);
 	}
 	else
 	{
-		/* Function needs to be built - Shenya*/
-		// temp
+		//install_signals(pid); 
 		pid_pid_builtin_n_set(cmd, env, pid);
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
 		waiting_child_process(stdios);
