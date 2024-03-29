@@ -615,7 +615,6 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	}
 	else
 	{
-		//install_signals(pid); 
 		pid_pid_builtin_n_set(cmd, env, pid);
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
 		waiting_child_process(stdios);

@@ -5,7 +5,6 @@
 */
 void	pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env, pid_t pid)
 {
-	//set_signals_interactive(pid);
 	install_signals(1);
 	if (redirection_error_handle(cmd->l_child, pid))
 		return ;
