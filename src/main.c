@@ -82,7 +82,7 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 			printf("exit\n");
 			break;
 		}
-		if (user_input[0] != '\0')
+		if (user_input[0] != '\0' || user_input[0] != '\n')
 		{
 			extract_envarr(env);
 			envp = save_all_env_paths(env->envarr);
@@ -96,7 +96,9 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 			free_2d(envp);
 		}
 		if (user_input)
+		{
 			free (user_input);
+		}
 	}
 }
 
