@@ -37,7 +37,6 @@ void  print_export_error(char *var, char *val, char *message)
       ft_putstr_fd("bash: export: `", 2);
       if (var)
             ft_putstr_fd(var, 2);
-      //ft_putchar_fd('=', 2);
       ft_putstr_fd(val, 2);
       ft_putchar_fd('\'', 2);
       ft_putstr_fd(message, 2);
@@ -86,14 +85,11 @@ void   export_one_var(char **arr, t_envp *my_data)
 
       var = arr[0];
       val = arr[1];
-      /*if val is null make it an empty string*/
       if (val == NULL)
             val = ft_strdup("");
-      /* join the variable and set value */
       str = ft_strjoin(var, ft_strdup("="));
       str = ft_strjoin(str, val);
       printf("%s\n", str);
-      /*if var exists in env, remove it - unset */
       unset_one_var(var, my_data);
       ft_lstadd_back(&my_data->envlist, ft_lstnew(str));
       my_data->count++;
