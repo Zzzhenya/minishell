@@ -51,9 +51,10 @@ void	builtin_action(t_cmd *builtin, char **cmdline, t_envp *env)
 		exec_echo(cmdline);
 	else if (!ft_strcmp(builtin->cmdstr[0], "pwd"))
 		exec_pwd();
-	else if (!ft_strcmp(builtin->cmdstr[0], "env")
+	else if (!ft_strcmp(builtin->cmdstr[0], "env"))
+		/*
 		|| !ft_strcmp(builtin->cmdstr[0], "/bin/env")
-		|| !ft_strcmp(builtin->cmdstr[0], "/usr/bin/env"))
+		|| !ft_strcmp(builtin->cmdstr[0], "/usr/bin/env"))*/
 		exec_env(NULL, env);
 	exit(errno);
 }
