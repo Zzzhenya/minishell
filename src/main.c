@@ -66,14 +66,18 @@ void	non_interactive_mode(t_cmd **tree,
 
 	user_inputs = ft_split(input, ';');
 	i = 0;
+	extract_envarr(env);
+	envp = save_all_env_paths(env->envarr);
 	while (user_inputs[i])
 	{
-		*tree = parse_user_input(user_inputs[i], env);
+		*tree = parse_user_input(user_inputs[i], env->envarr);
 		search_tree(*tree, envp, env);
 		i++;
 		free_tree(*tree);
 	}
 	free_2d(user_inputs);
+	free_arr(env->envarr, env->count);
+	free_2d(envp);
 }
 
 void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
@@ -89,7 +93,6 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 		{
 			g_exit_status = 0;
 			printf("exit\n");
-			// free stuff and exit
 			break;
 		}
 		if (user_input[0] != '\0')
@@ -109,6 +112,15 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 		if (user_input)
 			free (user_input);
 	}
+}
+
+/* Initiate t_envp structure variables to NULL and 0 */
+void	init_env(t_envp *env)
+{
+	env->envarr = NULL;
+	env->cd_hist = NULL;
+	env->envlist = NULL;
+	env->count = 0;
 }
 
 /*
@@ -144,26 +156,24 @@ int	main(int argc, char **argv, char **envs)
 	t_envp	env;
 	char	**paths;
 
-	env.envarr = NULL;
-	env.cd_hist = NULL;
-	env.envlist = NULL;
-	env.count = 0;
+	paths = NULL;
+	init_env(&env);
 	if (store_envp(&env, envs) < 0)
 		return (1);
-	paths = NULL;
 	//paths = save_all_env_paths(envs);
 	if (argc == 2)
 		non_interactive_mode(&tree, argv[1], paths, &env);
-	else if (isatty(STDIN_FILENO))
+	else
 	{
 		(void)argv;
-		interactive_mode(&tree, paths, &env);
+		if (isatty(STDIN_FILENO) == 1)
+			interactive_mode(&tree, paths, &env);
 	}
 	//free_2d(paths);
 	clear_envlist(&env);
 	if (env.cd_hist != NULL)
 	{
-		free(env.cd_hist);
+		free (env.cd_hist);
 		env.cd_hist = NULL;
 	}
 }
