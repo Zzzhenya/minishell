@@ -34,6 +34,7 @@ SRCS = src/parsing/change_exit_status.c\
  src/builtins/env.c\
  src/builtins/exit.c\
  src/builtins/export.c\
+ src/builtins/export_utils.c\
  src/builtins/pwd.c\
  src/builtins/unset.c\
  src/executing/setup_redirections.c\

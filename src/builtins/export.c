@@ -119,18 +119,38 @@ void real_export(char **argv, t_envp *my_data)
       int i = 1;
       char **temp = NULL;
 
+      arr[0] = NULL;
+      arr[1] = NULL;
       arr[2] = NULL;
-      if (ft_strchr(argv[i], '='))
+      while(argv[i] != NULL)
       {
-            temp = ft_split(argv[i], '=');
-
-            arr[0] = ft_strdup(temp[0]);
-            arr[1] = ft_strdup(temp[1]);
+            if (ft_strchr(argv[i], '='))
+            {
+                  if (ft_strcmp(argv[i], "=") != 0)
+                  {
+                        temp = ft_split(argv[i], '=');
+                        if (temp[0])
+                              arr[0] = ft_strdup(temp[0]);
+                        if (temp[1])
+                              arr[1] = ft_strdup(temp[1]);
+                        free_arr(temp, get_arg_count(temp));
+                  }
+                  else
+                  {
+                        arr[0] = ft_strdup(argv[i - 1]);
+                        if (argv[i + 1] != NULL )
+                              arr[1] = ft_strdup(argv[i + 1]);
+                  }
+                  if (!is_valid_var_start(arr[0][0]) || !is_valid_var_char(arr[0]))
+                  {
+                        g_exit_status = 1;
+                        print_export_error(arr[0], arr[2]," : not a valid identifier");
+                  }
+                  else
+                        export_one_var(arr, my_data);
+            }
+            i ++;
       }
-      else
-            arr[0] = ft_strdup(argv[1]);
-            arr[1] = ft_strdup(argv[3]);
-      export_one_var(arr, my_data);
 }
 
 
@@ -140,21 +160,38 @@ string will be removed by parser/lexer*/
 void    exec_export(char **argv, t_envp *my_data)
 {
       int count;
+      char **arr;
       
       count = 0;
-      count = get_arg_count(argv);
-      printf("%d\n", count);
+      arr = NULL;
+      count = count_non_empty_strings(argv);
+      arr = strip_empty_strings(argv);
       g_exit_status = 0;
-      if (count == 1 || (count == 2 && !ft_strcmp(argv[1], "#")))
+      if (count == 1 || arr == NULL)
       {
             print_variables_list(my_data->envarr);
-            g_exit_status = 0;
             return;
+      }
+      else if (count == 2 && arr != NULL)
+      {
+            if (!ft_strcmp(arr[1], "#"))
+            {
+                  print_variables_list(my_data->envarr);
+                  return;
+            }
+            else if (ft_strchr(arr[1], '='))
+                  real_export(arr, my_data);
+            else if (!is_valid_var_start(arr[1][0]) || !is_valid_var_char(arr[1]))
+            {
+                  g_exit_status = 1;
+                  print_export_error(arr[1], NULL," : not a valid identifier");
+            }
+            else
+                  return;
       }
       else
       {
-            real_export(argv, my_data);
+            real_export(arr, my_data);
             return ;
       }
-      // When there is no =
 }

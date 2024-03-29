@@ -366,6 +366,8 @@ void	exec_echo(char **argv);
 void	exec_exit(char **argv, t_envp *my_data);
 void    exec_unset(char **argv, t_envp *my_data);
 void    exec_export(char **argv, t_envp *my_data);
+char	**strip_empty_strings(char **cmdstr);
+int	count_non_empty_strings(char **cmdstr);
 char	*get_pwd(void);
 void 	unset_one_var(char *var, t_envp *my_data);
 
