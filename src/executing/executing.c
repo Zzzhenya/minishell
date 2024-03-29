@@ -610,8 +610,9 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	{
 		/* Function needs to be built - Shenya*/ 
 		//set_signals_interactive(pid);
-		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
+		
 		setup_redirections(*stdios);
+		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
 		pid_zero_exec(cmd, envp, env, pid);
 	}
 	else
