@@ -351,8 +351,6 @@ void	exec(char **cmd, char **env, t_envp *envo)
 	// Added the newly extracted and updated envarr array
 	//g_exit_status = execve(path_cmd, cmd, env);
 	g_exit_status = execve(path_cmd, cmd, envo->envarr);
-	//Check whether the conditions after execve are for when execve fails;
-	// because if execve is succcessfull everything else is irrelavent
 	if (path_cmd)
 		free(path_cmd);
 	g_exit_status = errno;
