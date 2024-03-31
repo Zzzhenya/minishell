@@ -13,6 +13,11 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+/*
+	[F]
+	macro for exit status when command not found
+*/
+
 # define EX_CMD_NOT_FOUND 127
 
 //	[DEFINE MACRO]
@@ -71,6 +76,14 @@
 // 4. ????
 # define _XOPEN_SOURCE 700
 
+/*
+	[F]
+	macro for PATH_MAX for cwd/pwd in case its not defined 
+*/
+#ifndef PATH_MAX
+# define PATH_MAX 2048
+#endif
+
 // [HEADER FILE]
 // 1. [f] close, read, write, access, dup, dup2, execve, fork, pipe, unlink
 // 	  STDIO_FILENO, STDOUT_FILENO, getcwd, chdir, isatty, ttyname, ttyslot
@@ -108,6 +121,11 @@
 
 // 12. [f] All the functions from LIBFT
 # include "../libft/libft.h"
+
+/* 13. [f] used for cd - stat
+	stat, lstat, fstat
+*/
+# include <sys/stat.h>
 
 /* NOT USED
 // opendir, readdir, closedir
