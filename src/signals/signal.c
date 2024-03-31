@@ -10,13 +10,12 @@ void	sig_handler(int sig)
 	if (sig == SIGINT)
 	{
 		g_exit_status = sig;
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-		/*
-		g_exit_status = 130;
+		//ioctl(STDIN_FILENO, TIOCSTI, "\n");		
+		//g_exit_status = 130;
 		ft_putchar_fd('\n', 1);
 		rl_on_new_line();
 		rl_replace_line ("", 0);
-		rl_redisplay();*/
+		rl_redisplay();
 	}
 }
 /*
@@ -31,7 +30,7 @@ void install_signals(pid_t pid)
 {
 	signal(SIGQUIT, SIG_IGN);
 	if (pid <= 0)
-		signal(SIGINT, NULL);
+		signal(SIGINT, sig_handler);	
 	else
-		signal(SIGINT, sig_handler);
+		signal(SIGINT, SIG_IGN); 
 }
