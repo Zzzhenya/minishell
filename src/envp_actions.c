@@ -75,7 +75,6 @@ int	extract_envarr(t_envp *env)
 		if (!env->envarr[i])
 		{
 			free_arr(env->envarr, i);
-			clear_envlist(env);
 			return (-1);
 		}
 		current = current->next;

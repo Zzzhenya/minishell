@@ -84,7 +84,11 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 		}
 		if (user_input[0] != '\0' || user_input[0] != '\n')
 		{
-			extract_envarr(env);
+			if (extract_envarr(env) != 0)
+			{
+				free(user_input);
+				break;
+			}
 			envp = save_all_env_paths(env->envarr);
 			add_history(user_input);
 			*tree = parse_user_input(user_input, env);
