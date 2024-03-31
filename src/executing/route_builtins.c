@@ -40,8 +40,6 @@ int	check_builtin(t_cmd *file_path)
 		|| !ft_strcmp(file_path->cmdstr[0], "export")
 		|| !ft_strcmp(file_path->cmdstr[0], "unset")
 		|| !ft_strcmp(file_path->cmdstr[0], "env")
-		|| !ft_strcmp(file_path->cmdstr[0], "/bin/env")
-		|| !ft_strcmp(file_path->cmdstr[0], "/usr/bin/env")
 		|| !ft_strcmp(file_path->cmdstr[0], "exit"))
 		return (1);
 	else
