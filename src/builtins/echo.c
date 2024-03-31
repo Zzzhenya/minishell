@@ -14,11 +14,11 @@ void	exec_echo(char **argv)
     }
     while (argv[i] != NULL)
     {
-        if (argv[i][0] == '$' && argv[i][1] == '?')
+        /*if (argv[i][0] == '$' && argv[i][1] == '?')
             ft_putnbr_fd(g_exit_status, 1);
         else if (argv[i][0] == '$' && argv[i][1] == '$')
             ft_putnbr_fd(getpid(), 1);
-        else
+        else*/
         {
             ft_putstr_fd(argv[i], 1);
             ft_putchar_fd(' ', 1);
