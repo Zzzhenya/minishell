@@ -82,7 +82,7 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 			printf("exit\n");
 			break;
 		}
-		if (user_input[0] != '\0' || user_input[0] != '\n')
+		if (user_input[0] != '\0' && user_input[0] != '\n')
 		{
 			if (extract_envarr(env) != 0)
 			{
