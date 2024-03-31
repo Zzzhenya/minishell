@@ -74,7 +74,7 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 	user_input = NULL;
 	while (1)
 	{
-		install_signals(1);
+		install_signals(-1);
 		user_input = readline ("Minishell > ");
 		if (!user_input)
 		{
