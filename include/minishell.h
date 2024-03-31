@@ -387,6 +387,7 @@ void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, pid_t pid);
 
 // [wait_blocked_cmds.c]
 void	wait_each_command(t_cmd *tree);
+int	count_commands(t_cmd *tree);
 
 // [route_builtins.c]
 void	builtin_action(t_cmd *builtin, char **cmdline, t_envp *env);
@@ -396,5 +397,7 @@ void	pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env, pid_t pid);
 /* readline */
 void rl_replace_line(const char *text, int clear_undo);
 
+void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
+		, t_envp *env);
 
 #endif
