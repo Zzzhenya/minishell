@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sde-silv <sde-silv@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/02 17:59:46 by sde-silv          #+#    #+#             */
+/*   Updated: 2024/04/02 17:59:49 by sde-silv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /*
@@ -6,8 +18,8 @@
 */
 int	count_non_empty_strings(char **cmdstr)
 {
-	int i;
-	int count;
+	int	i;
+	int	count;
 
 	i = 0;
 	count = 0;
@@ -29,16 +41,16 @@ int	count_non_empty_strings(char **cmdstr)
 char	**strip_empty_strings(char **cmdstr)
 {
 	char	**arr;
-	int	count;
-	int	i;
-	int j;
+	int		count;
+	int		i;
+	int		j;
 
 	arr = NULL;
 	i = 0;
 	j = 0;
 	count = count_non_empty_strings(cmdstr);
 	if (count <= 1)
-		return NULL;
+		return (NULL);
 	arr = malloc(sizeof(char *) * count + 1);
 	if (!arr)
 		return (NULL);

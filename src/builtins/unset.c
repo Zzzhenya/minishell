@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sde-silv <sde-silv@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/02 18:01:15 by sde-silv          #+#    #+#             */
+/*   Updated: 2024/04/02 18:01:18 by sde-silv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 // go through the envp list - find the variable
@@ -37,18 +49,18 @@ int arr_len(char **arr)
 	return (len);
 }
 */
-void unset_one_var(char *var, t_envp *my_data)
+void	unset_one_var(char *var, t_envp *my_data)
 {
 	t_list	*current;
 	t_list	*prev;
-	char 	**arr;
+	char	**arr;
 
 	current = (my_data->envlist);
 	prev = current;
 	while (current != NULL)
 	{
 		arr = NULL;
-      	arr = ft_split((char *)current->content, '=');
+		arr = ft_split((char *)current->content, '=');
 		if (!ft_strncmp(arr[0], var, ft_strlen(arr[0])) 
 			&& !ft_strncmp(arr[0], var, ft_strlen(var)))
 		{
@@ -67,9 +79,9 @@ void unset_one_var(char *var, t_envp *my_data)
 
 /* TESTTTTT */
 
-void    exec_unset(char **argv, t_envp *my_data)
+void	exec_unset(char **argv, t_envp *my_data)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	g_exit_status = 0;
