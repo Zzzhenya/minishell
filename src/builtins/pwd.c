@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pwd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sde-silv <sde-silv@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/02 20:49:16 by sde-silv          #+#    #+#             */
+/*   Updated: 2024/04/02 20:49:43 by sde-silv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 char	*get_pwd(void)
@@ -30,7 +42,7 @@ void	exec_pwd(void)
 	if (!path)
 	{
 		//exit(g_exit_status);
-		return;
+		return ;
 	}
 	else
 	{
@@ -39,6 +51,6 @@ void	exec_pwd(void)
 		free (path);
 	}
 	g_exit_status = EXIT_SUCCESS;
-	return;
+	return ;
 	//exit(g_exit_status);
 }

@@ -44,3 +44,35 @@ int	is_valid_var_char(char *var)
 	}
 	return (1);
 }
+
+void	print_variables_list(char **arr)
+{
+	int	i;
+
+	i = 0;
+	if (!arr || !arr[i])
+		return ;
+	while (arr[i])
+	{
+		ft_putstr_fd("declare -x ", STDOUT_FILENO);
+		ft_putendl_fd(arr[i], STDOUT_FILENO);
+		i ++;
+	}
+}
+
+void	export_one_var(char **arr, t_envp *my_data)
+{
+	char	*var;
+	char	*val;
+	char	*str;
+
+	var = arr[0];
+	val = arr[1];
+	if (val == NULL)
+		val = ft_strdup("");
+	str = ft_strjoin(var, ft_strdup("="));
+	str = ft_strjoin(str, val);
+	unset_one_var(var, my_data);
+	ft_lstadd_back(&my_data->envlist, ft_lstnew(str));
+	my_data->count++;
+}

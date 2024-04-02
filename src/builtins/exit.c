@@ -1,10 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sde-silv <sde-silv@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/02 20:38:31 by sde-silv          #+#    #+#             */
+/*   Updated: 2024/04/02 20:38:32 by sde-silv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
-int ft_isanumber(char *str)
+int	ft_isanumber(char *str)
 {
-	int i = 0;
-	int sign = 0;
+	int	i;
+	int	sign;
 
+	i = 0;
+	sign = 0;
 	if (!str)
 		return (0);
 	if (str[i] == '-' || str[i] == '+')
@@ -28,7 +42,7 @@ void	print_exit_error(char *string, char *message)
 	ft_putstr_fd(message, 2);
 }
 
-static void handle_exit_codes(char **argv, int digcount)
+static void	handle_exit_codes(char **argv, int digcount)
 {
 	if (digcount && digcount <= 19 && !argv[2])
 	{
@@ -43,19 +57,18 @@ static void handle_exit_codes(char **argv, int digcount)
 	}
 	else if (digcount && argv[2])
 	{
-		print_exit_error(NULL,"too many arguments\n");
+		print_exit_error(NULL, "too many arguments\n");
 		g_exit_status = 1;
-		return;
+		return ;
 	}
 }
 
 /* Need to free stuff before exit */
-
 void	exec_exit(char **argv, t_envp *my_data)
 {
-	(void) my_data;
-	int digcount;
+	int	digcount;
 
+	(void)my_data;
 	digcount = 0;
 	ft_putstr_fd("exit\n", 2);
 	if (!argv[1])
