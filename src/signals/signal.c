@@ -10,10 +10,14 @@ void	sig_handler(int sig)
 	if (sig == SIGINT)
 	{	
 		g_exit_status = 130;
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		ioctl(STDIN_FILENO, TIOCSTI, "\n");
+		/*
 		ft_putchar_fd('\n', 1);
 		rl_on_new_line();
 		rl_replace_line ("", 0);
-		rl_redisplay();
+		rl_redisplay();*/
 	}
 }
 /*

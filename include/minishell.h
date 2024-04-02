@@ -126,6 +126,11 @@
 	stat, lstat, fstat
 */
 # include <sys/stat.h>
+/* 14. [f] used in signals to inject a linebreak to the stream
+		allows to avoid switching to readline SIGINT definition
+	ioctl
+*/
+#include <sys/ioctl.h>
 
 /* NOT USED
 // opendir, readdir, closedir
@@ -134,11 +139,8 @@
 // strerror
 # include <string.h>
 
-// stat, lstat, fstat
+// lstat, fstat
 # include <sys/stat.h>
-
-// ioctl
-# include <sys/ioctl.h>
 
 // tcsetattr, tcgetattr
 # include <termios.h>
