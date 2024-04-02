@@ -187,13 +187,13 @@ char	*check_cmd_in_path(char **envp, char *command)
 			path = ft_strdup(command);
 		if (access(path, F_OK) == 0 && access(path, X_OK) == 0)
 		{
-			free_2d(path_array);
+			//free_2d(path_array);
 			return (path);
 		}
 		free(path);
 		i++;
 	}
-	free_2d(path_array);
+	//free_2d(path_array);
 	return (NULL);
 }
 
