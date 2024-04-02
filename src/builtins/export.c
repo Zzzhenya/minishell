@@ -109,11 +109,29 @@ void	real_export(char **argv, t_envp *my_data)
 	}
 }
 
+void	two_argv(char **arr, t_envp *my_data)
+{
+	if (!ft_strcmp(arr[1], "#"))
+	{
+		print_variables_list(my_data->envarr);
+		return ;
+	}
+	else if (ft_strchr(arr[1], '='))
+		real_export(arr, my_data);
+	else if (!is_valid_var_start(arr[1][0]) || !is_valid_var_char(arr[1]))
+	{
+		g_exit_status = 1;
+		print_export_error(arr[1], NULL, " : not a valid identifier");
+	}
+	else
+		return ;
+}
+
 /* The double and single quotes wrapping the entire export command
 string will be removed by parser/lexer*/
 void	exec_export(char **argv, t_envp *my_data)
 {
-	int	count;
+	int		count;
 	char	**arr;
 
 	count = 0;
@@ -127,22 +145,7 @@ void	exec_export(char **argv, t_envp *my_data)
 		return ;
 	}
 	else if (count == 2 && arr != NULL)
-	{
-		if (!ft_strcmp(arr[1], "#"))
-		{
-			print_variables_list(my_data->envarr);
-			return ;
-		}
-		else if (ft_strchr(arr[1], '='))
-			real_export(arr, my_data);
-		else if (!is_valid_var_start(arr[1][0]) || !is_valid_var_char(arr[1]))
-		{
-			g_exit_status = 1;
-			print_export_error(arr[1], NULL, " : not a valid identifier");
-		}
-		else
-			return ;
-	}
+		two_argv(arr, my_data);
 	else
 	{
 		real_export(arr, my_data);

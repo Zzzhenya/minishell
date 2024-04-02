@@ -40,7 +40,8 @@ SRCS = src/parsing/change_exit_status.c\
  src/executing/child_process.c\
  src/executing/route_builtins.c\
  src/executing/redirection_error_handle.c\
- src/executing/wait_blocked_cmds.c
+ src/executing/wait_blocked_cmds.c\
+ src/builtins/builtin_utils.c
 
 OBJS = $(SRCS:.c=.o)
 

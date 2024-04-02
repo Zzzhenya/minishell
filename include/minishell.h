@@ -387,11 +387,12 @@ void 	unset_one_var(char *var, t_envp *my_data);
 // [export.c]
 void    exec_export(char **argv, t_envp *my_data);
 // [export_utils.c]
-char	**strip_empty_strings(char **cmdstr);
-int		count_non_empty_strings(char **cmdstr);
 void	print_export_error(char *var, char *val, char *message);
 int		is_valid_var_start(unsigned char c);
 int		is_valid_var_char(char *var);
+// [builtin_utils.c]
+char	**strip_empty_strings(char **cmdstr);
+int		count_non_empty_strings(char **cmdstr);
 
 
 // [MEMO]
