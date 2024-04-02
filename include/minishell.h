@@ -207,6 +207,7 @@ typedef struct s_envp
 	char	**envarr;
 	char	*cd_hist;
 	int		count;
+	int 	cmds;
 }	t_envp;
 
 /*	[F]

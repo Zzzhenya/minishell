@@ -92,7 +92,7 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 			envp = save_all_env_paths(env->envarr);
 			add_history(user_input);
 			*tree = parse_user_input(user_input, env);
-			env->count = count_commands(*tree);
+			env->cmds = count_commands(*tree);
 			search_tree(*tree, envp, env);
 			wait_each_command(*tree);
 			if (*tree)
@@ -114,6 +114,7 @@ void	init_env(t_envp *env)
 	env->cd_hist = NULL;
 	env->envlist = NULL;
 	env->count = 0;
+	env->cmds = 0;
 }
 
 /*
