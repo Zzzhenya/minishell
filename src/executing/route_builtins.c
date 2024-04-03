@@ -25,7 +25,7 @@ void	pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env, pid_t pid)
 	}
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "cd"))
 	{
-        exec_cd(cmd->r_child->cmdstr, env);
+        exec_cd(cmd->r_child->cmdstr, env, NULL);
 		return ;
 	}
 	if (access(cmd->r_child->cmdstr[0], X_OK) != 0)

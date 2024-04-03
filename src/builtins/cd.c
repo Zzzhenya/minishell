@@ -1,10 +1,6 @@
 #include "../../include/minishell.h"
-#include <sys/types.h>
-#include <sys/stat.h>
 
 /*
-
-
 int 	chdir(const char *path);
 
 The path argument points to the pathname of a directory.  
@@ -19,14 +15,11 @@ The chdir()
 RETURN VALUES
      Upon successful completion, a value of 0 is returned.  Otherwise, a value
      of -1 is returned and errno is set to indicate the error.
-
-
 if (S_ISDIR(statbuf.st_mode))
 */
-
-int  not_a_dir(char	*path)
+int	not_a_dir(char	*path)
 {
-	struct	stat statbuf;
+	struct stat	statbuf;
 
 	statbuf.st_mode = 0;
 	stat(path, &statbuf);
@@ -43,17 +36,14 @@ void	print_cd_error(char *path, char *message)
 	ft_putstr_fd(message, 2);
 }
 
-
-char		*change_to_home(t_envp	*my_data)
+char	*change_to_home(t_envp	*my_data)
 {
-	//int		i;
-	char		*temp;
-	char		*path;
+	char	*temp;
+	char	*path;
 	t_list	*lst;
 
 	temp = NULL;
 	path = NULL;
-	//i = 0;
 	lst = (my_data->envlist);
 	while (lst)
 	{
@@ -61,13 +51,6 @@ char		*change_to_home(t_envp	*my_data)
 			temp = (char *)lst->content;
 		lst = lst->next;
 	}
-	/*
-	while (my_data->envp[i] != NULL)
-	{
-		if (!ft_strncmp(my_data->envp[i], "HOME=", ft_strlen("HOME=")))
-			temp = my_data->envp[i];
-		i ++;
-	}*/
 	if (!temp)
 		return (NULL);
 	while (*temp)
@@ -75,20 +58,20 @@ char		*change_to_home(t_envp	*my_data)
 		if (*temp == '/')
 		{
 			path = ft_strdup(temp);
-			break;
+			break ;
 		}
 		temp ++;
 	}
 	return (path);
 }
 
-void		execute_path(char	*path)
+void	execute_path(char	*path)
 {
 	if (not_a_dir(path))
 	{
 		g_exit_status = 1;
 		print_cd_error(path, ": Not a directory\n");
-		return;
+		return ;
 	}
 	else if (chdir(path) == -1)
 	{
@@ -97,32 +80,28 @@ void		execute_path(char	*path)
 			print_cd_error(path, ": Permission denied\n");
 		else
 			print_cd_error(path, ": No such file or directory\n");
-		return;
+		return ;
 	}
 	else
 	{
 		g_exit_status = 0;
-		return;
+		return ;
 	}
-
 }
 
-void    exec_cd(char **argv, t_envp *my_data)
+void	exec_cd(char **argv, t_envp *my_data, char *path)
 {
-	char *path;
-
-	path = NULL;
-	if (my_data->cd_hist != NULL && argv[1] && !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
+	if (my_data->cd_hist != NULL && argv[1]
+		&& !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
 	{
 		path = ft_strdup(my_data->cd_hist);
-		ft_putstr_fd(path, 1);
-          ft_putchar_fd('\n', 1);
+		ft_putendl_fd(path, 1);
 	}
-	else if (my_data->cd_hist == NULL && argv[1] && !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
+	else if (my_data->cd_hist == NULL && argv[1]
+		&& !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
 	{
 		path = get_pwd();
-		ft_putstr_fd(path, 1);
-          ft_putchar_fd('\n', 1);
+		ft_putendl_fd(path, 1);
 	}
 	else if (argv[1] == NULL || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
 		path = change_to_home(my_data);
