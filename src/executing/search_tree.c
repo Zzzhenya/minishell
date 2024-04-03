@@ -1,4 +1,53 @@
 #include "../../include/minishell.h"
+/*	[F]
+	[Role]
+	Check the NODE'S TYPE, execute next tree node,
+	corresponding to the certain node type.
+
+	[Korean]
+	1. 트리의 노드를 실행.
+	2. 노드타입에 따라 각기 다른 동작 수행.
+	3. 간단명령: execute_simple_cmd 함수호출.
+	4. 리다이렉션: execute_simple_redirect 함수호출.
+
+	[Available types for cild_node]
+	1. N_SIMPLE_CMD
+		LEFT: file_path
+		RIGHT: argv
+	2. N_SIMPLE_REDIREC
+		LEFT: type
+		RIGHT: file_name
+
+	[Progress]
+	1. If node's type == (N_CMD, N_REDIREC)
+		= "there are more redirects and pipes that need to be handled first."
+		= return ; // nothing happen.
+
+	2. If node's type == (N_SIMPLE_CMD)
+		execute_simple_cmd
+
+	3. If node's type == (N_SIMPLE_REDIREC)
+		execute_simple_redirect
+
+	[Struct]
+						  N_CMD(1)			|			N_CMD(2)
+					/				\
+			N_REDIREC				N_SIMPLE_CMD
+			/		\					/			\
+	N_REDIREC	N_SIMPLE_REDIREC	N_FILE_PATH		N_ARGV
+					/		\
+		N_REDIREC_TYPE		N_FILE_NAME
+
+*/
+void	execute_tree(t_cmd *node, t_redirec **stdios, char **envp, t_envp *envs)
+{
+	if (node->node_type == N_CMD || node->node_type == N_REDIREC)
+		return ;
+	else if (node->node_type == N_SIMPLE_CMD)
+		execute_simple_cmd(node, stdios, envp, envs);
+	else if (node->node_type == N_SIMPLE_REDIREC)
+		execute_simple_redirect(node, stdios);
+}
 
 /*	[F]
 	[Role]
@@ -26,7 +75,8 @@
 
 	[Progress]
 	1. "execute_tree"
-		If meet with nodes, still have more child nodes, skip node, cause can't execute now.
+		If meet with nodes, still have more child nodes,
+			skip node, cause can't execute now.
 		
 		(if) curr node is (CMD) or (REDIRECTS)
 			= Skip to the next node, cause current node couldn't be executed.
@@ -42,81 +92,54 @@
 		There is more nodes from r_child's node
 		= search more about r_child node.
 */
-/*
-void	print_node(t_cmd *node)
+void	search_tree(t_cmd *node, char **envp, t_envp *env)
 {
-	int i = 0;
+	static t_redirec	*stdios;
 
-	printf("%d 	", node->pre_flag);
-	printf("%d 	", node->pipe_exist);
-	if (node->node_type == N_CMD)
-		printf("%s 	", "N_CMD");
-	else if (node->node_type == N_SIMPLE_CMD)
-		printf("%s 	", "N_SIMPLE_CMD");
-	else if (node->node_type == N_FILE_PATH)
-		printf("%s 	", "N_FILE_PATH");
-	else if (node->node_type == N_ARGV)
-		printf("%s 	", "N_ARGV");
-	else if (node->node_type == N_REDIREC)
-		printf("%s 	", "N_REDIREC");
-	else if (node->node_type == N_SIMPLE_REDIREC)
-		printf("%s 	", "N_SIMPLE_REDIREC");
-	else if (node->node_type == N_REDIREC_TYPE)
-		printf("%s 	", "N_REDIREC_TYPE");
-	else
-		printf("%s 	", "N_FILE_NAME");
-	//printf("%d 	", node->node_type);
-	if (!node->cmdstr)
-	{
-		printf("Empty\n");
+	if (node == NULL)
 		return ;
-	}
-	while (node->cmdstr[i])
-	{
-		printf("%s 	", node->cmdstr[i]);
-		i ++;
-	}
-	printf("\n");
+	execute_tree(node, &stdios, envp, env);
+	if (node->l_child && (node->l_child->node_type != N_REDIREC_TYPE
+			|| node->l_child->node_type != N_FILE_PATH))
+		search_tree(node->l_child, envp, env);
+	if (node->r_child && (node->r_child->node_type != N_FILE_NAME
+			|| node->r_child->node_type != N_ARGV))
+		search_tree(node->r_child, envp, env);
 }
 
-void	print_leaves(t_cmd *node, char **paths, t_envp *env)
+/*	[F]
+	[Example]
+	1. *tree = parse_user_input(user_input, env);
+					P
+			R				W
+		W		R		W		R
+			W		W				W
+	= Already seperated to tokens.
+
+	2. search_tree(*tree, envp, env);
+	= Check node's status and decide the direction (left || right).
+
+	3. Follow tree and execute corresponding nodes.
+
+	4. No more tree to execute (= finish to search tree)
+		-> free_tree(tree)
+		-> free_2d(user_input)
+
+void	non_interactive_mode(t_cmd **tree,
+								char *input, char **envp, t_envp *env)
 {
-	if (!node)
-		return;
-	if (node && !(node->l_child && node->r_child))
-		print_node(node);
-	if (node && node->l_child )
-		print_leaves(node->l_child, paths, env);
-	if (node && node->r_child )
-		print_leaves(node->r_child, paths, env);
+	char	**user_inputs;
+	int		i;
+
+	user_inputs = ft_split(input, ';');
+	i = 0;
+	while (user_inputs[i])
+	{
+		*tree = parse_user_input(user_inputs[i], env);
+		search_tree(*tree, envp, env);
+		i++;
+		free_tree(*tree);
+	}
+	free_2d(user_inputs);
 }
-
-// Pre-order DFS - Pre-order Depth First Search/Traveral
-void	search_tree(t_cmd *node, char **paths, t_envp *env)
-{
-	//print_leaves(node, paths, env);
-	if (!node)
-		return;
-	// If node has no children print the node and return;
-	if (!node->l_child && !node->r_child)
-	{
-		node->pre_flag = 1;
-		print_node(node);
-		return ;
-	}
-	// if the node has left child search left child tree
-	if (node->l_child )
-	{
-		node->pre_flag = 1;
-		print_node(node);
-		search_tree(node->l_child, paths, env);
-	}
-	// if the node has right child search right child tree
-	if (node->r_child )
-	{
-		node->pre_flag = 1;
-		print_node(node);
-		search_tree(node->r_child, paths, env);
-	}
-
-}*/
+*/
