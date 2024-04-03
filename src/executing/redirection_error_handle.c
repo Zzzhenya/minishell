@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirection_error_handle.c                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sde-silv <sde-silv@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/03 16:22:29 by sde-silv          #+#    #+#             */
+/*   Updated: 2024/04/03 16:22:31 by sde-silv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /*
-
 WHY?
 
 Why check PID when we are sending a hardcoded pid value
@@ -18,8 +29,6 @@ What about when the first string of node->cmdstr is << or >>
 exit status in mac is 258 check for linux	
 
 */
-
-
 int	redirection_error_handle(t_cmd *type, pid_t pid)
 {
 	if (type->cmdstr[0][0] == '<' || type->cmdstr[0][0] == '>')
