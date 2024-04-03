@@ -6,7 +6,7 @@
 /*   By: sde-silv <sde-silv@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 18:01:15 by sde-silv          #+#    #+#             */
-/*   Updated: 2024/04/02 18:01:18 by sde-silv         ###   ########.fr       */
+/*   Updated: 2024/04/03 15:25:08 by sde-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	unset_one_var(char *var, t_envp *my_data)
 	{
 		arr = NULL;
 		arr = ft_split((char *)current->content, '=');
-		if (!ft_strncmp(arr[0], var, ft_strlen(arr[0])) 
+		if (!ft_strncmp(arr[0], var, ft_strlen(arr[0]))
 			&& !ft_strncmp(arr[0], var, ft_strlen(var)))
 		{
 			prev->next = current->next;
