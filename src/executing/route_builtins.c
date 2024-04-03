@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   route_builtins.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sde-silv <sde-silv@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/03 15:31:31 by sde-silv          #+#    #+#             */
+/*   Updated: 2024/04/03 15:34:36 by sde-silv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /* 
@@ -10,22 +22,22 @@ void	pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env, pid_t pid)
 		return ;
 	if (!ft_strcmp(cmd->r_child->cmdstr[0], "exit"))
 	{
-        exec_exit(cmd->r_child->cmdstr, env);
+		exec_exit(cmd->r_child->cmdstr, env);
 		return ;
 	}
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "unset"))
 	{
-        exec_unset(cmd->r_child->cmdstr, env);
+		exec_unset(cmd->r_child->cmdstr, env);
 		return ;
 	}
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "export"))
 	{
-        exec_export(cmd->r_child->cmdstr, env);
+		exec_export(cmd->r_child->cmdstr, env);
 		return ;
 	}
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "cd"))
 	{
-        exec_cd(cmd->r_child->cmdstr, env, NULL);
+		exec_cd(cmd->r_child->cmdstr, env, NULL);
 		return ;
 	}
 	if (access(cmd->r_child->cmdstr[0], X_OK) != 0)
@@ -49,7 +61,6 @@ int	check_builtin(t_cmd *file_path)
 /*
 	builtin router for child processes
 */
-
 void	builtin_action(t_cmd *builtin, char **cmdline, t_envp *env)
 {
 	if (!ft_strcmp(builtin->cmdstr[0], "echo"))
@@ -57,9 +68,6 @@ void	builtin_action(t_cmd *builtin, char **cmdline, t_envp *env)
 	else if (!ft_strcmp(builtin->cmdstr[0], "pwd"))
 		exec_pwd();
 	else if (!ft_strcmp(builtin->cmdstr[0], "env"))
-		/*
-		|| !ft_strcmp(builtin->cmdstr[0], "/bin/env")
-		|| !ft_strcmp(builtin->cmdstr[0], "/usr/bin/env"))*/
 		exec_env(NULL, env);
 	exit(errno);
 }
