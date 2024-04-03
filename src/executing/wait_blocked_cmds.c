@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wait_blocked_cmds.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sde-silv <sde-silv@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/03 16:09:31 by sde-silv          #+#    #+#             */
+/*   Updated: 2024/04/03 16:10:16 by sde-silv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /*
@@ -10,7 +22,6 @@
 	recursively count & add commands in right sub trees
 	return the total count
 */
-
 int	count_commands(t_cmd *tree)
 {
 	int	count;
@@ -32,7 +43,6 @@ int	count_commands(t_cmd *tree)
 		return info about terminated children
 		return info when child is stopped by signal
 */
-
 void	wait_each_command(t_cmd *tree)
 {
 	int	count;

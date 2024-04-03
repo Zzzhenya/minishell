@@ -1,30 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   setup_redirections.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sde-silv <sde-silv@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/03 15:40:20 by sde-silv          #+#    #+#             */
+/*   Updated: 2024/04/03 15:46:56 by sde-silv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
-# define HEREDOCNAME  ".___tmp__4heredoc"
-
-/*	[F]
-	[Field]
-	1. redirec_type: Type of redirection.
-	2. filename: Pointer to file name(address),
-				 which is ridirected by redirection.
-				 해당 파일의 경로가 이 변수에 저장된다.
-	3. next_redirec: Pointer to the next redirection.
-
-typedef struct s_redirec
-{
-	int				redirec_type;
-	char			*filename;
-	struct s_redirec	*next_redirec;
-}	t_redirec; 
-
-
-	[F]
-	3. macro for types of "redirection".
-# define REDIREC_R 1	 '>'
-# define REDIREC_RR 2	 '>>'
-# define REDIREC_L 3	 '<'
-# define REDIREC_LL 4	 '<<' */
-
+#define HEREDOCNAME  ".___tmp__4heredoc"
 /*
 	make a line  of char size of 1
 	continue while the line doesn't have/ is not equal to the delimiter word
@@ -38,7 +26,6 @@ typedef struct s_redirec
 		increment i??
 	When exiting the while loop free line
 */
-
 void	heredoc_input(int fd, char *word)
 {
 	char	*line;
@@ -63,18 +50,16 @@ void	heredoc_input(int fd, char *word)
 }
 
 /*
-
 	declare a temporary fd integer
 	makes a duplicate of the file descriptor fd using the supplied fd
 	if dup2 fails; ret = -1, close opened file fd and exit with errno;
 
 */
-
 void	dup_and_redirect(int oldfd, int newfd)
 {
 	int	ret;
 
-	// ret = -1;
+	ret = -1;
 	ret = dup2 (oldfd, newfd);
 	if (ret == -1)
 	{
@@ -103,13 +88,11 @@ void	dup_and_redirect(int oldfd, int newfd)
 		duplicate fd of the opened file and redirect it to STDOUT
 	close opened fd
 */
-
 void	setup_last_r(t_redirec *last_r)
 {
 	int	fd;
 
 	fd = -1;
-
 	if (last_r->redirec_type == REDIREC_R)
 	{
 		fd = open(last_r->filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
@@ -152,7 +135,6 @@ void	setup_last_r(t_redirec *last_r)
 		unlink and delete the temp file and path;
 
 */
-
 void	setup_last_l(t_redirec *last_l)
 {
 	int	fd;
@@ -169,7 +151,6 @@ void	setup_last_l(t_redirec *last_l)
 	}
 	else if (last_l->redirec_type == REDIREC_LL)
 	{
-		//fd = open(HEREDOCNAME, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 		fd = open(HEREDOCNAME, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (!fd)
 			exit(errno);
@@ -181,7 +162,7 @@ void	setup_last_l(t_redirec *last_l)
 	}
 }
 
-t_redirec 	*find_last(t_redirec *stdios, char c)
+t_redirec	*find_last(t_redirec *stdios, char c)
 {
 	t_redirec	*last;
 	t_redirec	*curr;
@@ -192,7 +173,8 @@ t_redirec 	*find_last(t_redirec *stdios, char c)
 	{
 		while (curr)
 		{
-			if (curr->redirec_type == REDIREC_L || curr->redirec_type == REDIREC_LL)
+			if (curr->redirec_type == REDIREC_L
+				|| curr->redirec_type == REDIREC_LL)
 				last = curr;
 			curr = curr->next_redirec;
 		}
@@ -201,7 +183,8 @@ t_redirec 	*find_last(t_redirec *stdios, char c)
 	{
 		while (curr)
 		{
-			if (curr->redirec_type == REDIREC_R || curr->redirec_type == REDIREC_RR)
+			if (curr->redirec_type == REDIREC_R
+				|| curr->redirec_type == REDIREC_RR)
 				last = curr;
 			curr = curr->next_redirec;
 		}
@@ -216,12 +199,10 @@ t_redirec 	*find_last(t_redirec *stdios, char c)
 	if last left redirec is not null ; setup the last left redirec
 	if last right redirec is not null ; setup the last right redirec
 */
-
 void	setup_redirections(t_redirec *stdios)
 {
 	t_redirec	*last_l;
 	t_redirec	*last_r;
-
 
 	if (stdios == NULL)
 		return ;
