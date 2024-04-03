@@ -371,7 +371,7 @@ void install_signals(pid_t pid);
 
 // [ BUILT-IN ] 
 // [cd.c]
-void    exec_cd(char **argv, t_envp *my_data);
+void    exec_cd(char **argv, t_envp *my_data, char *path);
 // [env.c]
 void	exec_env(char **argv, t_envp *my_data);
 // [pwd.c]
