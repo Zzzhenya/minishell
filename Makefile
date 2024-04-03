@@ -27,7 +27,10 @@ SRCS = src/parsing/change_exit_status.c\
  src/main.c\
  src/envp_actions.c\
  src/signals/signal.c\
- src/executing/executing.c\
+ src/executing/execute_simple_cmd.c\
+ src/executing/cmd_functions.c\
+ src/executing/execute_simple_redirect.c\
+ src/executing/search_tree.c\
  src/builtins/cd.c\
  src/builtins/echo.c\
  src/builtins/env.c\

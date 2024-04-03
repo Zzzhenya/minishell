@@ -12,6 +12,7 @@
 
 #include "../../include/minishell.h"
 
+char	*check_cmd_in_path(char **envp, char *command);
 /*	[F]
 	Reference, in "lexical_expanding.c"
 	Search Param(1): "str" from

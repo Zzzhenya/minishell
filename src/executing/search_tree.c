@@ -1,4 +1,7 @@
 #include "../../include/minishell.h"
+
+void	execute_simple_redirect(t_cmd *node, t_redirec **stdios);
+
 /*	[F]
 	[Role]
 	Check the NODE'S TYPE, execute next tree node,
