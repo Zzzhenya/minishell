@@ -65,7 +65,7 @@ void	export_one_var(char **arr, t_envp *my_data)
 	char	*var;
 	char	*val;
 	char	*str;
-	char 	*mid;
+	char	*mid;
 
 	if (arr[1] == NULL)
 		val = ft_strdup("");
