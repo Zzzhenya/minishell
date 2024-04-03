@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   child_process.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sde-silv <sde-silv@student.42berlin.de>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/03 15:37:59 by sde-silv          #+#    #+#             */
+/*   Updated: 2024/04/03 15:38:28 by sde-silv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
 /*	[F]
@@ -12,8 +24,6 @@
 			-> print error message about cmd.
 			-> exec
 */
-
-
 void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, pid_t pid)
 {
 	if (check_builtin(cmd->l_child))
