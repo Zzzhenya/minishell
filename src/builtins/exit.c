@@ -52,7 +52,6 @@ static void	handle_exit_codes(char **argv, int digcount)
 			g_exit_status = 256 + ft_atoi(argv[1]);
 		else
 			g_exit_status = ft_atoi(argv[1]) - 256;
-		// free stuff
 		exit(g_exit_status);
 	}
 	else if (digcount && argv[2])
@@ -73,7 +72,6 @@ void	exec_exit(char **argv, t_envp *my_data)
 	ft_putstr_fd("exit\n", 2);
 	if (!argv[1])
 	{
-		// free stuff
 		exit(g_exit_status);
 	}
 	digcount = ft_isanumber(argv[1]);
@@ -83,7 +81,6 @@ void	exec_exit(char **argv, t_envp *my_data)
 	{
 		print_exit_error(argv[1], ": numeric argument required\n");
 		g_exit_status = 2;
-		// free stuff
 		exit(g_exit_status);
 	}
 }
