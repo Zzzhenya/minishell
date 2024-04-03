@@ -34,16 +34,13 @@ char	*get_pwd(void)
  */
 
 void	exec_pwd(void)
-{  
+{
 	char	*path;
 
 	path = NULL;
 	path = get_pwd();
 	if (!path)
-	{
-		//exit(g_exit_status);
 		return ;
-	}
 	else
 	{
 		ft_putstr_fd(path, 1);
@@ -52,5 +49,4 @@ void	exec_pwd(void)
 	}
 	g_exit_status = EXIT_SUCCESS;
 	return ;
-	//exit(g_exit_status);
 }
