@@ -58,6 +58,10 @@ void	eq_in_own_line(char **argv, int i, t_envp *my_data)
 	}
 	else
 		export_one_var(arr, my_data);
+	if (arr[0])
+		free(arr[0]);
+	if (arr[1])
+		free(arr[1]);
 }
 
 /* else */
@@ -69,7 +73,7 @@ void	eq_within_string(char **argv, int i, t_envp *my_data)
 	arr[1] = NULL;
 	arr[2] = NULL;
 	arr[0] = ft_strdup(argv[i - 1]);
-	if (argv[i + 1] != NULL )
+	if (argv[i + 1] != NULL)
 		arr[1] = ft_strdup(argv[i + 1]);
 	if (!is_valid_var_start(arr[0][0]) || !is_valid_var_char(arr[0]))
 	{
@@ -78,6 +82,10 @@ void	eq_within_string(char **argv, int i, t_envp *my_data)
 	}
 	else
 		export_one_var(arr, my_data);
+	if (arr[0])
+		free (arr[0]);
+	if (arr[1])
+		free (arr[1]);
 }
 
 void	real_export(char **argv, t_envp *my_data)
@@ -129,15 +137,11 @@ void	exec_export(char **argv, t_envp *my_data)
 	arr = strip_empty_strings(argv);
 	g_exit_status = 0;
 	if (count == 1 || arr == NULL)
-	{
 		print_variables_list(my_data->envarr);
-		return ;
-	}
 	else if (count == 2 && arr != NULL)
 		two_argv(arr, my_data);
 	else
-	{
 		real_export(arr, my_data);
-		return ;
-	}
+	if (arr)
+		free_arr(arr, count);
 }

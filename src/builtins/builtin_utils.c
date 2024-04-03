@@ -51,7 +51,7 @@ char	**strip_empty_strings(char **cmdstr)
 	count = count_non_empty_strings(cmdstr);
 	if (count <= 1)
 		return (NULL);
-	arr = malloc(sizeof(char *) * count + 1);
+	arr = malloc(sizeof(char *) * (count + 1));
 	if (!arr)
 		return (NULL);
 	while (cmdstr[i] != NULL)
