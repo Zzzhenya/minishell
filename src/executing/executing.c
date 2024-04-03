@@ -514,8 +514,8 @@ void	free_stdios(t_redirec *stdios)
 void	waiting_child_process(t_redirec **stdios)
 {
 	waitpid(-1, &g_exit_status, WNOHANG);
-	//if (find_last(*stdios, 'l') != NULL
-		//&& find_last(*stdios, 'l')->redirec_type == REDIREC_LL)
+	//if (find_last(*stdios, 'l', NULL) != NULL
+		//&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
 	if (find_last_in(*(stdios)) != NULL
 		&& find_last_in(*(stdios))->redirec_type == REDIREC_LL)
 		waitpid(-1, &g_exit_status, 0);

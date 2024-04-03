@@ -19,6 +19,7 @@
 */
 
 # define EX_CMD_NOT_FOUND 127
+# define HEREDOCNAME  ".___tmp__4heredoc"
 
 //	[DEFINE MACRO]
 /*	[F]
@@ -359,7 +360,9 @@ void	search_tree(t_cmd *node, char **envp, t_envp *env);
 // [ REDIRECTIONS ]
 // [setup_redirections.c]
 void	setup_redirections(t_redirec *stdios);
-t_redirec 	*find_last(t_redirec *stdios, char c);
+t_redirec 	*find_last(t_redirec *stdios, char c, t_redirec *last);
+// [here_doc_functions.c]
+void	heredoc_input(int fd, char *word);
 
 // util_debug.c
 void	print_tree(t_cmd *node);

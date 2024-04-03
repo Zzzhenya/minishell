@@ -41,7 +41,8 @@ SRCS = src/parsing/change_exit_status.c\
  src/executing/route_builtins.c\
  src/executing/redirection_error_handle.c\
  src/executing/wait_blocked_cmds.c\
- src/builtins/builtin_utils.c
+ src/builtins/builtin_utils.c\
+ src/executing/here_doc_functions.c
 
 OBJS = $(SRCS:.c=.o)
 

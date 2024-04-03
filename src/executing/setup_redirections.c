@@ -12,7 +12,6 @@
 
 #include "../../include/minishell.h"
 
-#define HEREDOCNAME  ".___tmp__4heredoc"
 /*
 	make a line  of char size of 1
 	continue while the line doesn't have/ is not equal to the delimiter word
@@ -25,7 +24,7 @@
 			write line break to fd
 		increment i??
 	When exiting the while loop free line
-*/
+
 void	heredoc_input(int fd, char *word)
 {
 	char	*line;
@@ -48,8 +47,6 @@ void	heredoc_input(int fd, char *word)
 	}
 	free (line);
 }
-
-/*
 	declare a temporary fd integer
 	makes a duplicate of the file descriptor fd using the supplied fd
 	if dup2 fails; ret = -1, close opened file fd and exit with errno;
@@ -162,12 +159,10 @@ void	setup_last_l(t_redirec *last_l)
 	}
 }
 
-t_redirec	*find_last(t_redirec *stdios, char c)
+t_redirec	*find_last(t_redirec *stdios, char c, t_redirec *last)
 {
-	t_redirec	*last;
 	t_redirec	*curr;
 
-	last = NULL;
 	curr = stdios;
 	if (c == 'l')
 	{
@@ -206,8 +201,8 @@ void	setup_redirections(t_redirec *stdios)
 
 	if (stdios == NULL)
 		return ;
-	last_l = find_last(stdios, 'l');
-	last_r = find_last(stdios, 'r');
+	last_l = find_last(stdios, 'l', NULL);
+	last_r = find_last(stdios, 'r', NULL);
 	if (last_l != NULL)
 		setup_last_l(last_l);
 	if (last_r != NULL)
