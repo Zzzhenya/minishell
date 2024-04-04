@@ -6,7 +6,7 @@
 /*   By: sde-silv <sde-silv@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:23:56 by sde-silv          #+#    #+#             */
-/*   Updated: 2024/04/03 15:24:01 by sde-silv         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:58:25 by sde-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,12 @@
 		ft_putnbr_fd(getpid(), 1);
 	else
 */
-void	exec_echo(char **argv)
+
+void	exec_echo(char **argv, int count, char **arr)
 {
 	int	i;
 	int	opt;
-	int		count;
-	char	**arr;
 
-	count = 0;
-	arr = NULL;
 	count = count_non_empty_strings(&argv[1]);
 	arr = strip_empty_strings(&argv[1]);
 	i = 0;
@@ -49,10 +46,3 @@ void	exec_echo(char **argv)
 		free_arr(arr, count);
 	g_exit_status = 0;
 }
-
-/* 
-manage env variables like $HOME - Expanded in parsing so its an array of strings
-manage exceptions line $? $$ - Here 
-
-It is assumed the $? is a seperate string in the char ** array ( for now)
-*/

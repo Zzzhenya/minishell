@@ -6,7 +6,7 @@
 /*   By: sde-silv <sde-silv@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:37:59 by sde-silv          #+#    #+#             */
-/*   Updated: 2024/04/03 15:38:28 by sde-silv         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:05:26 by sde-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int	find_matching_env_row(char *str, char **env)
 		   when errer happens in system call of library function.
 			update errno code and save it to 'g_exit_status'.
 */
+
 void	exec(char **cmd, char **env, t_envp *envo)
 {
 	char	*path_cmd;

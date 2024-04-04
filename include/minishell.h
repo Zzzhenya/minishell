@@ -6,7 +6,7 @@
 /*   By: tkwak <tkwak@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 21:10:59 by tkwak             #+#    #+#             */
-/*   Updated: 2024/04/03 17:40:44 by tkwak            ###   ########.fr       */
+/*   Updated: 2024/04/04 15:00:09 by sde-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,7 +383,7 @@ void	exec_pwd(void);
 char	*get_pwd(void);
 
 // [echo.c]
-void	exec_echo(char **argv);
+void	exec_echo(char **argv, int count, char **arr);
 
 // [exit.c]
 void	exec_exit(char **argv, t_envp *my_data);

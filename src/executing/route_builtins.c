@@ -6,7 +6,7 @@
 /*   By: sde-silv <sde-silv@student.42berlin.de>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 15:31:31 by sde-silv          #+#    #+#             */
-/*   Updated: 2024/04/03 15:34:36 by sde-silv         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:59:27 by sde-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	check_builtin(t_cmd *file_path)
 void	builtin_action(t_cmd *builtin, char **cmdline, t_envp *env)
 {
 	if (!ft_strcmp(builtin->cmdstr[0], "echo"))
-		exec_echo(cmdline);
+		exec_echo(cmdline, 0, NULL);
 	else if (!ft_strcmp(builtin->cmdstr[0], "pwd"))
 		exec_pwd();
 	else if (!ft_strcmp(builtin->cmdstr[0], "env"))
