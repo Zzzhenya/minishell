@@ -6,7 +6,7 @@
 /*   By: tkwak <tkwak@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 10:13:07 by tkwak             #+#    #+#             */
-/*   Updated: 2024/03/13 10:13:14 by tkwak            ###   ########.fr       */
+/*   Updated: 2024/04/04 09:38:23 by tkwak            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../../include/minishell.h"
@@ -50,12 +50,13 @@ void	free_stdios(t_redirec *stdios)
 		curr = next;
 	}
 }
+
 /* 
 	frees a heap array upto a specified location
 */
 void	free_arr(char **arr, int loc)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < loc)

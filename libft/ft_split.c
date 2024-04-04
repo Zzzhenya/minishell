@@ -22,13 +22,13 @@ int	countrow(char const *s, char c)
 	index = 0;
 	prvc = 0;
 	if (s[index] != c && s[index] != 0)
-		row ++;
+		row++;
 	while (s[index])
 	{
 		if (prvc == c && s[index] != c)
-			row ++;
+			row++;
 		prvc = s[index];
-		index ++;
+		index++;
 	}
 	if (c == 0)
 		row = row - 1;
@@ -47,7 +47,52 @@ int	tool4free(char **str, int i4str)
 	return (1);
 }
 
-// [M]
+char	**linebyline(char **str, char const *s, char c)
+{
+	int	i;
+	int	i4str;
+	int	start;
+
+	i = 0;
+	i4str = 0;
+	while (s[i])
+	{
+		if (s[i] != c)
+		{
+			start = i;
+			while (s[i] && s[i] != c)
+				i++;
+			str[i4str] = ft_substr(s, start, i - start);
+			if (tool4free(str, i4str) < 0)
+				return (NULL);
+			i4str++;
+		}
+		else
+			i++;
+	}
+	str[i4str] = NULL;
+	return (str);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**str;
+	int		row;
+
+	row = countrow(s, c);
+	str = (char **)malloc((row + 1) * sizeof(char *));
+	if (!str || !s)
+		return (NULL);
+	str = linebyline(str, s, c);
+	if (str == NULL)
+	{
+		free (str);
+		return (NULL);
+	}
+	return (str);
+}
+
+/*
 char	**linebyline(char **str, char const *s, char c)
 {
 	int	i;
@@ -66,7 +111,7 @@ char	**linebyline(char **str, char const *s, char c)
 			str[i4str] = ft_substr(s, start, i - start);
 			if (str[i4str] == NULL)
 			{
-				tool4free(str, i4str);	// 할당 실패 시 메모리 해제 후 종료
+				tool4free(str, i4str);
 				return (NULL);
 			}
 			i4str++;
@@ -77,22 +122,4 @@ char	**linebyline(char **str, char const *s, char c)
 	str[i4str] = NULL;
 	return (str);
 }
-
-// [M]
-char	**ft_split(char const *s, char c)
-{
-	char	**str;
-	int		row;
-
-	row = countrow(s, c);
-	str = (char **)malloc((row + 1) * sizeof(char *));
-	if (!str || !s)
-		return (NULL);
-	str = linebyline(str, s, c);
-	if (str == NULL) // linebyline 호출 실패 시 메모리 해제
-	{
-		free (str);
-		return (NULL);
-	}
-	return (str);
-}
+*/

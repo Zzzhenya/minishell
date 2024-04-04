@@ -15,7 +15,6 @@
 /* 
 	Clear the content of the envlist node
 */
-
 void	free_string(void *input)
 {
 	char	*str;
@@ -28,7 +27,6 @@ void	free_string(void *input)
 /*
 	Clear entire envlist
 */
-
 void	clear_envlist(t_envp *env)
 {
 	ft_lstclear(&env->envlist, free_string);
@@ -38,7 +36,6 @@ void	clear_envlist(t_envp *env)
 	Store env variables in a linked list pointed by env->envlist
 	Store number of of variables in env->count 
 */
-
 int	store_envp(t_envp *env, char **envs)
 {
 	int		i;
@@ -65,7 +62,6 @@ int	store_envp(t_envp *env, char **envs)
 /*
 	extract env variables from the linked list and store in envarr array
 */
-
 int	extract_envarr(t_envp *env)
 {
 	t_list	*current;
@@ -94,4 +90,3 @@ int	extract_envarr(t_envp *env)
 	}
 	return (0);
 }
-

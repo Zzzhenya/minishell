@@ -18,3 +18,19 @@ void	syntax_pipe_error_print(void)
 		ft_strlen("syntax error near unexpected token '|'\n"));
 	g_exit_status = 1;
 }
+
+int	find_matching_env_row(char *str, char **env)
+{
+	int	i;
+
+	i = 0;
+	if (str == NULL && *str == '\0')
+		return (-1);
+	while (env[i] != NULL)
+	{
+		if (ft_strcmp(env[i], str) != -1)
+			return (i); 
+		i++;
+	}
+	return (-1);
+}

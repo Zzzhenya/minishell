@@ -12,22 +12,6 @@
 
 #include "../../include/minishell.h"
 
-int	find_matching_env_row(char *str, char **env)
-{
-	int	i;
-
-	i = 0;
-	if (str == NULL && *str == '\0')
-		return (-1);
-	while (env[i] != NULL)
-	{
-		if (ft_strcmp(env[i], str) != -1)
-			return (i); 
-		i++;
-	}
-	return (-1);
-}
-
 char	*trim_single_quotes(char *str)
 {
 	int		i;
@@ -84,6 +68,52 @@ char	*replace_substring(char *token, char *row_env, int i_dollar)
 	return (res);
 }
 
+int	expand_token_env(t_data *data, char **env, int i)
+{
+	int	i_dollar;
+	int	row_env;
+
+	i_dollar = ft_strchr_m(data->token[i], '$');
+	if (i_dollar != -1
+		&& (ft_strchr_m(data->token[i], '\'') == -1) 
+		&& data->token[i][i_dollar + 1] != '?' 
+		&& data->token[i][i_dollar + 1] != '$')
+	{
+		row_env = find_matching_env_row(data->token[i] + i_dollar + 1, env);
+		if (row_env == -1)
+			data->token[i]
+				= replace_substring(data->token[i], "\n", i_dollar);
+		else
+			data->token[i]
+				= replace_substring(data->token[i], env[row_env], i_dollar);
+		if (data->token[i] == NULL)
+			return (-1);
+	}
+	return (0);
+}
+
+int	expand_env(t_data *data, char **env, int i)
+{
+	while (data->token[i] != NULL)
+	{
+		if (data->token[i][0] == '\'')
+		{
+			if (remove_single_quotes_from_token(data, i) == -1)
+				return (-1);
+		}
+		else
+		{
+			if (expand_token_env(data, env, i) == -1)
+				return (-1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+/*
+[ Original but the line is over 25, so i fixed it ]
+
 int	expand_env(t_data *data, char **env, int i)
 {
 	int	i_dollar;
@@ -118,3 +148,4 @@ int	expand_env(t_data *data, char **env, int i)
 	}
 	return (0);
 }
+*/
