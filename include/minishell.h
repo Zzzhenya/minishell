@@ -332,7 +332,8 @@ void		free_arr(char **arr, int loc);
 // [ main.c ]
 char		**save_all_env_paths(char **envp);
 char		*get_allocated_cwd(void);
-void		interactive_mode(t_cmd **tree, char **envp, t_envp *env);
+void		interactive_mode(t_cmd **tree, char **envp, t_envp *env,
+				char *user_input);
 void		non_interactive_mode(t_cmd **tree,
 				char *input, char **envp, t_envp *env);
 int			main(int argc, char **argv, char **envs);
@@ -343,6 +344,7 @@ int			store_envp(t_envp *env, char **envs);
 void		clear_envlist(t_envp *env);
 int			extract_envarr(t_envp *my_data);
 void		free_string(void *input);
+void		init_env(t_envp *env);
 
 // [ Executing ]
 /*

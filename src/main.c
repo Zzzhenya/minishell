@@ -67,11 +67,21 @@ void	non_interactive_mode(t_cmd **tree,
 	free_2d(envp);
 }
 
-void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
+void	free_things(t_cmd **tree, t_envp *env, char **envp, char *user_input)
 {
-	char	*user_input;
+	if (*tree)
+		free_tree(*tree);
+	if (env->envarr)
+		free_arr(env->envarr, env->count);
+	if (envp)
+		free_2d(envp);
+	if (user_input)
+		free (user_input);
+}
 
-	user_input = NULL;
+void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
+					char *user_input)
+{
 	while (1)
 	{
 		install_signals(-1);
@@ -85,66 +95,20 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 		if (user_input[0] != '\0' && user_input[0] != '\n')
 		{
 			if (extract_envarr(env) != 0)
-			{
-				free(user_input);
 				break ;
-			}
 			envp = save_all_env_paths(env->envarr);
 			add_history(user_input);
 			*tree = parse_user_input(user_input, env);
 			env->cmds = count_commands(*tree);
 			search_tree(*tree, envp, env);
 			wait_each_command(*tree);
-			if (*tree)
-				free_tree(*tree);
-			free_arr(env->envarr, env->count);
-			free_2d(envp);
 		}
-		if (user_input)
-		{
-			free (user_input);
-		}
+		free_things(tree, env, envp, user_input);
 	}
+	if (user_input)
+		free(user_input);
 }
 
-/* Initiate t_envp structure variables to NULL and 0 */
-void	init_env(t_envp *env)
-{
-	env->envarr = NULL;
-	env->cd_hist = NULL;
-	env->envlist = NULL;
-	env->count = 0;
-	env->cmds = 0;
-}
-
-/*
-void	interactive_bash(t_cmd **tree, char **paths, t_envp *env)
-{
-	char	user_input[1000];
-
-	install_signals();
-	if (extract_envarr(env) < 0)
-		return ;
-	//Replace these two lines with the radline functions
-	fgets(user_input, sizeof(user_input), stdin);
-	user_input[strcspn(user_input, "\n")] = 0;
-	tree = (t_cmd **)parse_user_input(user_input, env);
-	if (tree != NULL)
-	{
-		printf("Successfully created\n");
-		printf("flag	pipe 	type\n");
-		search_tree(*tree, paths, env);
-	}
-	else
-		printf("Error: Failed to create command tree.\n");
-	if (tree)
-		free_tree(*tree);
-	(void)paths;
-}
-
-*/
-// paths = save_all_env_paths(envs);
-// free_2d(paths);
 int	main(int argc, char **argv, char **envs)
 {
 	t_cmd	*tree;
@@ -161,7 +125,7 @@ int	main(int argc, char **argv, char **envs)
 	{
 		(void)argv;
 		if (isatty(STDIN_FILENO) == 1)
-			interactive_mode(&tree, paths, &env);
+			interactive_mode(&tree, paths, &env, NULL);
 	}
 	clear_envlist(&env);
 	if (env.cd_hist != NULL)
@@ -203,5 +167,4 @@ int	main(int argc, char **argv, char **envs)
 	free_2d(paths);
 	return (0);
 }
-
 */

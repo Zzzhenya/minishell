@@ -75,8 +75,8 @@ int	expand_token_env(t_data *data, char **env, int i)
 
 	i_dollar = ft_strchr_m(data->token[i], '$');
 	if (i_dollar != -1
-		&& (ft_strchr_m(data->token[i], '\'') == -1) 
-		&& data->token[i][i_dollar + 1] != '?' 
+		&& (ft_strchr_m(data->token[i], '\'') == -1)
+		&& data->token[i][i_dollar + 1] != '?'
 		&& data->token[i][i_dollar + 1] != '$')
 	{
 		row_env = find_matching_env_row(data->token[i] + i_dollar + 1, env);

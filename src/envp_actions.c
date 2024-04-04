@@ -12,6 +12,16 @@
 
 #include "../include/minishell.h"
 
+/* Initiate t_envp structure variables to NULL and 0 */
+void	init_env(t_envp *env)
+{
+	env->envarr = NULL;
+	env->cd_hist = NULL;
+	env->envlist = NULL;
+	env->count = 0;
+	env->cmds = 0;
+}
+
 /* 
 	Clear the content of the envlist node
 */

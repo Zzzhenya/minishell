@@ -130,6 +130,7 @@ void	setup_last_r(t_redirec *last_r)
 		re-open the closed temp file in readonly mode
 		duplicate fd of the temp file and redirect it to STDIN
 		unlink and delete the temp file and path;
+Shouldn't I close the fd?
 
 */
 void	setup_last_l(t_redirec *last_l)
@@ -143,8 +144,7 @@ void	setup_last_l(t_redirec *last_l)
 		if (!fd)
 			exit(errno);
 		dup_and_redirect(fd, STDIN_FILENO);
-		// Shouldn't I close the fd?
-		//close(fd);
+		close(fd);
 	}
 	else if (last_l->redirec_type == REDIREC_LL)
 	{

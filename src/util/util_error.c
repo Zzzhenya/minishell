@@ -29,7 +29,7 @@ int	find_matching_env_row(char *str, char **env)
 	while (env[i] != NULL)
 	{
 		if (ft_strcmp(env[i], str) != -1)
-			return (i); 
+			return (i);
 		i++;
 	}
 	return (-1);
