@@ -38,7 +38,7 @@ int	count_quote(char *str, t_data *data)
 	return (-1);
 }
 
-int	*extract_quoted_string(char *str, int i)
+char	*extract_quoted_string(char *str, int i)
 {
 	int		j;
 	char	*m_str;
