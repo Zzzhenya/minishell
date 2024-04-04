@@ -49,7 +49,7 @@ char	**strip_empty_strings(char **cmdstr)
 	i = 0;
 	j = 0;
 	count = count_non_empty_strings(cmdstr);
-	if (count <= 1)
+	if (count == 0)
 		return (NULL);
 	arr = malloc(sizeof(char *) * (count + 1));
 	if (!arr)

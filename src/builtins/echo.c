@@ -23,22 +23,30 @@ void	exec_echo(char **argv)
 {
 	int	i;
 	int	opt;
+	int		count;
+	char	**arr;
 
-	i = 1;
+	count = 0;
+	arr = NULL;
+	count = count_non_empty_strings(&argv[1]);
+	arr = strip_empty_strings(&argv[1]);
+	i = 0;
 	opt = 0;
-	if (argv[i] != NULL && i == 1 && !ft_strncmp(argv[i], "-n", 3))
+	if (count > 0 && !ft_strncmp(arr[i], "-n", 3))
 	{
 		opt = 1;
 		i ++;
 	}
-	while (argv[i] != NULL)
+	while (i < count)
 	{
-		ft_putstr_fd(argv[i], 1);
+		ft_putstr_fd(arr[i], 1);
 		ft_putchar_fd(' ', 1);
 		i ++;
 	}
 	if (opt == 0)
 		ft_putchar_fd('\n', 1);
+	if (arr)
+		free_arr(arr, count);
 	g_exit_status = 0;
 }
 

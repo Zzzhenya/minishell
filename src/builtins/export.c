@@ -133,12 +133,12 @@ void	exec_export(char **argv, t_envp *my_data)
 
 	count = 0;
 	arr = NULL;
-	count = count_non_empty_strings(argv);
-	arr = strip_empty_strings(argv);
+	count = count_non_empty_strings(&argv[1]);
+	arr = strip_empty_strings(&argv[1]);
 	g_exit_status = 0;
-	if (count == 1 || arr == NULL)
+	if (count == 0 || arr == NULL)
 		print_variables_list(my_data->envarr);
-	else if (count == 2 && arr != NULL)
+	else if (count == 1 && arr != NULL)
 		two_argv(arr, my_data);
 	else
 		real_export(arr, my_data);
