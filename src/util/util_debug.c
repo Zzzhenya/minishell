@@ -1,5 +1,16 @@
-#include "../../include/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   util_debug.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tkwak <tkwak@student.42berlin.de>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/04 09:38:35 by tkwak             #+#    #+#             */
+/*   Updated: 2024/04/04 09:39:14 by tkwak            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../../include/minishell.h"
 /*
 	Count the number of strings in a string array
 		if pointer is null or array is empty 
@@ -9,7 +20,6 @@
 		return len
 
 */
-
 int	get_arg_count(char **argv)
 {
 	int	len;
@@ -25,7 +35,6 @@ int	get_arg_count(char **argv)
 /* 
 	print each node
 */
-
 void	print_node(t_cmd *node)
 {
 	int	i;
@@ -56,12 +65,11 @@ void	print_node(t_cmd *node)
 	If node has no children print the node and return;
 
 */
-
 void	print_tree(t_cmd *node)
 {
 	if (!node)
 		return ;
-	if (node->l_child )
+	if (node->l_child)
 	{
 		if (node->pre_flag == 0)
 			print_node (node);

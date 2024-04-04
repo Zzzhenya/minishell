@@ -80,14 +80,14 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env)
 		{
 			g_exit_status = 0;
 			printf("exit\n");
-			break;
+			break ;
 		}
 		if (user_input[0] != '\0' && user_input[0] != '\n')
 		{
 			if (extract_envarr(env) != 0)
 			{
 				free(user_input);
-				break;
+				break ;
 			}
 			envp = save_all_env_paths(env->envarr);
 			add_history(user_input);
@@ -143,7 +143,8 @@ void	interactive_bash(t_cmd **tree, char **paths, t_envp *env)
 }
 
 */
-
+// paths = save_all_env_paths(envs);
+// free_2d(paths);
 int	main(int argc, char **argv, char **envs)
 {
 	t_cmd	*tree;
@@ -154,7 +155,6 @@ int	main(int argc, char **argv, char **envs)
 	init_env(&env);
 	if (store_envp(&env, envs) < 0)
 		return (1);
-	//paths = save_all_env_paths(envs);
 	if (argc == 2)
 		non_interactive_mode(&tree, argv[1], paths, &env);
 	else
@@ -163,7 +163,6 @@ int	main(int argc, char **argv, char **envs)
 		if (isatty(STDIN_FILENO) == 1)
 			interactive_mode(&tree, paths, &env);
 	}
-	//free_2d(paths);
 	clear_envlist(&env);
 	if (env.cd_hist != NULL)
 	{

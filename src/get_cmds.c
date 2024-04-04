@@ -11,6 +11,11 @@
 /* ************************************************************************** */
 #include "../include/minishell.h"
 
+void	free_for_norminette(char **validated_input, int *token)
+{
+	free_2d(validated_input);
+	free(token);
+}
 /*	[M]
 	사용자 입력을 파싱하여 조건에 맞는지 확인하고, 그 결과에 따라 명령어 트리를 생성하는 기능을 구현
 	Implements a function that parses user input to check,
@@ -33,6 +38,7 @@
 		Parses the pipe based on it and constructs a command tree.
 	6. Free memory and return for no more useful things.
 */
+
 t_cmd	*parse_user_input(char *user_input, t_envp *env)
 {
 	t_cmd	*cmd_tree;
@@ -44,7 +50,38 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	if (user_input == NULL || user_input[0] == 0)
 		return (NULL);
 	cmd_tree = NULL;
-	//validated_input = validate_input(user_input, env->envp);
+	validated_input = validate_input(user_input, env->envarr);
+	if (!validated_input)
+		return (NULL);
+	replace_exit_status(&validated_input, 0, 0, 0);
+	token = token_malloc(validated_input);
+	if (!token)
+		return (NULL);
+	token_sequence[0] = 0;
+	token_sequence[1] = check_token_length(token);
+	tmp = syntax_pipe(validated_input, token, token_sequence, &cmd_tree);
+	if (tmp == -1)
+		free_tree(cmd_tree);
+	if (tmp == -1)
+		return (NULL);
+	free_for_norminette(validated_input, token);
+	return (cmd_tree);
+}
+/*
+[ Original codes, changed cause it's over 25 lines ]
+
+// validated_input = validate_input(user_input, env->envp);
+t_cmd	*parse_user_input(char *user_input, t_envp *env)
+{
+	t_cmd	*cmd_tree;
+	char	**validated_input;
+	int		*token;
+	int		token_sequence[2];
+	int		tmp;
+
+	if (user_input == NULL || user_input[0] == 0)
+		return (NULL);
+	cmd_tree = NULL;
 	validated_input = validate_input(user_input, env->envarr);
 	if (!validated_input)
 		return (NULL);
@@ -63,3 +100,4 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	free(token);
 	return (cmd_tree);
 }
+*/

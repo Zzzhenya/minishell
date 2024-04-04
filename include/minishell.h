@@ -6,7 +6,7 @@
 /*   By: tkwak <tkwak@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 21:10:59 by tkwak             #+#    #+#             */
-/*   Updated: 2024/03/13 12:13:46 by tkwak            ###   ########.fr       */
+/*   Updated: 2024/04/03 17:40:44 by tkwak            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,15 @@
 
 /*
 	[F]
+	macro for PATH_MAX for cwd/pwd in case its not defined 
+*/
+//#ifndef PATH_MAX
+# define PATH_MAX 2048
+
+/*
+	[F]
 	macro for exit status when command not found
 */
-
 # define EX_CMD_NOT_FOUND 127
 # define HEREDOCNAME  ".___tmp__4heredoc"
 
@@ -77,14 +83,6 @@
 // 4. ????
 # define _XOPEN_SOURCE 700
 
-/*
-	[F]
-	macro for PATH_MAX for cwd/pwd in case its not defined 
-*/
-#ifndef PATH_MAX
-# define PATH_MAX 2048
-#endif
-
 // [HEADER FILE]
 // 1. [f] close, read, write, access, dup, dup2, execve, fork, pipe, unlink
 // 	  STDIO_FILENO, STDOUT_FILENO, getcwd, chdir, isatty, ttyname, ttyslot
@@ -131,7 +129,7 @@
 		allows to avoid switching to readline SIGINT definition
 	ioctl
 */
-#include <sys/ioctl.h>
+# include <sys/ioctl.h>
 
 /* NOT USED
 // opendir, readdir, closedir
@@ -198,19 +196,26 @@ typedef struct s_cmd
 	[Description]
 	structure to store envp related data 
 
-	envlist:	environmental variables stored in a linked list.
-	envarr:		a pointer array of environmental variables. Created before calling execve
-	cd_hist:	last directory visited with cd. Required for cd -
-	count:		number of env variables stored in the envlist
+	envlist:
+	environmental variables stored in a linked list.
+
+	envarr:
+	a pointer array of environmental variables. Created before calling execve
+
+	cd_hist:
+	last directory visited with cd. Required for cd -
+
+	count:
+	number of env variables stored in the envlist
 */
 
 typedef struct s_envp
 {
-	t_list 	*envlist;
+	t_list	*envlist;
 	char	**envarr;
 	char	*cd_hist;
 	int		count;
-	int 	cmds;
+	int		cmds;
 }	t_envp;
 
 /*	[F]
@@ -223,13 +228,12 @@ typedef struct s_envp
 */
 typedef struct s_redirec
 {
-	int				redirec_type;
-	char			*filename;
+	int					redirec_type;
+	char				*filename;
 	struct s_redirec	*next_redirec;
 }	t_redirec;
 
 // [FUNCTIONS]
-
 /* [ LEXER ] INPUT_VALIDATE  & TOKENIZATION */
 // [ lexical_qoute.c ]
 int		count_quote(char *str, t_data *data);
@@ -331,9 +335,6 @@ void	non_interactive_mode(t_cmd **tree,
 			char *input, char **envp, t_envp *env);
 int		main(int argc, char **argv, char **envs);
 
-/* [ SHENYA] */
-
-
 /* [ ENV ] */
 // [ envp_actions.c ]
 int		store_envp(t_envp *env, char **envs);
@@ -352,43 +353,48 @@ void	exec(char **cmd, char **env, t_envp *envo);
 // [search_tree.c]
 void	search_tree(t_cmd *node, char **envp, t_envp *env);
 
-// [ FORK ]
-/*
-
-*/
-
 // [ REDIRECTIONS ]
 // [setup_redirections.c]
 void	setup_redirections(t_redirec *stdios);
-t_redirec 	*find_last(t_redirec *stdios, char c, t_redirec *last);
+
+// [ETC ]
+t_redirec	*find_last(t_redirec *stdios, char c, t_redirec *last);
+
 // [here_doc_functions.c]
 void	heredoc_input(int fd, char *word);
 
 // util_debug.c
 void	print_tree(t_cmd *node);
-int 	get_arg_count(char **argv);
+int		get_arg_count(char **argv);
 
 // [ SIGNAL ]
 // [signals.c]
-void install_signals(pid_t pid);
+void	install_signals(pid_t pid);
 
 // [ BUILT-IN ] 
 // [cd.c]
-void    exec_cd(char **argv, t_envp *my_data, char *path);
+void	exec_cd(char **argv, t_envp *my_data, char *path);
+
 // [env.c]
 void	exec_env(char **argv, t_envp *my_data);
+
 // [pwd.c]
 void	exec_pwd(void);
 char	*get_pwd(void);
+
 // [echo.c]
 void	exec_echo(char **argv);
+
 // [exit.c]
 void	exec_exit(char **argv, t_envp *my_data);
+
 // [unset.c]
-void    exec_unset(char **argv, t_envp *my_data);
-void 	unset_one_var(char *var, t_envp *my_data);
+void	exec_unset(char **argv, t_envp *my_data);
+void	unset_one_var(char *var, t_envp *my_data);
+
 // [export.c]
-void    exec_export(char **argv, t_envp *my_data);
+void	exec_export(char **argv, t_envp *my_data);
+
 // [export_utils.c]
 void	print_export_error(char *var, char *val, char *message);
 int		is_valid_var_start(unsigned char c);
@@ -400,7 +406,6 @@ void	export_one_var(char **arr, t_envp *my_data);
 char	**strip_empty_strings(char **cmdstr);
 int		count_non_empty_strings(char **cmdstr);
 
-
 // [MEMO]
 /*
 STDIN_FILENO:
@@ -411,14 +416,14 @@ File descriptor of STDIN, relating with input source like Key-board.
 */
 
 // [redirection_error_handle.c]
-int	redirection_error_handle(t_cmd *type, pid_t pid);
+int		redirection_error_handle(t_cmd *type, pid_t pid);
 
 // [child_process.c]
 void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, pid_t pid);
 
 // [wait_blocked_cmds.c]
 void	wait_each_command(t_cmd *tree);
-int	count_commands(t_cmd *tree);
+int		count_commands(t_cmd *tree);
 
 // [route_builtins.c]
 void	builtin_action(t_cmd *builtin, char **cmdline, t_envp *env);
@@ -426,9 +431,7 @@ int		check_builtin(t_cmd *file_path);
 void	pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env, pid_t pid);
 
 /* readline */
-void rl_replace_line(const char *text, int clear_undo);
-
-void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
-		, t_envp *env);
-
+void	rl_replace_line(const char *text, int clear_undo);
+void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios,
+			char **envp, t_envp *env);
 #endif
