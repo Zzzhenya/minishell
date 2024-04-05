@@ -116,6 +116,7 @@ int	main(int argc, char **argv, char **envs)
 	char	**paths;
 
 	paths = NULL;
+	tree = NULL;
 	init_env(&env);
 	if (store_envp(&env, envs) < 0)
 		return (1);
