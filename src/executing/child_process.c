@@ -13,6 +13,7 @@
 #include "../../include/minishell.h"
 
 char	*check_cmd_in_path(char **envp, char *command);
+void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid);
 /*	[F]
 	Reference, in "lexical_expanding.c"
 	Search Param(1): "str" from
@@ -144,7 +145,8 @@ void	exec(char **cmd, char **env, t_envp *envo)
 void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, pid_t pid)
 {
 	if (check_builtin(cmd->l_child))
-		builtin_action(cmd->r_child, cmd->r_child->cmdstr, env);
+		builtin_router(cmd, env, pid);
+		//builtin_action(cmd->r_child, cmd->r_child->cmdstr, env);
 	else
 	{
 		redirection_error_handle(cmd->l_child, pid);

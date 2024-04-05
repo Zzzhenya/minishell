@@ -12,6 +12,7 @@
 
 #include "../../include/minishell.h"
 
+void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid);
 /*	[F]
 	[Role]
 	Find next pipe and update pipe's fd.
@@ -270,6 +271,13 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	static int		initial_input = -1;
 	pid_t			pid;
 
+	if (env->cmds == 1 && check_builtin(cmd->l_child))
+	{
+		printf("HERE\n");
+		setup_redirections(*stdios);
+		builtin_router(cmd, env, 1);
+		return;
+	}
 	if (pipe(pipefd) == -1)
 		return (perror("pipe: "));
 	pid = fork();
@@ -284,7 +292,7 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	}
 	else
 	{
-		pid_pid_builtin_n_set(cmd, env, pid);
+		//pid_pid_builtin_n_set(cmd, env, pid);
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
 		waiting_child_process(stdios);
 	}
