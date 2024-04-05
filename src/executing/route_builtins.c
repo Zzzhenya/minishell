@@ -78,13 +78,13 @@ void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid)
 {
 	if (pid != 0)
 		install_signals(1);
-	/*if (redirection_error_handle(cmd->l_child, pid))
+	if (redirection_error_handle(cmd->l_child, pid))
 	{
 		if (pid != 0)
 			return ;
 		else
 			exit(g_exit_status);
-	}*/
+	}
 	if (!ft_strcmp(cmd->r_child->cmdstr[0], "exit"))
 		exec_exit(cmd->r_child->cmdstr, env);
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "unset"))

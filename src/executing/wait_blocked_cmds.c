@@ -47,6 +47,7 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 {
 	int	count;
 	int	i;
+	int status;
 
 	i = 0;
 	count = 0;
@@ -55,7 +56,9 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 	count = count_commands(tree);
 	while (i < count)
 	{
-		waitpid(-1, &g_exit_status, WUNTRACED);
+		waitpid(-1, &status, WUNTRACED);
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
 		i ++;
 	}
 }

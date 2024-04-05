@@ -106,6 +106,7 @@ int	find_matching_env_row(char *str, char **env)
 		= errno(for EXIT)
 		   when errer happens in system call of library function.
 			update errno code and save it to 'g_exit_status'.
+	cmd = strip_empty_strings(cmd);
 */
 
 void	exec(char **cmd, char **env, t_envp *envo)
