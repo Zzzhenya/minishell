@@ -42,19 +42,19 @@ void	print_exit_error(char *string, char *message)
 	ft_putstr_fd(message, 2);
 }
 
-static void	handle_exit_codes(char **argv, int digcount)
+static void	handle_exit_codes(char **arr, int digcount, int count)
 {
-	if (digcount && digcount <= 19 && !argv[2])
+	if (digcount > 0 && digcount <= 19 && count < 2)
 	{
-		if (ft_atoi(argv[1]) >= 0 && ft_atoi(argv[1]) <= 255)
-			g_exit_status = ft_atoi(argv[1]);
-		else if (ft_atoi(argv[1]) < 0)
-			g_exit_status = 256 + ft_atoi(argv[1]);
+		if (ft_atoi(arr[0]) >= 0 && ft_atoi(arr[0]) <= 255)
+			g_exit_status = ft_atoi(arr[0]);
+		else if (ft_atoi(arr[0]) < 0)
+			g_exit_status = 256 + ft_atoi(arr[0]);
 		else
-			g_exit_status = ft_atoi(argv[1]) - 256;
-		exit(g_exit_status);
+			g_exit_status = ft_atoi(arr[0]) - 256;
+		exit (g_exit_status);
 	}
-	else if (digcount && argv[2])
+	else if (digcount > 0 && count >= 2)
 	{
 		print_exit_error(NULL, "too many arguments\n");
 		g_exit_status = 1;
@@ -66,10 +66,28 @@ static void	handle_exit_codes(char **argv, int digcount)
 void	exec_exit(char **argv, t_envp *my_data)
 {
 	int	digcount;
+	char **arr;
+	int count;
 
 	(void)my_data;
 	digcount = 0;
 	ft_putstr_fd("exit\n", 2);
+	arr = NULL;
+	arr = strip_empty_strings(&argv[1]);
+	count = count_non_empty_strings(&argv[1]);
+	if (count == 0)
+		exit (g_exit_status);
+	digcount = ft_isanumber(arr[0]);
+	// if first argument is a number
+	if (digcount != 0)
+		handle_exit_codes(arr, digcount, count);
+	else
+	{
+		print_exit_error(arr[0], ": numeric argument required\n");
+		g_exit_status = 2;
+		exit(g_exit_status);		
+	}
+	/*
 	if (!argv[1])
 	{
 		exit(g_exit_status);
@@ -82,5 +100,5 @@ void	exec_exit(char **argv, t_envp *my_data)
 		print_exit_error(argv[1], ": numeric argument required\n");
 		g_exit_status = 2;
 		exit(g_exit_status);
-	}
+	}*/
 }

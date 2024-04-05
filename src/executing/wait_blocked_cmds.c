@@ -43,13 +43,15 @@ int	count_commands(t_cmd *tree)
 		return info about terminated children
 		return info when child is stopped by signal
 */
-void	wait_each_command(t_cmd *tree)
+void	wait_each_command(t_cmd *tree, t_envp *env)
 {
 	int	count;
 	int	i;
 
 	i = 0;
 	count = 0;
+	if (env->cmds == 1 && env->builtin == 1)
+		return ;
 	count = count_commands(tree);
 	while (i < count)
 	{

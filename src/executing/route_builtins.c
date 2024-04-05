@@ -53,7 +53,9 @@ int	check_builtin(t_cmd *file_path)
 		|| !ft_strcmp(file_path->cmdstr[0], "unset")
 		|| !ft_strcmp(file_path->cmdstr[0], "env")
 		|| !ft_strcmp(file_path->cmdstr[0], "exit"))
+	{
 		return (1);
+	}
 	else
 		return (0);
 }
@@ -100,5 +102,7 @@ void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid)
 	if (pid == 0)
 		exit(g_exit_status);
 	else
+	{
 		return ;
+	}
 }

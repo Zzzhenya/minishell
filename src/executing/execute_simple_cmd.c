@@ -271,9 +271,9 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	static int		initial_input = -1;
 	pid_t			pid;
 
-	if (env->cmds == 1 && check_builtin(cmd->l_child))
+	if (env->cmds == 1 && check_builtin(cmd->r_child))
 	{
-		printf("HERE\n");
+		env->builtin = 1;
 		setup_redirections(*stdios);
 		builtin_router(cmd, env, 1);
 		return;
