@@ -185,9 +185,9 @@ void	write_pipefd(int pipefd[2], int *initial_input, int flag_pipe_exist)
 	if (find_last_in(*(stdios)) != NULL
 		&& find_last_in(*(stdios))->redirec_type == REDIREC_LL)
 */
-void	waiting_child_process(t_redirec **stdios)
+void	waiting_child_process(t_redirec **stdios, pid_t pid)
 {
-	waitpid(-1, &g_exit_status, WNOHANG);
+	waitpid(pid, NULL, WNOHANG);
 	if (find_last(*stdios, 'l', NULL) != NULL
 		&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
 		waitpid(-1, &g_exit_status, 0);
@@ -294,6 +294,6 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	{
 		//pid_pid_builtin_n_set(cmd, env, pid);
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
-		waiting_child_process(stdios);
+		waiting_child_process(stdios, pid);
 	}
 }

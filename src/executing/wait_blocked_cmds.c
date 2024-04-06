@@ -45,20 +45,28 @@ int	count_commands(t_cmd *tree)
 */
 void	wait_each_command(t_cmd *tree, t_envp *env)
 {
+	int status;
+	/*
 	int	count;
 	int	i;
 	int status;
 
 	i = 0;
-	count = 0;
+	count = 0;*/
+	(void)tree;
 	if (env->cmds == 1 && env->builtin == 1)
 		return ;
+	while (waitpid(-1, &status, 0) > 0)
+	{
+
+	}
+	/*
 	count = count_commands(tree);
 	while (i < count)
 	{
 		waitpid(-1, &status, WUNTRACED);
-		if (WIFEXITED(status))
-			g_exit_status = WEXITSTATUS(status);
 		i ++;
-	}
+	}*/
+	if (WIFEXITED(status))
+		g_exit_status = WEXITSTATUS(status);
 }
