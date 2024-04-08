@@ -92,12 +92,14 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
 			printf("exit\n");
 			break ;
 		}
-		if (user_input[0] != '\0' && user_input[0] != '\n')
+		if (user_input[0] != '\n') // user_input[0] != '\0' || 
 		{
+			if (user_input[0] != '\0')
+				add_history(user_input);
 			if (extract_envarr(env) != 0)
 				break ;
 			envp = save_all_env_paths(env->envarr);
-			add_history(user_input);
+			
 			*tree = parse_user_input(user_input, env);
 			env->cmds = count_commands(*tree);
 			search_tree(*tree, envp, env);
@@ -105,8 +107,8 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
 		}
 		free_things(tree, env, envp, user_input);
 	}
-	if (user_input)
-		free(user_input);
+	/*if (user_input)
+		free(user_input);*/
 }
 
 int	main(int argc, char **argv, char **envs)
