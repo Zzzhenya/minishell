@@ -311,8 +311,7 @@ char		*strrjoin(char *s1, char *s2);
 int			ft_strchr_m(char *str, char c);
 int			ft_strcmp(char *s1, char *s2);
 int			ft_putstr_m(char *str);
-int			ft_strcpy_m1(t_data *data, char *str, int len, int j);
-int			ft_strcpy_m2(t_data *data, char *str, int len, int j);
+int			ft_strcpy(t_data *data, char *tmp, int len, int k);
 
 // [ util_str2.c ]
 char		*strjoin_c(char *str, char c);
