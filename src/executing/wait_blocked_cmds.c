@@ -56,8 +56,10 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 	(void)tree;
 	if (env->cmds == 1 && env->builtin == 1)
 		return ;
-	while (waitpid(-1, &status, 0) > 0)
+	while (waitpid(-1, &status, WUNTRACED) > 0)
 	{
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
 
 	}
 	/*
@@ -67,6 +69,5 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 		waitpid(-1, &status, WUNTRACED);
 		i ++;
 	}*/
-	if (WIFEXITED(status))
-		g_exit_status = WEXITSTATUS(status);
+	
 }
