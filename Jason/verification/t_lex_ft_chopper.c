@@ -160,9 +160,7 @@ void	skip_normal_char(char *str, int *i)
 {
 	while (str[*i] != '\0' && str[*i] != ' ' && str[*i] != '='
 		&& str[*i] != '\"' && str[*i] != '\''
-		&& str[*i] != '<' && str[*i] != '>' && str[*i] != '|'
-		&& str[*i] != '\n' && str[*i] != '\v' && str[*i] != '\t'
-		&& str[*i] != '\f' && str[*i] != '\r')
+		&& str[*i] != '<' && str[*i] != '>' && str[*i] != '|')
 		*i += 1;
 }
 

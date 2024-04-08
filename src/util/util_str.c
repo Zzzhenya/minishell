@@ -42,46 +42,19 @@ int	ft_putstr_m(char *str)
 	return (0);
 }
 
-int	ft_strcpy_m1(t_data *data, char *str, int len, int j)
+int	ft_strcpy(t_data *data, char *tmp, int len, int k)
 {
 	int	i;
-	int	index;
 
 	i = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	data->token[j] = malloc((len + 1) * sizeof(char));
-	if (!data->token[j])
+	data->token[k] = malloc((len + 1) * sizeof(char));
+	if (!data->token[k])
 		return (-1);
-	index = 0;
 	while (i < len)
 	{
-		data->token[j][index] = str[i];
+		data->token[k][i] = tmp[i];
 		i++;
-		index++;
 	}
-	data->token[j][index] = '\0';
-	return (len);
-}
-
-int	ft_strcpy_m2(t_data *data, char *str, int len, int j)
-{
-	int	i;
-	int	index;
-
-	i = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	data->token[j] = malloc((len + 1) * sizeof(char));
-	if (!data->token[j])
-		return (-1);
-	index = 0;
-	while (i < len && str[i] != ' ')
-	{
-		data->token[j][index] = str[i];
-		i++;
-		index++;
-	}
-	data->token[j][index] = '\0';
+	data->token[k][i] = '\0';
 	return (len);
 }
