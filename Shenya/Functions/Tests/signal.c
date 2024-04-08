@@ -4,18 +4,54 @@
 #include <readline/history.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+// cc -Wall -Werror -Wextra -g signal.c -lreadline
+
+void    print_line(int sig)
+{
+    (void)sig;
+    write (1, "SIGQUIT\n", 8);
+	rl_on_new_line();
+	rl_replace_line ("", 0);
+    rl_redisplay();
+}
+
+void    install_signal_work(void)
+{
+    signal(SIGQUIT, &print_line);
+}
 
 void    work_loop(char *str)
 {
-    while (1)
+    pid_t pid;
+    int i = 0;
+    int status = 0;
+    
+    pid = fork();
+    if (pid == 0)
     {
-        printf("%s\n", str);
+        while (i < 10)
+        {
+            install_signal_work();
+            printf("%s\n", str);
+            sleep(1);
+            i ++;
+        }
+    }
+    else
+    {
+        install_signal_work();
+        waitpid(-1, &status, WUNTRACED);
+        printf("status %d\n", status);
     }
 }
 
 void    install_signals_main(void)
 {
     signal(SIGQUIT, SIG_IGN);
+    signal(SIGINT, &print_line);
 }
 
 
