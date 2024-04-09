@@ -6,59 +6,96 @@
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <string.h>
 
 // cc -Wall -Werror -Wextra -g signal.c -lreadline
 
 void    print_line(int sig)
 {
     (void)sig;
-    write (1, "SIGQUIT\n", 8);
+    write (1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line ("", 0);
     rl_redisplay();
 }
 
-void    install_signal_work(void)
+void    handle(int sig)
 {
-    signal(SIGQUIT, &print_line);
+    (void)sig;
+    write (1, "\n", 1);
 }
 
-void    work_loop(char *str)
+void    install_signal_work(void)
+{
+    //struct sigaction act1;
+    struct sigaction act2;
+
+    //sigemptyset(&act1.sa_mask);
+    sigemptyset(&act2.sa_mask);
+    //act1.sa_handler = SIG_IGN;
+    act2.sa_handler = &handle;//SIG_IGN;
+    //sigaction(SIGQUIT, &act1, NULL);
+    sigaction(SIGINT, &act2, NULL);
+    /*
+    signal(SIGQUIT, SIG_IGN);
+    signal(SIGINT, SIG_IGN);*/
+}
+
+void    install_signals_main(void)
+{
+    //struct sigaction act1;
+    struct sigaction act2;
+
+    //sigemptyset(&act1.sa_mask);
+    sigemptyset(&act2.sa_mask);
+    //act1.sa_handler = SIG_IGN;
+    act2.sa_handler = &print_line;
+    //sigaction(SIGQUIT, &act1, NULL);
+    sigaction(SIGINT, &act2, NULL);
+    /*signal(SIGQUIT, SIG_IGN);
+    signal(SIGINT, &print_line);*/
+}
+
+
+void    work_loop(void)
 {
     pid_t pid;
-    int i = 0;
     int status = 0;
+    char **arr = NULL;
     
+    arr = (char **)malloc(sizeof(char *) * 2);
+    arr[0] = strdup("/bin/cat");
+    arr[1] = NULL;
     pid = fork();
+    if (pid == -1)
+        printf("Fork error\n");
     if (pid == 0)
     {
-        while (i < 10)
+        install_signals_main();
+        if (execve("/bin/cat", arr, NULL) == -1)
         {
-            install_signal_work();
-            printf("%s\n", str);
-            sleep(1);
-            i ++;
+            printf("Execve error\n");
+            exit(1);
         }
     }
     else
     {
         install_signal_work();
-        waitpid(-1, &status, WUNTRACED);
-        printf("status %d\n", status);
+        while (waitpid(-1, &status, WUNTRACED) < 0)
+        {
+
+        }
+        //printf("status %d\n", status);
+        free(arr[0]);
+        free(arr);
     }
 }
-
-void    install_signals_main(void)
-{
-    signal(SIGQUIT, SIG_IGN);
-    signal(SIGINT, &print_line);
-}
-
 
 void    input_loop(char *user_input)
 {
     while (1)
     {
+        signal(SIGQUIT, SIG_IGN);
         install_signals_main();
         user_input = readline("Hello > ");
         if (!user_input) // Ctrl + D
@@ -69,8 +106,10 @@ void    input_loop(char *user_input)
         /*if (user_input[0] == '\0')
             printf("Enter\n");*/
         if (user_input[0] != '\0')
+        {
             add_history(user_input);
-        work_loop(user_input);
+            work_loop();
+        }
         free(user_input);
     }
 }
