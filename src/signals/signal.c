@@ -12,34 +12,63 @@
 
 #include "../../include/minishell.h"
 
-/*
-	signal handler for ctrl + c : SIGINT - Parent
-	ctrl + d -> print exit, exit(1) <- from interactive_bash
-	main readline loop
-*/
-void	sig_handler(int sig)
+void	handle_nl(int sig)
 {
-	if (sig == SIGINT)
-	{
-		g_exit_status = 130;
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		ioctl(STDIN_FILENO, TIOCSTI, "\n");
-	}
+	(void)sig;
+	write (1, "\n", 1);
 }
-/*
-	Ignore ctrl + \ : SIGQUIT -> do nothing for
-		all processes
-	ctrl + c : SIGINT - Child -> behave normally
-	ctrl + c : SIGINT - Parent-> behave as mentioned
-		in sig_handler
-*/
 
-void	install_signals(pid_t pid)
+/*	signal definitions for the main
+	process after executing, when a
+	child process hangs
+*/
+void	install_signal_hang()
 {
-	signal(SIGQUIT, SIG_IGN);
-	if (pid <= 0)
-		signal(SIGINT, sig_handler);
-	else
-		signal(SIGINT, SIG_IGN);
+	struct sigaction act1;
+    struct sigaction act2;
+
+    ft_bzero(&act1, sizeof(act1));
+    ft_bzero(&act2, sizeof(act2));
+    act1.sa_handler = SIG_IGN;
+    act2.sa_handler = &handle_nl;
+    sigaction(SIGQUIT, &act1, NULL);
+    sigaction(SIGINT, &act2, NULL);
+}
+
+void	handle_prompt(int sig)
+{
+	(void)sig;
+    write (1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line ("", 0);
+    rl_redisplay();
+}
+
+/* 	signal definitions for the main 
+	process and child after executing tree
+*/
+void	install_signals_main()
+{
+	struct sigaction act1;
+    struct sigaction act2;
+
+    ft_bzero(&act1, sizeof(act1));
+    ft_bzero(&act2, sizeof(act2));
+    act1.sa_handler = SIG_IGN;
+    act2.sa_handler = &handle_prompt;
+    sigaction(SIGQUIT, &act1, NULL);
+    sigaction(SIGINT, &act2, NULL);
+}
+
+void	install_signals_child()
+{
+	struct sigaction act1;
+	struct sigaction act2;
+    ft_bzero(&act1, sizeof(act1));
+    ft_bzero(&act2, sizeof(act2));
+    act1.sa_handler = SIG_IGN;
+    act2.sa_handler = SIG_IGN;
+    sigaction(SIGQUIT, &act1, NULL);
+    sigaction(SIGINT, &act2, NULL);
+
 }
