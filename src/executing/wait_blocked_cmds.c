@@ -43,17 +43,31 @@ int	count_commands(t_cmd *tree)
 		return info about terminated children
 		return info when child is stopped by signal
 */
-void	wait_each_command(t_cmd *tree)
+void	wait_each_command(t_cmd *tree, t_envp *env)
 {
+	int status;
+	/*
 	int	count;
 	int	i;
+	int status;
 
 	i = 0;
-	count = 0;
+	count = 0;*/
+	(void)tree;
+	if (env->cmds == 1 && env->builtin == 1)
+		return ;
+	while (waitpid(-1, &status, WUNTRACED) > 0)
+	{
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+
+	}
+	/*
 	count = count_commands(tree);
 	while (i < count)
 	{
-		waitpid(-1, &g_exit_status, WUNTRACED);
+		waitpid(-1, &status, WUNTRACED);
 		i ++;
-	}
+	}*/
+	
 }

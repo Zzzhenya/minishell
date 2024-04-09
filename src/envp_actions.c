@@ -20,6 +20,7 @@ void	init_env(t_envp *env)
 	env->envlist = NULL;
 	env->count = 0;
 	env->cmds = 0;
+	env->builtin = 0;
 }
 
 /* 

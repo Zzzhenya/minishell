@@ -12,6 +12,7 @@
 
 #include "../../include/minishell.h"
 
+void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid);
 /*	[F]
 	[Role]
 	Find next pipe and update pipe's fd.
@@ -184,9 +185,9 @@ void	write_pipefd(int pipefd[2], int *initial_input, int flag_pipe_exist)
 	if (find_last_in(*(stdios)) != NULL
 		&& find_last_in(*(stdios))->redirec_type == REDIREC_LL)
 */
-void	waiting_child_process(t_redirec **stdios)
+void	waiting_child_process(t_redirec **stdios, pid_t pid)
 {
-	waitpid(-1, &g_exit_status, WNOHANG);
+	waitpid(pid, NULL, WNOHANG);
 	if (find_last(*stdios, 'l', NULL) != NULL
 		&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
 		waitpid(-1, &g_exit_status, 0);
@@ -270,6 +271,13 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	static int		initial_input = -1;
 	pid_t			pid;
 
+	if (env->cmds == 1 && check_builtin(cmd->r_child))
+	{
+		env->builtin = 1;
+		setup_redirections(*stdios);
+		builtin_router(cmd, env, 1);
+		return;
+	}
 	if (pipe(pipefd) == -1)
 		return (perror("pipe: "));
 	pid = fork();
@@ -284,8 +292,8 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	}
 	else
 	{
-		pid_pid_builtin_n_set(cmd, env, pid);
+		//pid_pid_builtin_n_set(cmd, env, pid);
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
-		waiting_child_process(stdios);
+		waiting_child_process(stdios, pid);
 	}
 }

@@ -216,6 +216,7 @@ typedef struct s_envp
 	char	*cd_hist;
 	int		count;
 	int		cmds;
+	int 	builtin;
 }	t_envp;
 
 /*	[F]
@@ -425,7 +426,7 @@ int			redirection_error_handle(t_cmd *type, pid_t pid);
 void		pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, pid_t pid);
 
 // [wait_blocked_cmds.c]
-void		wait_each_command(t_cmd *tree);
+void	wait_each_command(t_cmd *tree, t_envp *env);
 int			count_commands(t_cmd *tree);
 
 // [route_builtins.c]

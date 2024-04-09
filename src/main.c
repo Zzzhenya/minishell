@@ -88,7 +88,7 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
 		user_input = readline ("Minishell > ");
 		if (!user_input)
 		{
-			g_exit_status = 0;
+			//g_exit_status = 0;
 			printf("exit\n");
 			break ;
 		}
@@ -103,7 +103,7 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
 			*tree = parse_user_input(user_input, env);
 			env->cmds = count_commands(*tree);
 			search_tree(*tree, envp, env);
-			wait_each_command(*tree);
+			wait_each_command(*tree, env);
 		}
 		free_things(tree, env, envp, user_input);
 	}
