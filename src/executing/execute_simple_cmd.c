@@ -277,6 +277,12 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		env->builtin = 1;
 		setup_redirections(*stdios);
 		builtin_router(cmd, env, 1);
+		if (find_last(*stdios, 'l', NULL) != NULL
+			&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
+			waitpid(-1, &g_exit_status, 0);
+		else
+			free_stdios(*stdios);
+		*stdios = NULL;
 		return;
 	}
 	if (pipe(pipefd) == -1)
