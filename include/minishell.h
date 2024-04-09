@@ -373,7 +373,9 @@ int			get_arg_count(char **argv);
 
 // [ SIGNAL ]
 // [signals.c]
-void		install_signals(pid_t pid);
+void	install_signals_main(void);
+void	install_signal_hang(void);
+void	install_signals_child(void);
 
 // [ BUILT-IN ] 
 // [cd.c]
