@@ -13,6 +13,7 @@
 #include "../../include/minishell.h"
 
 void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid);
+void	install_signals_main();
 /*	[F]
 	[Role]
 	Find next pipe and update pipe's fd.
@@ -285,14 +286,14 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		return (perror("fork: "));
 	else if (pid == 0)
 	{
-		install_signals(pid);
+		install_signals_main();
 		setup_redirections(*stdios);
 		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
 		pid_zero_exec(cmd, envp, env, pid);
 	}
 	else
 	{
-		//pid_pid_builtin_n_set(cmd, env, pid);
+		install_signals_child();
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
 		waiting_child_process(stdios, pid);
 	}
