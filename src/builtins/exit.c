@@ -69,9 +69,10 @@ void	exec_exit(char **argv, t_envp *my_data)
 	char **arr;
 	int count;
 
-	(void)my_data;
+	//(void)my_data;
 	digcount = 0;
-	ft_putstr_fd("exit\n", 2);
+	if (my_data->builtin == 1 && my_data->cmds == 1)
+		ft_putstr_fd("exit\n", 2);
 	arr = NULL;
 	arr = strip_empty_strings(&argv[1]);
 	count = count_non_empty_strings(&argv[1]);
