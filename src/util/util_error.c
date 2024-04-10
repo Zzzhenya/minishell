@@ -28,7 +28,7 @@ int	find_matching_env_row(char *str, char **env)
 		return (-1);
 	while (env[i] != NULL)
 	{
-		if (ft_strcmp(env[i], str) != -1)
+		if (!ft_strncmp(env[i], str, ft_strlen(str)))
 			return (i);
 		i++;
 	}
