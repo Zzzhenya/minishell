@@ -6,7 +6,7 @@
 /*   By: sde-silv <sde-silv@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/02 20:38:31 by sde-silv          #+#    #+#             */
-/*   Updated: 2024/04/02 20:38:32 by sde-silv         ###   ########.fr       */
+/*   Updated: 2024/04/10 13:35:55 by sde-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,10 @@ static void	handle_exit_codes(char **arr, int digcount, int count)
 /* Need to free stuff before exit */
 void	exec_exit(char **argv, t_envp *my_data)
 {
-	int	digcount;
-	char **arr;
-	int count;
+	int		digcount;
+	char	**arr;
+	int		count;
 
-	//(void)my_data;
 	digcount = 0;
 	if (my_data->builtin == 1 && my_data->cmds == 1)
 		ft_putstr_fd("exit\n", 2);
@@ -79,27 +78,12 @@ void	exec_exit(char **argv, t_envp *my_data)
 	if (count == 0)
 		exit (g_exit_status);
 	digcount = ft_isanumber(arr[0]);
-	// if first argument is a number
 	if (digcount != 0)
 		handle_exit_codes(arr, digcount, count);
 	else
 	{
 		print_exit_error(arr[0], ": numeric argument required\n");
 		g_exit_status = 2;
-		exit(g_exit_status);		
+		exit (g_exit_status);
 	}
-	/*
-	if (!argv[1])
-	{
-		exit(g_exit_status);
-	}
-	digcount = ft_isanumber(argv[1]);
-	if (digcount)
-		handle_exit_codes(argv, digcount);
-	else
-	{
-		print_exit_error(argv[1], ": numeric argument required\n");
-		g_exit_status = 2;
-		exit(g_exit_status);
-	}*/
 }
