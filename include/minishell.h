@@ -351,7 +351,8 @@ void		init_env(t_envp *env);
 	search_tree
 	wait_each_commands
 */
-// [executing.c]
+// [cmd_functions.c]
+char		*check_cmd_in_path(char **envp, char *command);
 void		print_error_cmd(t_cmd *file_path, char **envp);
 void		exec(char **cmd, char **env, t_envp *envo);
 // [search_tree.c]
@@ -432,9 +433,10 @@ void	wait_each_command(t_cmd *tree, t_envp *env);
 int			count_commands(t_cmd *tree);
 
 // [route_builtins.c]
-void		builtin_action(t_cmd *builtin, char **cmdline, t_envp *env);
+//void		builtin_action(t_cmd *builtin, char **cmdline, t_envp *env);
 int			check_builtin(t_cmd *file_path);
-void		pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env, pid_t pid);
+//void		pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env, pid_t pid);
+void		builtin_router(t_cmd *cmd, t_envp *env, pid_t pid);
 
 /* readline */
 void		rl_replace_line(const char *text, int clear_undo);
