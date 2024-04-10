@@ -77,6 +77,8 @@ void	free_things(t_cmd **tree, t_envp *env, char **envp, char *user_input)
 		free_2d(envp);
 	if (user_input)
 		free (user_input);
+	env->cmds = 0;
+	env->builtin = 0;
 }
 
 void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
