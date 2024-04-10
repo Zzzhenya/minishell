@@ -6,7 +6,7 @@
 /*   By: tkwak <tkwak@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 21:10:59 by tkwak             #+#    #+#             */
-/*   Updated: 2024/04/04 15:23:16 by sde-silv         ###   ########.fr       */
+/*   Updated: 2024/04/10 16:55:44 by sde-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,7 +216,7 @@ typedef struct s_envp
 	char	*cd_hist;
 	int		count;
 	int		cmds;
-	int 	builtin;
+	int		builtin;
 }	t_envp;
 
 /*	[F]
@@ -374,9 +374,9 @@ int			get_arg_count(char **argv);
 
 // [ SIGNAL ]
 // [signals.c]
-void	install_signals_main(void);
-void	install_signal_hang(void);
-void	install_signals_child(void);
+void		install_signals_main(void);
+void		install_signal_hang(void);
+void		install_signals_child(void);
 
 // [ BUILT-IN ] 
 // [cd.c]
@@ -429,7 +429,7 @@ int			redirection_error_handle(t_cmd *type, pid_t pid);
 void		pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, pid_t pid);
 
 // [wait_blocked_cmds.c]
-void	wait_each_command(t_cmd *tree, t_envp *env);
+void		wait_each_command(t_cmd *tree, t_envp *env);
 int			count_commands(t_cmd *tree);
 
 // [route_builtins.c]
