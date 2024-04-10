@@ -6,14 +6,12 @@
 /*   By: tkwak <tkwak@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 14:25:03 by tkwak             #+#    #+#             */
-/*   Updated: 2024/04/04 14:25:04 by tkwak            ###   ########.fr       */
+/*   Updated: 2024/04/10 16:27:10 by sde-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid);
-void	install_signals_main();
 /*	[F]
 	[Role]
 	Find next pipe and update pipe's fd.
@@ -265,6 +263,21 @@ void	waiting_child_process(t_redirec **stdios, pid_t pid)
 		6-3. waiting_child_process
 			Wait until the child process completes execution.
 */
+
+void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env)
+{
+	env->builtin = 1;
+	setup_redirections(*stdios);
+	builtin_router(cmd, env, 1);
+	if (find_last(*stdios, 'l', NULL) != NULL
+		&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
+		waitpid(-1, &g_exit_status, 0);
+	else
+		free_stdios(*stdios);
+	*stdios = NULL;
+	return ;
+}
+
 void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		, t_envp *env)
 {
@@ -273,18 +286,7 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	pid_t			pid;
 
 	if (env->cmds == 1 && check_builtin(cmd->r_child))
-	{
-		env->builtin = 1;
-		setup_redirections(*stdios);
-		builtin_router(cmd, env, 1);
-		if (find_last(*stdios, 'l', NULL) != NULL
-			&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
-			waitpid(-1, &g_exit_status, 0);
-		else
-			free_stdios(*stdios);
-		*stdios = NULL;
-		return;
-	}
+		return (exec_one_builtin_cmd(cmd, stdios, env));
 	if (pipe(pipefd) == -1)
 		return (perror("pipe: "));
 	pid = fork();
