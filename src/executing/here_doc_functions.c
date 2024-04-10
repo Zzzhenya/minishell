@@ -24,8 +24,22 @@
 			write line break to fd
 		increment i??
 	When exiting the while loop free line
-*/
 
+
+void install_signals_here(void)
+{
+	struct sigaction	act1;
+	struct sigaction	act2;
+
+	ft_bzero(&act1, sizeof(act1));
+	ft_bzero(&act2, sizeof(act2));
+	act1.sa_handler = SIG_IGN;
+	act2.sa_handler = SIG_DFL;
+	sigaction(SIGQUIT, &act1, NULL);
+	sigaction(SIGINT, &act2, NULL);
+
+}
+*/
 void	heredoc_input(int fd, char *word)
 {
 	char	*line;
