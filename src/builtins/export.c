@@ -92,7 +92,7 @@ void	real_export(char **argv, t_envp *my_data)
 {
 	int		i;
 
-	i = 1;
+	i = 0;
 	while (argv[i] != NULL)
 	{
 		if (ft_strchr(argv[i], '='))
@@ -108,14 +108,14 @@ void	real_export(char **argv, t_envp *my_data)
 
 void	two_argv(char **arr, t_envp *my_data)
 {
-	if (!ft_strcmp(arr[1], "#"))
+	if (!ft_strcmp(arr[0], "#"))
 	{
 		print_variables_list(my_data->envarr);
 		return ;
 	}
-	else if (ft_strchr(arr[1], '='))
+	else if (ft_strchr(arr[0], '='))
 		real_export(arr, my_data);
-	else if (!is_valid_var_start(arr[1][0]) || !is_valid_var_char(arr[1]))
+	else if (!is_valid_var_start(arr[0][0]) || !is_valid_var_char(arr[0]))
 	{
 		g_exit_status = 1;
 		print_export_error(arr[1], NULL, " : not a valid identifier");
@@ -125,7 +125,16 @@ void	two_argv(char **arr, t_envp *my_data)
 }
 
 /* The double and single quotes wrapping the entire export command
-string will be removed by parser/lexer*/
+string will be removed by parser/lexer
+export, export "", export '' - 0
+export #, export "#", export '#' - 1
+export hello, "hello", ""hello"" - 1
+export hello=one - 1
+export hello= - 2
+export "hello=" - 1
+export "hello=one" - 1
+export ""hello=one"" - 3
+*/
 void	exec_export(char **argv, t_envp *my_data)
 {
 	int		count;
@@ -136,9 +145,9 @@ void	exec_export(char **argv, t_envp *my_data)
 	count = count_non_empty_strings(&argv[1]);
 	arr = strip_empty_strings(&argv[1]);
 	g_exit_status = 0;
-	if (count == 0 || arr == NULL)
+	if (count == 0)
 		print_variables_list(my_data->envarr);
-	else if (count == 1 && arr != NULL)
+	else if (count == 1)
 		two_argv(arr, my_data);
 	else
 		real_export(arr, my_data);
