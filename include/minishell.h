@@ -340,6 +340,7 @@ void		interactive_mode(t_cmd **tree, char **envp, t_envp *env,
 void		non_interactive_mode(t_cmd **tree,
 				char *input, char **envp, t_envp *env);
 int			main(int argc, char **argv, char **envs);
+void	free_things(t_cmd **tree, t_envp *env, char **envp, char *user_input);
 
 /* [ ENV ] */
 // [ envp_actions.c ]

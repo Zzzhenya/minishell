@@ -70,6 +70,6 @@ $(NAME): $(OBJS) $(LIBFT)
 
 leaks: 
 	make re
-	valgrind --suppressions=./readline.supp --show-leak-kinds=all --leak-check=full ./$(NAME)
+	valgrind -s --suppressions=./readline.supp --show-leak-kinds=all --leak-check=full ./$(NAME)
 
 .PHONY: all clean fclean re leaks
