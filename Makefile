@@ -67,4 +67,9 @@ $(LIBFT):
 
 $(NAME): $(OBJS) $(LIBFT)
 			$(CC) $(CCFLAGS) $(LDFLAGS) -o $@ $^ -lreadline
-.PHONY: all clean fclean re
+
+leaks: 
+	make re
+	valgrind --suppressions=./readline.supp --show-leak-kinds=all --leak-check=full ./$(NAME)
+
+.PHONY: all clean fclean re leaks
