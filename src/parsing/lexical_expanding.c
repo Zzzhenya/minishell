@@ -12,35 +12,6 @@
 
 #include "../../include/minishell.h"
 
-char	*trim_single_quotes(char *str)
-{
-	int		i;
-	int		len;
-	char	*res;
-
-	i = 0;
-	len = ft_strlen(str);
-	res = (char *)malloc((len - 1) * sizeof(char));
-	if (res == NULL)
-		return (NULL);
-	str[len - 1] = '\0';
-	while (str[i] != '\0')
-	{
-		res[i] = str[i + 1];
-		i++;
-	}
-	free(str);
-	return (res);
-}
-
-int	remove_single_quotes_from_token(t_data *data, int i)
-{
-	data->token[i] = trim_single_quotes(data->token[i]);
-	if (data->token[i] == NULL)
-		return (-1);
-	return (0);
-}
-
 char	*replace_substring(char *token, char *row_env, int i_dollar)
 {
 	int		i;
@@ -68,13 +39,29 @@ char	*replace_substring(char *token, char *row_env, int i_dollar)
 	return (res);
 }
 
-int	expand_token_env(t_data *data, char **env, int i)
+int	expand_token_env_1(t_data *data, int i)
+{
+	int	i_dollar;
+
+	i_dollar = ft_strchr_m(data->token[i], '$');
+	if (i_dollar != -1 && data->token[i][i_dollar + 1] == '$')
+	{
+		data->token[i] = get_pid_string();
+		if (data->token[i] == NULL)
+			return (-1);
+	}
+	return (0);
+}
+
+int	expand_token_env_2(t_data *data, char **env, int i)
 {
 	int	i_dollar;
 	int	row_env;
 
 	i_dollar = ft_strchr_m(data->token[i], '$');
-	if (i_dollar != -1
+	if (i_dollar != -1 && data->token[i][i_dollar + 1] == '\0')
+		return (0);
+	else if (i_dollar != -1
 		&& (ft_strchr_m(data->token[i], '\'') == -1)
 		&& data->token[i][i_dollar + 1] != '?'
 		&& data->token[i][i_dollar + 1] != '$')
@@ -103,7 +90,9 @@ int	expand_env(t_data *data, char **env, int i)
 		}
 		else
 		{
-			if (expand_token_env(data, env, i) == -1)
+			if (expand_token_env_1(data, i) == -1)
+				return (-1);
+			else if (expand_token_env_2(data, env, i) == -1)
 				return (-1);
 		}
 		i++;

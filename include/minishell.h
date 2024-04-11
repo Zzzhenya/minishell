@@ -247,13 +247,13 @@ char		*case_s_quote(t_data *data, char *str, int i, int j);
 char		*case_d_quote(t_data *data, char *str, int i, int j);
 int			check_str_null(t_data *data, char *str, int i, int j);
 int			ft_chopper(t_data *data, char *str, int j);
+char		*get_pid_string(void);
 
 // [ lexical_expanding.c ]
-int			find_matching_env_row(char *str, char **env);
-char		*trim_single_quotes(char *str);
-int			remove_single_quotes_from_token(t_data *data, int i);
 char		*replace_substring(char *token,
 				char *row_matched_env, int column_index_dollar);
+int			expand_token_env_1(t_data *data, int i);
+int			expand_token_env_2(t_data *data, char **env, int i);
 int			expand_env(t_data *data, char **env, int i);
 
 // [ lexical_validating.c ]
@@ -320,6 +320,9 @@ char		*strrjoin(char *s1, char *s2);
 
 // [ util_error.c ]
 void		syntax_pipe_error_print(void);
+int			find_matching_env_row(char *str, char **env);
+char		*trim_single_quotes(char *str);
+int			remove_single_quotes_from_token(t_data *data, int i);
 
 // [ util_free.c ]
 void		free_2d(char **arr);

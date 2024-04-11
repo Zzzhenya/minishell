@@ -101,6 +101,14 @@ int	ft_chopper(t_data *data, char *str, int j)
 	return (0);
 }
 
+char	*get_pid_string(void)
+{
+	pid_t	pid;
+
+	pid = getpid();
+	return (ft_itoa((int)pid));
+}
+
 // void	handle_tokens(t_data *data, char *str, int *i, int j)
 // {
 // 	skip_normal_char(str, i);
