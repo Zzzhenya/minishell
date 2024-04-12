@@ -120,13 +120,17 @@ void	exec(char **cmd, char **env, t_envp *envo)
 	else if (find_matching_env_row("PATH", envo->envarr) != -1)
 		path_cmd = check_cmd_in_path(env, cmd[0]);
 	if (!path_cmd)
-		exit(2);
+	{
+		g_exit_status = 2;
+		free_stuff_and_exit(envo, 1);
+	}
 	g_exit_status = execve(path_cmd, cmd, envo->envarr);
 	if (path_cmd)
 		free(path_cmd);
 	g_exit_status = errno;
 	if (g_exit_status)
-		exit (errno);
+		//exit (errno);
+		free_stuff_and_exit(envo, 1);
 }
 
 /*	[F]
