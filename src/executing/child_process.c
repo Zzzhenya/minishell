@@ -110,7 +110,7 @@ int	find_matching_env_row(char *str, char **env)
 void	exec(char **cmd, char **env, t_envp *envo)
 {
 	char	*path_cmd;
-	int		g_exit_status;
+	int		exit_status;
 
 	if (!cmd || !cmd[0])
 		exit(0);
@@ -121,14 +121,14 @@ void	exec(char **cmd, char **env, t_envp *envo)
 		path_cmd = check_cmd_in_path(env, cmd[0]);
 	if (!path_cmd)
 	{
-		g_exit_status = 2;
+		exit_status = 2;
 		free_stuff_and_exit(envo, 1);
 	}
-	g_exit_status = execve(path_cmd, cmd, envo->envarr);
+	exit_status = execve(path_cmd, cmd, envo->envarr);
 	if (path_cmd)
 		free(path_cmd);
-	g_exit_status = errno;
-	if (g_exit_status)
+	// exit_status = errno;
+	if (exit_status != 0)
 		//exit (errno);
 		free_stuff_and_exit(envo, 1);
 }
