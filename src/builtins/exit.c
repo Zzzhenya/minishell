@@ -12,9 +12,9 @@
 
 #include "../../include/minishell.h"
 
-void	free_stuff_and_exit(t_envp *my_data)
+void	free_stuff_and_exit(t_envp *my_data, int yes)
 {
-	if (my_data->builtin == 1 && my_data->cmds == 1)
+	if ((my_data->builtin == 1 && my_data->cmds == 1) || yes == 1)
 	{
 		clear_envlist(my_data);
 		if (my_data->cd_hist != NULL)
@@ -72,7 +72,7 @@ static void	handle_exit_codes(char **arr, int digcount, int count, t_envp *my_da
 			g_exit_status = 256 + ft_atoi(arr[0]);
 		else
 			g_exit_status = ft_atoi(arr[0]) - 256;
-		free_stuff_and_exit(my_data);
+		free_stuff_and_exit(my_data, 0);
 	}
 	else if (digcount > 0 && count >= 2)
 	{
@@ -96,7 +96,7 @@ void	exec_exit(char **argv, t_envp *my_data)
 	arr = strip_empty_strings(&argv[1]);
 	count = count_non_empty_strings(&argv[1]);
 	if (count == 0)
-		free_stuff_and_exit(my_data);
+		free_stuff_and_exit(my_data, 0);
 	digcount = ft_isanumber(arr[0]);
 	if (digcount != 0)
 		handle_exit_codes(arr, digcount, count, my_data);
@@ -104,6 +104,6 @@ void	exec_exit(char **argv, t_envp *my_data)
 	{
 		print_exit_error(arr[0], ": numeric argument required\n");
 		g_exit_status = 2;
-		free_stuff_and_exit(my_data);
+		free_stuff_and_exit(my_data, 0);
 	}
 }
