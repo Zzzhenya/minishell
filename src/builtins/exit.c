@@ -28,6 +28,12 @@ void	free_stuff_and_exit(t_envp *my_data, int yes)
 			free_2d(my_data->paths);
 		if (my_data->tree)
 			free_tree(my_data->tree);
+		if (my_data->user_input)
+		{
+			free(my_data->user_input);
+			my_data->user_input = NULL;
+		}
+		rl_clear_history();
 	}
 	exit (g_exit_status);
 }

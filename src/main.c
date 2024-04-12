@@ -128,8 +128,11 @@ int	main(int argc, char **argv, char **envs)
 	{
 		(void)argv;
 		if (isatty(STDIN_FILENO) == 1)
-			interactive_mode(&(env.tree), env.paths, &env, NULL);
+		{
+			interactive_mode(&(env.tree), env.paths, &env, env.user_input);
 			//interactive_mode(&tree, paths, &env, NULL);
+			rl_clear_history();
+		}
 	}
 	clear_envlist(&env);
 	if (env.cd_hist != NULL)
