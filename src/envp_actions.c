@@ -21,6 +21,8 @@ void	init_env(t_envp *env)
 	env->count = 0;
 	env->cmds = 0;
 	env->builtin = 0;
+	env->paths = NULL;
+	env->tree = NULL;
 }
 
 /* 

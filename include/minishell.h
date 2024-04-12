@@ -217,6 +217,8 @@ typedef struct s_envp
 	int		count;
 	int		cmds;
 	int		builtin;
+	char	**paths;
+	t_cmd	*tree;
 }	t_envp;
 
 /*	[F]
