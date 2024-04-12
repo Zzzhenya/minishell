@@ -219,6 +219,7 @@ typedef struct s_envp
 	int		builtin;
 	char	**paths;
 	t_cmd	*tree;
+	char 	*user_input;
 }	t_envp;
 
 /*	[F]
@@ -426,7 +427,7 @@ STDIN_FILENO:
 File descriptor of STDIN, relating with input source like Key-board.
 
 STDOUT_FILENO:
-File descriptor of STDIN, relating with input source like Key-board.
+File descriptor of STDOUT, relating with output source like Monitor.
 */
 
 // [redirection_error_handle.c]
