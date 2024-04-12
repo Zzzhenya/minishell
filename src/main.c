@@ -90,7 +90,6 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
 		user_input = readline ("Minishell > ");
 		if (!user_input)
 		{
-			g_exit_status = 0;
 			printf("exit\n");
 			break ;
 		}
