@@ -43,6 +43,37 @@ void install_signals_here(void)
 void	heredoc_input(int fd, char *word)
 {
 	char	*line;
+	int i = 1;
+
+	line = NULL;
+	while (1)
+	{
+		install_signals_here();
+		line = readline(">");
+		if (!line || ft_strcmp(line, word) == 0)
+		{
+			if (line)
+			{
+				free (line);
+				line = NULL;
+			}
+			else
+			{
+				printf("bash: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", i, word);
+			}
+			break;
+		}
+		if (ft_strcmp(line, word) != 0)
+		{
+			write(fd, line, ft_strlen(line));
+			write(fd, "\n", 1);
+		}
+		i ++;
+		free (line);
+		line = NULL;
+	}
+	/*
+	char	*line;
 	int		i;
 
 	i = 0;
@@ -50,9 +81,10 @@ void	heredoc_input(int fd, char *word)
 	while (ft_strcmp(line, word) != 0)
 	{
 		free(line);
+		install_signals_here();
 		line = readline("heredoc> ");
 		if (!line)
-			exit(1);
+			break;
 		if (ft_strcmp(line, word) != 0)
 		{
 			write(fd, line, ft_strlen(line));
@@ -60,5 +92,6 @@ void	heredoc_input(int fd, char *word)
 		}
 		i ++;
 	}
-	free (line);
+	if (line)
+		free (line);*/
 }
