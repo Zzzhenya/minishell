@@ -400,6 +400,7 @@ void		exec_echo(char **argv, int count, char **arr);
 
 // [exit.c]
 void		exec_exit(char **argv, t_envp *my_data);
+void		free_stuff_and_exit(t_envp *my_data, int yes);
 
 // [unset.c]
 void		exec_unset(char **argv, t_envp *my_data);
