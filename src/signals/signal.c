@@ -22,7 +22,7 @@ void	handle_nl(int sig)
 	process after executing, when a
 	child process hangs
 */
-void	install_signal_hang(void)
+void	install_signals_hang(void)
 {
 	struct sigaction	act1;
 	struct sigaction	act2;
@@ -72,4 +72,25 @@ void	install_signals_child(void)
 	act2.sa_handler = SIG_IGN;
 	sigaction(SIGQUIT, &act1, NULL);
 	sigaction(SIGINT, &act2, NULL);
+}
+
+void handle_here(int sig)
+{
+	(void)sig;
+	write (1, "\n", 1);
+	exit(130);
+}
+
+void install_signals_here(void)
+{
+	struct sigaction	act1;
+	struct sigaction	act2;
+
+	ft_bzero(&act1, sizeof(act1));
+	ft_bzero(&act2, sizeof(act2));
+	act1.sa_handler = SIG_IGN;
+	act2.sa_handler = &handle_here;
+	sigaction(SIGQUIT, &act1, NULL);
+	sigaction(SIGINT, &act2, NULL);
+
 }
