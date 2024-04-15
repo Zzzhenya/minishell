@@ -37,7 +37,8 @@ void	exec_echo(char **argv, int count, char **arr)
 	while (i < count)
 	{
 		ft_putstr_fd(arr[i], 1);
-		ft_putchar_fd(' ', 1);
+		if (i + 1 < count)
+			ft_putchar_fd(' ', 1);
 		i ++;
 	}
 	if (opt == 0)
