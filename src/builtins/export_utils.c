@@ -25,7 +25,7 @@ void	print_export_error(char *var, char *val, char *message)
 
 int	is_valid_var_start(unsigned char c)
 {
-	if (ft_isalnum(c) || c == '_')
+	if (ft_isalpha(c) || c == '_' || c == '=')
 		return (1);
 	else
 		return (0);
@@ -38,7 +38,7 @@ int	is_valid_var_char(char *var)
 	i = 0;
 	while (var[i] != '\0')
 	{
-		if (!(ft_isalpha((unsigned char)var[i]) || var[i] == '_'))
+		if (!(ft_isalnum((unsigned char)var[i]) || var[i] == '_' || var[i] == '='))
 			return (0);
 		i ++;
 	}
