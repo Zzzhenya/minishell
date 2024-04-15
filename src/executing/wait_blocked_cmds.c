@@ -29,7 +29,7 @@ int	count_commands(t_cmd *tree)
 	count = 0;
 	if (tree == NULL)
 		return (0);
-	if (tree->node_type == N_SIMPLE_CMD)
+	if (tree->node_type == N_SIMPLE_CMD || tree->node_type == N_REDIREC)
 		count ++;
 	count = count + count_commands(tree->l_child);
 	count = count + count_commands(tree->r_child);
@@ -38,7 +38,7 @@ int	count_commands(t_cmd *tree)
 
 /*
 	wait for any blocking child processes
-	-1 - any child
+	-1 - any childs
 	WUNTRACED - 
 		return info about terminated children
 		return info when child is stopped by signal
