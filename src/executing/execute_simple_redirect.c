@@ -107,6 +107,14 @@ void	execute_simple_redirect(t_cmd *node, t_redirec **stdios)
 	t_redirec	*redirection;
 	t_redirec	*curr;
 
+	if (node->r_child->cmdstr[0] == NULL)
+	{
+		//print_tree(node);
+		//printf("%s\n", node->l_child->cmdstr[0]);
+		redir_error_msg();
+		return;
+	}
+	//print_tree(node);
 	redirection = (t_redirec *)malloc(sizeof(t_redirec));
 	if (redirection == NULL)
 	{
@@ -114,11 +122,6 @@ void	execute_simple_redirect(t_cmd *node, t_redirec **stdios)
 		exit(EXIT_FAILURE);
 	}
 	redirection->filename = node->r_child->cmdstr[0];
-	if (redirection->filename == NULL)
-	{
-		redir_error_msg();
-		return;
-	}
 	redirection->redirec_type = redirect_type(node->l_child);
 	redirection->next_redirec = NULL;
 	if (*stdios == NULL)
