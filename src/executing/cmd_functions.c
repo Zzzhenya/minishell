@@ -118,7 +118,7 @@ void	print_error_cmd(t_cmd *file_path, char **envp)
 	char	*path_buf;
 
 	path_buf = check_cmd_in_path(envp, file_path->cmdstr[0]);
-	if (!path_buf)
+	if (!path_buf && access(file_path->cmdstr[0], X_OK) != 0)
 	{
 		printf("%s: ", file_path->cmdstr[0]);
 		if (errno != 2)
