@@ -48,15 +48,14 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 	int	status;
 
 	(void)tree;
+	status = 0;
 	if (env->cmds == 1 && env->builtin == 1)
 		return ;
 	while (waitpid(-1, &status, WUNTRACED) > 0)
 	{
 		if (WIFEXITED(status))
-		{
-				g_exit_status = WEXITSTATUS(status);
-		}
+			g_exit_status = WEXITSTATUS(status);
 	}
 	if ((env->cmds != 1) && (status == 2 || status == 3))
-		write(1, "ok\n", 3);//remove
+		write(1, "\n", 1);
 }
