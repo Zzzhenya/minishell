@@ -133,7 +133,7 @@ void	setup_last_r(t_redirec *last_r)
 Shouldn't I close the fd?
 
 */
-void	setup_last_l(t_redirec *last_l)
+void	setup_last_l(t_redirec *last_l, t_envp *env)
 {
 	int	fd;
 
@@ -151,7 +151,7 @@ void	setup_last_l(t_redirec *last_l)
 		fd = open(HEREDOCNAME, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (!fd)
 			exit(errno);
-		heredoc_input(fd, last_l->filename);
+		heredoc_input(fd, last_l->filename, env);
 		close(fd);
 		fd = open(HEREDOCNAME, O_RDONLY);
 		dup_and_redirect(fd, STDIN_FILENO);
@@ -194,7 +194,7 @@ t_redirec	*find_last(t_redirec *stdios, char c, t_redirec *last)
 	if last left redirec is not null ; setup the last left redirec
 	if last right redirec is not null ; setup the last right redirec
 */
-void	setup_redirections(t_redirec *stdios)
+void	setup_redirections(t_redirec *stdios, t_envp *env)
 {
 	t_redirec	*last_l;
 	t_redirec	*last_r;
@@ -204,7 +204,7 @@ void	setup_redirections(t_redirec *stdios)
 	last_l = find_last(stdios, 'l', NULL);
 	last_r = find_last(stdios, 'r', NULL);
 	if (last_l != NULL)
-		setup_last_l(last_l);
+		setup_last_l(last_l, env);
 	if (last_r != NULL)
 		setup_last_r(last_r);
 }

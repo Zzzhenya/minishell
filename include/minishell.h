@@ -367,13 +367,15 @@ void		search_tree(t_cmd *node, char **envp, t_envp *env);
 
 // [ REDIRECTIONS ]
 // [setup_redirections.c]
-void		setup_redirections(t_redirec *stdios);
+//void		setup_redirections(t_redirec *stdios);
+void		setup_redirections(t_redirec *stdios, t_envp *env);
 
 // [ETC ]
 t_redirec	*find_last(t_redirec *stdios, char c, t_redirec *last);
 
 // [here_doc_functions.c]
-void		heredoc_input(int fd, char *word);
+//void		heredoc_input(int fd, char *word);
+void		heredoc_input(int fd, char *word, t_envp *env);
 
 // util_debug.c
 void		print_tree(t_cmd *node);

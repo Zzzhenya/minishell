@@ -40,13 +40,17 @@ void install_signals_here(void)
 
 }
 */
-void	heredoc_input(int fd, char *word)
+void	heredoc_input(int fd, char *word, t_envp *env)
 {
 	char	*line;
-	int i = 1;
+	char 	**arr;
+	int k = 1;
+	int i = 0;
+	int count = 0;
 
 	//printf("word: %s\n", word);
 	line = NULL;
+	arr = NULL;
 	while (1)
 	{
 		install_signals_here();
@@ -60,16 +64,33 @@ void	heredoc_input(int fd, char *word)
 			}
 			else
 			{
-				printf("bash: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", i, word);
+				printf("bash: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", k, word);
 			}
 			break;
 		}
 		if (ft_strcmp(line, word) != 0)
 		{
-			write(fd, line, ft_strlen(line));
-			write(fd, "\n", 1);
+			arr = validate_input(line, env->envarr);
+			count = get_arg_count(arr);
+		/*if (count == 1)
+		{
+			if (ft_strcmp(line, word) != 0)
+			{
+				write(fd, line, ft_strlen(line));
+				write(fd, "\n", 1);
+			}
 		}
-		i ++;
+		else*/
+			i = 0;
+			while (i < count)
+			{
+				write(fd, arr[i], ft_strlen(arr[i]));
+				i ++;
+			}
+			write(fd, "\n", 1);
+			free_arr(arr, count);
+		}
+		k ++;
 		free (line);
 		line = NULL;
 	}

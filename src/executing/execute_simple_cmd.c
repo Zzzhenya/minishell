@@ -267,7 +267,7 @@ void	waiting_child_process(t_redirec **stdios, pid_t pid)
 void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env)
 {
 	env->builtin = 1;
-	setup_redirections(*stdios);
+	setup_redirections(*stdios, env);
 	builtin_router(cmd, env, 1);
 	if (find_last(*stdios, 'l', NULL) != NULL
 		&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
@@ -296,7 +296,7 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	{
 		//redirection_error_handle(cmd->l_child, pid);
 		install_signals_main();
-		setup_redirections(*stdios);
+		setup_redirections(*stdios, env);
 		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
 		pid_zero_exec(cmd, envp, env, pid);
 	}
