@@ -294,6 +294,7 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		return (perror("fork: "));
 	else if (pid == 0)
 	{
+		redirection_error_handle(cmd->l_child, pid);
 		install_signals_main();
 		setup_redirections(*stdios);
 		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
