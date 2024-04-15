@@ -101,6 +101,7 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
 				break ;
 			envp = save_all_env_paths(env->envarr);
 			*tree = parse_user_input(user_input, env);
+			//print_tree(*tree);
 			env->cmds = count_commands(*tree);
 			search_tree(*tree, envp, env);
 			wait_each_command(*tree, env);

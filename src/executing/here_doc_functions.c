@@ -45,6 +45,7 @@ void	heredoc_input(int fd, char *word)
 	char	*line;
 	int i = 1;
 
+	//printf("word: %s\n", word);
 	line = NULL;
 	while (1)
 	{
