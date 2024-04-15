@@ -30,7 +30,7 @@ int	check_builtin(t_cmd *file_path)
 
 void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid)
 {
-	if (redirection_error_handle(cmd->l_child, pid))
+	if (redirection_error_handle(cmd->l_child, pid) != 0)
 	{
 		if (pid != 0)
 			return ;

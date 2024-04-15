@@ -28,13 +28,13 @@ What about when the first string of node->cmdstr is << or >>
 
 exit status in mac is 258 check for linux	
 
-*/
-
 void	redir_error_msg(void)
 {
 	g_exit_status = 2;
 	printf("bash: syntax error near unexpected token `newline'\n");
 }
+
+*/
 
 int	redirection_error_handle(t_cmd *type, pid_t pid)
 {

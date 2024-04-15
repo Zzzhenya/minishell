@@ -95,6 +95,13 @@ int	redirect_type(t_cmd *node)
 			When meet with end of redirec -> add 
 			redirection to the end of *stdios.
 */
+
+void	redir_error_msg(void)
+{
+	g_exit_status = 2;
+	printf("bash: syntax error near unexpected token `newline'\n");
+}
+
 void	execute_simple_redirect(t_cmd *node, t_redirec **stdios)
 {
 	t_redirec	*redirection;
@@ -107,6 +114,11 @@ void	execute_simple_redirect(t_cmd *node, t_redirec **stdios)
 		exit(EXIT_FAILURE);
 	}
 	redirection->filename = node->r_child->cmdstr[0];
+	if (redirection->filename == NULL)
+	{
+		redir_error_msg();
+		return;
+	}
 	redirection->redirec_type = redirect_type(node->l_child);
 	redirection->next_redirec = NULL;
 	if (*stdios == NULL)
