@@ -43,7 +43,7 @@ int	redirection_error_handle(t_cmd *type, pid_t pid)
 		g_exit_status = 2;
 		if (pid == 0)
 		{
-			printf("bash: syntax error near unexpected token `newline'\n");
+			//printf("bash: syntax error near unexpected token `newline'\n");
 			exit (g_exit_status);
 		}
 		else
