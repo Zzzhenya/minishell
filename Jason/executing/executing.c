@@ -239,6 +239,25 @@ int	ft_strcmp(char *s1, char *s2)
 	return (0);
 }
 
+// char	*delete_empty_space_from_str(char *str)
+// {
+// 	char	*res;
+// 	int len = 0;
+// 	int	i = 0;
+
+// 	while (str[len] != '\0' && ft_isspace(str[i]) != -1)
+// 		len++;
+// 	res = (char *)malloc(sizeof(char) * len + 1);
+// 	i = 0;
+// 	while (str[len] != '\0' && ft_isspace(str[i]) != -1)
+// 	{
+// 		res[i] = str[i];
+// 		i++;
+// 	}
+// 	res[i] = '\0';
+// 	return (res);
+// }
+
 /*	[F]
 	Reference, in "lexical_expanding.c"
 	Search Param(1): "str" from
@@ -247,14 +266,18 @@ int	ft_strcmp(char *s1, char *s2)
 int	find_matching_env_row(char *str, char **env)
 {
 	int	i;
+	char	*res;
 
 	i = 0;
 	if (str == NULL && *str == '\0')
 		return (-1);
+	// printf("1. str: %s\n", str);
+	// str = delete_empty_space_from_str(str);
+	// printf("2. str: %s\n", str);
 	while (env[i] != NULL)
 	{
 		if (ft_strcmp(env[i], str) != -1)
-			return (i); 
+			return (i);
 		i++;
 	}
 	return (-1);
