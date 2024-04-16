@@ -88,13 +88,13 @@ int	ft_chopper(t_data *data, char *str, int j)
 		str = case_s_quote(data, str, i + 1, j);
 	else if (str[0] == '\"')
 		str = case_d_quote(data, str, i + 1, j);
-	else if (str[0] != '=' && str[0] != '\0'
-		&& str[0] != '<' && str[0] != '>' && str[0] != '|')
+	else if ( str[0] != '\0'
+		&& str[0] != '<' && str[0] != '>' && str[0] != '|') // str[0] != '=' &&
 		ft_strcpy(data, str, i, j);
 	else if ((str[0] == '>' && str[1] == '>')
 		|| (str[0] == '<' && str[1] == '<'))
 		i = ft_strcpy(data, str, 2, j);
-	else if (str[0] == '=' || str[0] == '<' || str[0] == '>' || str[0] == '|')
+	else if ( str[0] == '<' || str[0] == '>' || str[0] == '|') // str[0] == '=' ||
 		i = ft_strcpy(data, str, 1, j);
 	if (ft_chopper(data, str + i, ++j) == -1 || str[i] == '\0')
 		data->token[j] = NULL;

@@ -72,7 +72,8 @@ void	eq_within_string(char **argv, int i, t_envp *my_data)
 	arr[0] = NULL;
 	arr[1] = NULL;
 	arr[2] = NULL;
-	arr[0] = ft_strdup(argv[i - 1]);
+	if (argv[i-1] != NULL)
+		arr[0] = ft_strdup(argv[i - 1]);
 	if (argv[i + 1] != NULL)
 		arr[1] = ft_strdup(argv[i + 1]);
 	if (!is_valid_var_start(arr[0][0]) || !is_valid_var_char(arr[0]))
@@ -88,24 +89,25 @@ void	eq_within_string(char **argv, int i, t_envp *my_data)
 		free (arr[1]);
 }
 
-void	real_export(char **argv, t_envp *my_data)
+void	real_export(char **argv, t_envp *my_data, int count)
 {
 	int		i;
 
 	i = 0;
-	while (argv[i] != NULL)
+	while (i < count)
+	//while (argv[i] != NULL)
 	{
 		if (ft_strchr(argv[i], '='))
 		{
-			if (ft_strcmp(argv[i], "=") != 0)
+			/*if (ft_strcmp(argv[i], "=") != 0)
 				eq_in_own_line(argv, i, my_data);
-			else
+			else*/
 				eq_within_string(argv, i, my_data);
 		}
 		i ++;
 	}
 }
-
+/*
 void	two_argv(char **arr, t_envp *my_data)
 {
 	if (!ft_strcmp(arr[0], "#"))
@@ -122,7 +124,7 @@ void	two_argv(char **arr, t_envp *my_data)
 	}
 	else
 		return ;
-}
+}*/
 
 /* The double and single quotes wrapping the entire export command
 string will be removed by parser/lexer
@@ -137,9 +139,11 @@ export ""hello=one"" - 3
 */
 void	exec_export(char **argv, t_envp *my_data)
 {
+	
 	int		count;
 	char	**arr;
 
+	//(void)my_data;
 	count = 0;
 	arr = NULL;
 	count = count_non_empty_strings(&argv[1]);
@@ -147,10 +151,22 @@ void	exec_export(char **argv, t_envp *my_data)
 	g_exit_status = 0;
 	if (count == 0)
 		print_variables_list(my_data->envarr);
+	else
+		real_export(arr, my_data, count);
+	/*
+	int i = 0;
+	while (i < get_arg_count(argv))
+	{
+		printf("%s\n", argv[i]);
+		i ++;
+	}*/
+	/*
+	if (count == 0)
+		print_variables_list(my_data->envarr);
 	else if (count == 1)
 		two_argv(arr, my_data);
 	else
-		real_export(arr, my_data);
+		real_export(arr, my_data);*/
 	if (arr)
 		free_arr(arr, count);
 }

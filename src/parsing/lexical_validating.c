@@ -34,8 +34,8 @@ int	count_word(const char *str, int n_word, int flag_inword, int flag_inquote)
 	{
 		if (*str == ' ' && flag_inquote == 0)
 			flag_inword = 0;
-		else if (*str == '=' || *str == '<' || *str == '>'
-			|| *str == '|' || *str == '$')
+		else if ( *str == '<' || *str == '>'
+			|| *str == '|' || *str == '$') //*str == '=' ||
 		{
 			n_word++;
 			flag_inword = 0;
