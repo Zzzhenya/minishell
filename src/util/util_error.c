@@ -19,19 +19,40 @@ void	syntax_pipe_error_print(void)
 	g_exit_status = 1;
 }
 
+char	*delete_space_from_str(char *str)
+{
+	int	i = 0;
+	int len = 0;
+
+	while (str[i] != '\0' && ft_isspace(str[i]) != -1)
+		i++;
+	len = i;
+	char	*res = malloc(sizeof(char) * len);
+	i = 0;
+	while (i < len)
+	{
+		res[i] = str[i];
+		i++;
+	}
+	return (res);
+}
+
 int	find_matching_env_row(char *str, char **env)
 {
 	int	i;
+	char	*res;
 
 	i = 0;
 	if (str == NULL && *str == '\0')
 		return (-1);
+	res = delete_space_from_str(str);
 	while (env[i] != NULL)
 	{
-		if (!ft_strncmp(env[i], str, ft_strlen(str)))
+		if (!ft_strncmp(env[i], res, ft_strlen(res)))
 			return (i);
 		i++;
 	}
+	free (res);
 	return (-1);
 }
 
