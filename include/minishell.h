@@ -323,6 +323,7 @@ char		*strrjoin(char *s1, char *s2);
 
 // [ util_error.c ]
 void		syntax_pipe_error_print(void);
+char		*delete_space_from_str(char *str);
 int			find_matching_env_row(char *str, char **env);
 char		*trim_single_quotes(char *str);
 int			remove_single_quotes_from_token(t_data *data, int i);
