@@ -67,15 +67,15 @@ void	export_one_var(char **arr, t_envp *my_data)
 	char	*str;
 	char	*mid;
 
-	if (arr[1] == NULL)
-		val = ft_strdup("");
-	else
-		val = arr[1];
+	/*if (arr[1] == NULL)
+		val = ft_strdup("");*/
+	//else
+	val = arr[1];
 	var = arr[0];
 	mid = ft_strjoin(var, "=");
 	str = ft_strjoin(mid, val);
-	if (arr[1] == NULL)
-		free(val);
+	/*if (arr[1] == NULL)
+		free(val);*/
 	free (mid);
 	unset_one_var(var, my_data);
 	ft_lstadd_back(&my_data->envlist, ft_lstnew(str));

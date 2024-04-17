@@ -35,7 +35,7 @@ char	*remove_one_quote_set(char *str)
 	return (str);
 }*/
 
-/*if (ft_strcmp(argv[i], "=") != 0)*/
+/*if (ft_strcmp(argv[i], "=") != 0)
 void	eq_in_own_line(char **argv, int i, t_envp *my_data)
 {
 	char	*arr[3];
@@ -62,9 +62,9 @@ void	eq_in_own_line(char **argv, int i, t_envp *my_data)
 		free(arr[0]);
 	if (arr[1])
 		free(arr[1]);
-}
+}*/
 
-/* else */
+/* else 
 void	eq_within_string(char **argv, int i, t_envp *my_data)
 {
 	char	*arr[3];
@@ -98,15 +98,15 @@ void	real_export(char **argv, t_envp *my_data, int count)
 	//while (argv[i] != NULL)
 	{
 		if (ft_strchr(argv[i], '='))
-		{
+		{*/
 			/*if (ft_strcmp(argv[i], "=") != 0)
 				eq_in_own_line(argv, i, my_data);
-			else*/
+			else*//*
 				eq_within_string(argv, i, my_data);
 		}
 		i ++;
 	}
-}
+}*/
 /*
 void	two_argv(char **arr, t_envp *my_data)
 {
@@ -137,6 +137,95 @@ export "hello=" - 1
 export "hello=one" - 1
 export ""hello=one"" - 3
 */
+
+/*
+	// if char is not in string -> return NULL
+	// if char is at the end of string -> last string is an empty string
+	// always have two strings
+
+*/
+
+char **split_at_first_occ(char *str, char c)
+{
+
+	int i = 0;
+	int loc = 0;
+	int len = 0;
+	char **arr;
+
+	arr = NULL;
+	len = ft_strlen(str);
+	while (str[i] != '\0')
+	{
+		if (str[i] == c)
+		{
+			loc = i;
+			break;
+		}
+		i ++;
+	}
+	arr = (char **)malloc(sizeof(char *) * 3);
+	if (!arr)
+		return (NULL);
+	arr[0] = malloc(sizeof(char) * loc + 1);
+	if (!arr[0])
+	{
+		free (arr);
+		return (NULL);
+	}
+	ft_strlcpy(arr[0], str, loc + 1);
+	if (loc + 1 == '\0')
+		arr[1] = ft_strdup("");
+	else
+	{
+		arr[1] = malloc(sizeof(char) * (len - loc));
+		if (!arr[1])
+		{
+			free (arr);
+			return (NULL);
+		}
+		ft_strlcpy(arr[1], str + loc + 1, (len - loc));
+	}
+	arr[2] = NULL;
+	return (arr);
+}
+
+void	multi_export(char **argv, t_envp *my_data, int count)
+{
+	int		i;
+	char	*str;
+	char	**arr;
+
+	i = 0;
+	str = NULL;
+	arr = NULL;
+	while (i < count)
+	{
+		str = ft_strchr(argv[i], '=');
+		if (str && argv[i][0] != '=')
+		{
+			arr = split_at_first_occ(argv[i], '=');
+			if (!is_valid_var_start(arr[0][0]) || !is_valid_var_char(arr[0]))
+			{
+				g_exit_status = 1;
+				print_export_error(arr[0], NULL, " : not a valid identifier");
+			}
+			else
+				export_one_var(arr, my_data);
+			free_arr(arr, get_arg_count(arr));
+		}
+		else
+		{
+			if (!is_valid_var_start(argv[i][0]) || !is_valid_var_char(argv[i]))
+			{
+				g_exit_status = 1;
+				print_export_error(argv[i], NULL, " : not a valid identifier");
+			}
+		}
+		i ++;
+	}
+}
+
 void	exec_export(char **argv, t_envp *my_data)
 {
 	
@@ -152,21 +241,7 @@ void	exec_export(char **argv, t_envp *my_data)
 	if (count == 0)
 		print_variables_list(my_data->envarr);
 	else
-		real_export(arr, my_data, count);
-	/*
-	int i = 0;
-	while (i < get_arg_count(argv))
-	{
-		printf("%s\n", argv[i]);
-		i ++;
-	}*/
-	/*
-	if (count == 0)
-		print_variables_list(my_data->envarr);
-	else if (count == 1)
-		two_argv(arr, my_data);
-	else
-		real_export(arr, my_data);*/
+		multi_export(arr, my_data, count);
 	if (arr)
 		free_arr(arr, count);
 }
