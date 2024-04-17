@@ -121,12 +121,15 @@ int	main(int argc, char **argv, char **envs)
 	init_env(&env);
 	if (store_envp(&env, envs) < 0)
 		return (1);
-	if (argc == 2)
-		non_interactive_mode(&(env.tree), argv[1], env.paths, &env);
+	/*	
+	if (argc != 1)
+		continue ;
+		//non_interactive_mode(&(env.tree), argv[1], env.paths, &env);
 		//non_interactive_mode(&tree, argv[1], paths, &env);
-	else
+	*/
+	(void)argv;
+	if (argc == 1)
 	{
-		(void)argv;
 		if (isatty(STDIN_FILENO) == 1)
 		{
 			interactive_mode(&(env.tree), env.paths, &env, env.user_input);
