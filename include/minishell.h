@@ -452,6 +452,7 @@ void		builtin_router(t_cmd *cmd, t_envp *env, pid_t pid);
 
 /* readline */
 void		rl_replace_line(const char *text, int clear_undo);
+void		rl_clear_history (void);
 void		execute_simple_cmd(t_cmd *cmd, t_redirec **stdios,
 				char **envp, t_envp *env);
 #endif
