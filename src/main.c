@@ -28,22 +28,6 @@ char	**save_all_env_paths(char **envp)
 	perror("save_all_env_paths: ");
 	exit(EXIT_FAILURE);
 }
-/*
-char	*get_allocated_cwd(void)
-{
-	int		i;
-	char	*cwd;
-
-	cwd = malloc(1024 * sizeof(char));
-	if (cwd == NULL)
-		return (NULL);
-	getcwd(cwd, 1024);
-	i = ft_strlen(cwd);
-	cwd[i] = ' ';
-	cwd[i + 1] = '\0';
-	return (cwd);
-}
-*/
 
 void	non_interactive_mode(t_cmd **tree,
 								char *input, char **envp, t_envp *env)
@@ -101,7 +85,6 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
 				break ;
 			envp = save_all_env_paths(env->envarr);
 			*tree = parse_user_input(user_input, env);
-			//print_tree(*tree);
 			env->cmds = count_commands(*tree);
 			search_tree(*tree, envp, env);
 			wait_each_command(*tree, env);
@@ -112,28 +95,17 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
 
 int	main(int argc, char **argv, char **envs)
 {
-	//t_cmd	*tree;
 	t_envp	env;
-	//char	**paths;
 
-	//paths = NULL;
-	//tree = NULL;
 	init_env(&env);
 	if (store_envp(&env, envs) < 0)
 		return (1);
-	/*	
-	if (argc != 1)
-		continue ;
-		//non_interactive_mode(&(env.tree), argv[1], env.paths, &env);
-		//non_interactive_mode(&tree, argv[1], paths, &env);
-	*/
 	(void)argv;
 	if (argc == 1)
 	{
 		if (isatty(STDIN_FILENO) == 1)
 		{
 			interactive_mode(&(env.tree), env.paths, &env, env.user_input);
-			//interactive_mode(&tree, paths, &env, NULL);
 			rl_clear_history();
 		}
 	}
@@ -144,37 +116,3 @@ int	main(int argc, char **argv, char **envs)
 		env.cd_hist = NULL;
 	}
 }
-
-/*
-
-int	main(int argc, char **argv, char **envs)
-{
-	t_cmd	*tree;
-	t_envp	env;
-	char	**paths;
-
-	env.envarr = NULL;
-	env.cd_hist = NULL;
-	env.envlist = NULL;
-	tree = NULL;
-	env.count = 0;
-	paths = save_all_env_paths(envs);
-	if (store_envp(&env, envs) < 0)
-		return (1);
-	if (argc == 2)
-		non_interactive_bash(&tree, paths, &env, argv[1]);
-	else
-	{
-		(void)argv;
-		if (isatty(STDIN_FILENO) == 1)
-		{
-			interactive_bash(&tree, paths, &env);
-		}
-	}
-	if (env.envarr)
-		free_arr(env.envarr, env.count);
-	clear_envlist(&env);
-	free_2d(paths);
-	return (0);
-}
-*/
