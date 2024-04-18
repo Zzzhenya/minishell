@@ -211,7 +211,7 @@ void	multi_export(char **argv, t_envp *my_data, int count)
 				print_export_error(arr[0], NULL, " : not a valid identifier");
 			}
 			else
-				export_one_var(arr, my_data);
+				export_one_var(argv[i], arr[0], my_data);
 			free_arr(arr, get_arg_count(arr));
 		}
 		else

@@ -419,7 +419,8 @@ void		print_export_error(char *var, char *val, char *message);
 int			is_valid_var_start(unsigned char c);
 int			is_valid_var_char(char *var);
 void		print_variables_list(char **arr);
-void		export_one_var(char **arr, t_envp *my_data);
+//void		export_one_var(char **arr, t_envp *my_data);
+void	export_one_var(char *str,char *var, t_envp *my_data);
 
 // [builtin_utils.c]
 char		**strip_empty_strings(char **cmdstr);

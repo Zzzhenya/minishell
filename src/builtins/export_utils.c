@@ -60,24 +60,25 @@ void	print_variables_list(char **arr)
 	}
 }
 
-void	export_one_var(char **arr, t_envp *my_data)
+void	export_one_var(char *str,char *var, t_envp *my_data)
 {
+	/*
 	char	*var;
 	char	*val;
 	char	*str;
-	char	*mid;
+	char	*mid;*/
 
 	/*if (arr[1] == NULL)
 		val = ft_strdup("");*/
 	//else
-	val = arr[1];
-	var = arr[0];
-	mid = ft_strjoin(var, "=");
-	str = ft_strjoin(mid, val);
+	//val = arr[1];
+	//var = arr[0];
+	//mid = ft_strjoin(var, "=");
+	//str = ft_strjoin(mid, val);
 	/*if (arr[1] == NULL)
 		free(val);*/
-	free (mid);
+	//free (mid);
 	unset_one_var(var, my_data);
-	ft_lstadd_back(&my_data->envlist, ft_lstnew(str));
+	ft_lstadd_back(&my_data->envlist, ft_lstnew(ft_strdup(str)));
 	my_data->count++;
 }
