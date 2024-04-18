@@ -25,7 +25,7 @@ void	print_export_error(char *var, char *val, char *message)
 
 int	is_valid_var_start(unsigned char c)
 {
-	if (ft_isalpha(c) || c == '_' || c == '=')
+	if (ft_isalpha(c) || c == '_' )
 		return (1);
 	else
 		return (0);
