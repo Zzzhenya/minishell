@@ -56,6 +56,6 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 		if (WIFEXITED(status))
 			g_exit_status = WEXITSTATUS(status);
 	}
-	if ((env->cmds != 1) && (status == 2 || status == 3))
+	if ((status == 2 || status == 3)) // (env->cmds != 1) && 
 		write(1, "\n", 1);
 }
