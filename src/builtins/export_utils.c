@@ -78,7 +78,11 @@ void	export_one_var(char *str,char *var, t_envp *my_data)
 	/*if (arr[1] == NULL)
 		free(val);*/
 	//free (mid);
+	char *line;
+
+	line = NULL;
+	line = ft_strdup(str);
 	unset_one_var(var, my_data);
-	ft_lstadd_back(&my_data->envlist, ft_lstnew(ft_strdup(str)));
+	ft_lstadd_back(&my_data->envlist, ft_lstnew(line));
 	my_data->count++;
 }

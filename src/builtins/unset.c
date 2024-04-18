@@ -54,13 +54,15 @@ void	unset_one_var(char *var, t_envp *my_data)
 	t_list	*current;
 	t_list	*prev;
 	char	**arr;
+	//char *str = NULL;
 
 	current = (my_data->envlist);
 	prev = current;
 	while (current != NULL)
 	{
 		arr = NULL;
-		arr = ft_split((char *)current->content, '=');
+		arr = split_at_first_occ((char *)current->content, '=');
+		//arr = ft_split((char *)current->content, '=');
 		if (!ft_strncmp(arr[0], var, ft_strlen(arr[0]))
 			&& !ft_strncmp(arr[0], var, ft_strlen(var)))
 		{
@@ -69,7 +71,8 @@ void	unset_one_var(char *var, t_envp *my_data)
 			my_data->count --;
 			free_arr(arr, get_arg_count(arr));
 			g_exit_status = 0;
-			return ;
+			break ;
+			//return ;
 		}
 		free_arr(arr, get_arg_count(arr));
 		prev = current;

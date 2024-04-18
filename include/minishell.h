@@ -413,6 +413,7 @@ void		unset_one_var(char *var, t_envp *my_data);
 
 // [export.c]
 void		exec_export(char **argv, t_envp *my_data);
+char		**split_at_first_occ(char *str, char c);
 
 // [export_utils.c]
 void		print_export_error(char *var, char *val, char *message);

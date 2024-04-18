@@ -72,7 +72,7 @@ void	free_things(t_cmd **tree, t_envp *env, char **envp, char *user_input)
 	if (*tree)
 		free_tree(*tree);
 	if (env->envarr)
-		free_arr(env->envarr, env->count);
+		free_arr(env->envarr, get_arg_count(env->envarr));
 	if (envp)
 		free_2d(envp);
 	if (user_input)
