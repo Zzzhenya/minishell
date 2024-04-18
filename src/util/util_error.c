@@ -27,13 +27,14 @@ char	*delete_space_from_str(char *str)
 	while (str[i] != '\0' && ft_isspace(str[i]) != -1)
 		i++;
 	len = i;
-	char	*res = malloc(sizeof(char) * len);
+	char	*res = malloc(sizeof(char) * len + 1);
 	i = 0;
 	while (i < len)
 	{
 		res[i] = str[i];
 		i++;
 	}
+	res[i] = '\0';
 	return (res);
 }
 
