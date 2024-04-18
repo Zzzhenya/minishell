@@ -105,8 +105,9 @@ int	find_matching_env_row(char *str, char **env)
 		   when errer happens in system call of library function.
 			update errno code and save it to 'g_exit_status'.
 	cmd = strip_empty_strings(cmd);
-*/
 
+	// if (find_matching_env_row("PATH", envo->envarr) != -1)
+*/
 void	exec(char **cmd, char **env, t_envp *envo)
 {
 	char	*path_cmd;
@@ -117,7 +118,7 @@ void	exec(char **cmd, char **env, t_envp *envo)
 	path_cmd = NULL;
 	if (access(cmd[0], X_OK) == 0)
 		path_cmd = cmd[0];
-	else if (find_matching_env_row("PATH", envo->envarr) != -1)
+	else
 		path_cmd = check_cmd_in_path(env, cmd[0]);
 	if (!path_cmd)
 	{
