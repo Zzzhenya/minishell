@@ -18,9 +18,9 @@ void	handle_nl(int sig)
 	write (1, "\n", 1);
 }
 
-/*	signal definitions for the main
-	process after executing, when a
-	child process hangs
+/*	signal definitions for 
+	the main process after executing
+	when the child process hangs
 */
 void	install_signals_hang(void)
 {
@@ -45,8 +45,10 @@ void	handle_prompt(int sig)
 	rl_redisplay();
 }
 
-/* 	signal definitions for the main 
-	process and child after executing tree
+/* 	
+	signal definitions for 
+		the main before executing 
+		the child after executing
 */
 void	install_signals_main(void)
 {
@@ -60,6 +62,11 @@ void	install_signals_main(void)
 	sigaction(SIGQUIT, &act1, NULL);
 	sigaction(SIGINT, &act2, NULL);
 }
+
+/*
+	signal definitions for
+		the main after executing
+*/
 
 void	install_signals_child(void)
 {
@@ -80,6 +87,10 @@ void handle_here(int sig)
 	write (1, "\n", 1);
 	exit(130);
 }
+
+/*
+	signal definitions for the heredoc
+*/
 
 void install_signals_here(void)
 {
