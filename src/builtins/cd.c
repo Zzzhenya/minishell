@@ -103,6 +103,7 @@ void	execute_path(char	*path)
 
 void	exec_cd(char **argv, t_envp *my_data, char *path)
 {
+	char *temp = NULL;
 	if (my_data->cd_hist != NULL && argv[1]
 		&& !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
 	{
@@ -116,7 +117,16 @@ void	exec_cd(char **argv, t_envp *my_data, char *path)
 		ft_putendl_fd(path, 1);
 	}
 	else if (argv[1] == NULL || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
+	{
+		printf("HERE\n");
 		path = change_to_home(my_data);
+	}
+	else if (argv[1][0] == '~' && argv[1][1] == '/')
+	{
+		temp = change_to_home(my_data);
+		path = ft_strjoin(temp, ft_strdup(&argv[1][1]));
+		free(temp);
+	}
 	else
 		path = ft_strdup(argv[1]);
 	if (my_data->cd_hist != NULL)
