@@ -376,7 +376,7 @@ t_redirec	*find_last(t_redirec *stdios, char c, t_redirec *last);
 
 // [here_doc_functions.c]
 //void		heredoc_input(int fd, char *word);
-void		heredoc_input(int fd, char *word, t_envp *env);
+void		heredoc_input(int fd, char *word, t_envp *env, char *line);
 
 // util_debug.c
 void		print_tree(t_cmd *node);

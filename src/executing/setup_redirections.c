@@ -151,7 +151,7 @@ void	setup_last_l(t_redirec *last_l, t_envp *env)
 		fd = open(HEREDOCNAME, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (!fd)
 			exit(errno);
-		heredoc_input(fd, last_l->filename, env);
+		heredoc_input(fd, last_l->filename, env, NULL);
 		close(fd);
 		fd = open(HEREDOCNAME, O_RDONLY);
 		dup_and_redirect(fd, STDIN_FILENO);

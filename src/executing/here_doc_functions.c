@@ -40,21 +40,45 @@ void install_signals_here(void)
 
 }
 */
-void	heredoc_input(int fd, char *word, t_envp *env)
-{
-	char	*line;
-	char 	**arr;
-	int k = 1;
-	int i = 0;
-	int count = 0;
 
-	//printf("word: %s\n", word);
-	line = NULL;
+static void	print_here_error(int k, char *word)
+{
+	ft_putstr_fd("bash: warning: here-document at line ", 2);
+	ft_putnbr(k);
+	ft_putstr_fd(" delimited by end-of-file (wanted `", 2);
+	ft_putstr_fd(word, 2);
+	ft_putstr_fd("\')\n", 2);
+}
+
+static void	print_here_text(int fd, t_envp *env, char *line)
+{
+	int		count;
+	char	**arr;
+	int		i;
+
+	count = 0;
 	arr = NULL;
+	arr = validate_input(line, env->envarr);
+	count = get_arg_count(arr);
+	i = 0;
+	while (i < count)
+	{
+		write(fd, arr[i], ft_strlen(arr[i]));
+		i ++;
+	}
+	write(fd, "\n", 1);
+	free_arr(arr, count);
+}
+
+void	heredoc_input(int fd, char *word, t_envp *env, cahr *line)
+{
+	int		k;
+
+	k = 1;
 	while (1)
 	{
 		install_signals_here();
-		line = readline(">");
+		line = readline("> ");
 		if (!line || ft_strcmp(line, word) == 0)
 		{
 			if (line)
@@ -63,57 +87,13 @@ void	heredoc_input(int fd, char *word, t_envp *env)
 				line = NULL;
 			}
 			else
-			{
-				printf("bash: warning: here-document at line %d delimited by end-of-file (wanted `%s')\n", k, word);
-			}
-			break;
+				print_here_error(k, word);
+			break ;
 		}
 		if (ft_strcmp(line, word) != 0)
-		{
-			arr = validate_input(line, env->envarr);
-			count = get_arg_count(arr);
-		/*if (count == 1)
-		{
-			if (ft_strcmp(line, word) != 0)
-			{
-				write(fd, line, ft_strlen(line));
-				write(fd, "\n", 1);
-			}
-		}
-		else*/
-			i = 0;
-			while (i < count)
-			{
-				write(fd, arr[i], ft_strlen(arr[i]));
-				i ++;
-			}
-			write(fd, "\n", 1);
-			free_arr(arr, count);
-		}
+			print_here_text(fd, env, line);
 		k ++;
 		free (line);
 		line = NULL;
 	}
-	/*
-	char	*line;
-	int		i;
-
-	i = 0;
-	line = ft_calloc(1, 1);
-	while (ft_strcmp(line, word) != 0)
-	{
-		free(line);
-		install_signals_here();
-		line = readline("heredoc> ");
-		if (!line)
-			break;
-		if (ft_strcmp(line, word) != 0)
-		{
-			write(fd, line, ft_strlen(line));
-			write(fd, "\n", 1);
-		}
-		i ++;
-	}
-	if (line)
-		free (line);*/
 }
