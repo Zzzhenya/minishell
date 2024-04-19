@@ -96,10 +96,11 @@ int	redirect_type(t_cmd *node)
 			redirection to the end of *stdios.
 */
 
-void	redir_error_msg(void)
+char	*redir_error_msg(void)
 {
 	g_exit_status = 2;
 	printf("bash: syntax error near unexpected token `newline'\n");
+	return (NULL);
 }
 
 void	execute_simple_redirect(t_cmd *node, t_redirec **stdios)
@@ -108,13 +109,7 @@ void	execute_simple_redirect(t_cmd *node, t_redirec **stdios)
 	t_redirec	*curr;
 
 	if (node->r_child->cmdstr[0] == NULL)
-	{
-		//print_tree(node);
-		//printf("%s\n", node->l_child->cmdstr[0]);
-		redir_error_msg();
-		return;
-	}
-	//print_tree(node);
+		return (redir_error_msg());
 	redirection = (t_redirec *)malloc(sizeof(t_redirec));
 	if (redirection == NULL)
 	{

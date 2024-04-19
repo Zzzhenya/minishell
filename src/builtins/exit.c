@@ -68,7 +68,8 @@ void	print_exit_error(char *string, char *message)
 	ft_putstr_fd(message, 2);
 }
 
-static void	handle_exit_codes(char **arr, int digcount, int count, t_envp *my_data)
+static void	handle_exit_codes(char **arr, int digcount,
+		int count, t_envp *my_data)
 {
 	if (digcount > 0 && digcount <= 19 && count < 2)
 	{
