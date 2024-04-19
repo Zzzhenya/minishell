@@ -117,7 +117,7 @@ void	exec(char **cmd, char **env, t_envp *envo)
 		exit(0);
 	path_cmd = NULL;
 	if (access(cmd[0], X_OK) == 0)
-		path_cmd = cmd[0];
+		path_cmd = ft_strdup(cmd[0]);
 	else
 		path_cmd = check_cmd_in_path(env, cmd[0]);
 	if (!path_cmd)
