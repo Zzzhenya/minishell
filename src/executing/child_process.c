@@ -128,10 +128,12 @@ void	exec(char **cmd, char **env, t_envp *envo)
 	exit_status = execve(path_cmd, cmd, envo->envarr);
 	if (path_cmd)
 		free(path_cmd);
-	// exit_status = errno;
+	exit_status = errno;
 	if (exit_status != 0)
-		//exit (errno);
+	{
+		g_exit_status = EX_CMD_NOT_FOUND;
 		free_stuff_and_exit(envo, 1);
+	}
 }
 
 /*	[F]
