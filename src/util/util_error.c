@@ -21,13 +21,17 @@ void	syntax_pipe_error_print(void)
 
 char	*delete_space_from_str(char *str)
 {
-	int	i = 0;
-	int len = 0;
+	int		i;
+	int		len;
+	char	*res;
 
+	i = 0;
+	len = 0;
+	res = NULL;
 	while (str[i] != '\0' && ft_isspace(str[i]) != -1)
 		i++;
 	len = i;
-	char	*res = malloc(sizeof(char) * len + 1);
+	res = malloc(sizeof(char) * len + 1);
 	i = 0;
 	while (i < len)
 	{
@@ -40,7 +44,7 @@ char	*delete_space_from_str(char *str)
 
 int	find_matching_env_row(char *str, char **env)
 {
-	int	i;
+	int		i;
 	char	*res;
 
 	i = 0;
