@@ -108,6 +108,16 @@ int	find_matching_env_row(char *str, char **env)
 
 	// if (find_matching_env_row("PATH", envo->envarr) != -1)
 */
+
+static void execve_fail(char *cmd, t_envp *envo)
+{
+	g_exit_status = EX_CMD_NOT_FOUND;
+	ft_putstr_fd("bash: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": command not found\n", 2);
+	free_stuff_and_exit(envo, 1);
+}
+
 void	exec(char **cmd, char **env, t_envp *envo)
 {
 	char	*path_cmd;
@@ -130,10 +140,7 @@ void	exec(char **cmd, char **env, t_envp *envo)
 		free(path_cmd);
 	exit_status = errno;
 	if (exit_status != 0)
-	{
-		g_exit_status = EX_CMD_NOT_FOUND;
-		free_stuff_and_exit(envo, 1);
-	}
+		execve_fail(cmd[0], envo);
 }
 
 /*	[F]
