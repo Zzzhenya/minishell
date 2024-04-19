@@ -125,7 +125,7 @@ void	exec_cd(char **argv, t_envp *my_data, char *path)
 	{
 		temp = change_to_home(my_data);
 		path = ft_strjoin(temp, ft_strdup(&argv[1][1]));
-		free(temp);
+		free (temp);
 	}
 	else
 		path = ft_strdup(argv[1]);

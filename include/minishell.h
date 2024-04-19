@@ -392,6 +392,7 @@ void		install_signals_here(void);
 // [ BUILT-IN ] 
 // [cd.c]
 void		exec_cd(char **argv, t_envp *my_data, char *path);
+char		*change_to_home(t_envp	*my_data);
 
 // [env.c]
 void		exec_env(char **argv, t_envp *my_data);
@@ -401,7 +402,7 @@ void		exec_pwd(void);
 char		*get_pwd(void);
 
 // [echo.c]
-void		exec_echo(char **argv, int count, char **arr);
+void		exec_echo(char **argv, int count, char **arr, t_envp *my_data);
 
 // [exit.c]
 void		exec_exit(char **argv, t_envp *my_data);

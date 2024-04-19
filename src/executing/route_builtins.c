@@ -46,7 +46,7 @@ void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid)
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "cd"))
 		exec_cd(cmd->r_child->cmdstr, env, NULL);
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "echo"))
-		exec_echo(cmd->r_child->cmdstr, 0, NULL);
+		exec_echo(cmd->r_child->cmdstr, 0, NULL, env);
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "pwd"))
 		exec_pwd();
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "env"))

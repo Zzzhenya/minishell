@@ -20,10 +20,11 @@
 	else
 */
 
-void	exec_echo(char **argv, int count, char **arr)
+void	exec_echo(char **argv, int count, char **arr, t_envp *my_data)
 {
 	int	i;
 	int	opt;
+	char *path = NULL;
 
 	count = count_non_empty_strings(&argv[1]);
 	arr = strip_empty_strings(&argv[1]);
@@ -36,7 +37,14 @@ void	exec_echo(char **argv, int count, char **arr)
 	}
 	while (i < count)
 	{
-		ft_putstr_fd(arr[i], 1);
+		if (!ft_strcmp(arr[i], "~"))
+		{
+			path = change_to_home(my_data);
+			ft_putstr_fd(path, 1);
+			free (path);
+		}
+		else
+			ft_putstr_fd(arr[i], 1);
 		if (i + 1 < count)
 			ft_putchar_fd(' ', 1);
 		i ++;
