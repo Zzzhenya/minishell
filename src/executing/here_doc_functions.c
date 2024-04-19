@@ -44,7 +44,7 @@ void install_signals_here(void)
 static void	print_here_error(int k, char *word)
 {
 	ft_putstr_fd("bash: warning: here-document at line ", 2);
-	ft_putnbr(k);
+	ft_putnbr_fd(k, 2);
 	ft_putstr_fd(" delimited by end-of-file (wanted `", 2);
 	ft_putstr_fd(word, 2);
 	ft_putstr_fd("\')\n", 2);
@@ -70,7 +70,7 @@ static void	print_here_text(int fd, t_envp *env, char *line)
 	free_arr(arr, count);
 }
 
-void	heredoc_input(int fd, char *word, t_envp *env, cahr *line)
+void	heredoc_input(int fd, char *word, t_envp *env, char *line)
 {
 	int		k;
 

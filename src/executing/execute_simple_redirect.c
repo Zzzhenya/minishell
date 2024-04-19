@@ -114,7 +114,6 @@ void	redir_error_msg(char *str)
 void	execute_simple_redirect(t_cmd *node, t_redirec **stdios)
 {
 	t_redirec	*redirection;
-	t_redirec	*curr;
 
 	if (node->r_child->cmdstr[0] == NULL)
 	{
@@ -133,5 +132,5 @@ void	execute_simple_redirect(t_cmd *node, t_redirec **stdios)
 	if (*stdios == NULL)
 		*stdios = redirection;
 	else
-		trav_redirec(redirection, curr, stdios);
+		trav_redirec(redirection, NULL, stdios);
 }
