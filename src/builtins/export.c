@@ -38,7 +38,6 @@ void	multi_export(char **argv, t_envp *my_data, int count, int i)
 	arr = NULL;
 	while (i < count)
 	{
-		printf("str %s\n", argv[i]);
 		str = ft_strchr(argv[i], '=');
 		if (str && argv[i][0] != '=')
 		{
