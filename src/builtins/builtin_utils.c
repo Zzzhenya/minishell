@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-static char	*free_and_ret(char **arr)
+static char	**free_and_ret(char **arr)
 {
 	free (arr);
 	arr = NULL;
@@ -36,7 +36,7 @@ static int	find_loc(char *str, int i, char c)
 	return (loc);
 }
 
-char	**split_at_first_occ(char *str, char c, int i, int loc)
+char	**split_at_first_occ(char *str, char c, int loc)
 {
 	char	**arr;
 

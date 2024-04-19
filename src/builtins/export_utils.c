@@ -31,6 +31,20 @@ int	is_valid_var_start(unsigned char c)
 		return (0);
 }
 
+int	is_valid_var_val(char *var)
+{
+	int	i;
+
+	i = 0;
+	while (var[i] != '\0')
+	{
+		if (!(ft_isalnum((unsigned char)var[i])))
+			return (0);
+		i ++;
+	}
+	return (1);
+}
+
 int	is_valid_var_char(char *var)
 {
 	int	i;
@@ -59,15 +73,4 @@ void	print_variables_list(char **arr)
 		ft_putendl_fd(arr[i], STDOUT_FILENO);
 		i ++;
 	}
-}
-
-void	export_one_var(char *str, char *var, t_envp *my_data)
-{
-	char	*line;
-
-	line = NULL;
-	line = ft_strdup(str);
-	unset_one_var(var, my_data);
-	ft_lstadd_back(&my_data->envlist, ft_lstnew(line));
-	my_data->count++;
 }

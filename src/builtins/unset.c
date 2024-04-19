@@ -60,7 +60,7 @@ void	unset_one_var(char *var, t_envp *my_data)
 	while (current != NULL)
 	{
 		arr = NULL;
-		arr = split_at_first_occ((char *)current->content, '=', 0, 0);
+		arr = split_at_first_occ((char *)current->content, '=', 0);
 		if (!ft_strncmp(arr[0], var, ft_strlen(arr[0]))
 			&& !ft_strncmp(arr[0], var, ft_strlen(var)))
 		{

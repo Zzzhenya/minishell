@@ -425,7 +425,7 @@ void	export_one_var(char *str,char *var, t_envp *my_data);
 // [builtin_utils.c]
 char		**strip_empty_strings(char **cmdstr);
 int			count_non_empty_strings(char **cmdstr);
-char		**split_at_first_occ(char *str, char c, int i, int loc);
+char		**split_at_first_occ(char *str, char c, int loc);
 
 // [MEMO]
 /*

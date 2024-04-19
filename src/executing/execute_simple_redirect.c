@@ -96,11 +96,19 @@ int	redirect_type(t_cmd *node)
 			redirection to the end of *stdios.
 */
 
-char	*redir_error_msg(void)
+static void	trav_redirec(t_redirec	*redirection,
+		t_redirec	*curr, t_redirec **stdios)
+{
+	curr = *stdios;
+	while (curr->next_redirec)
+		curr = curr->next_redirec;
+	curr->next_redirec = redirection;
+}
+
+void	redir_error_msg(char *str)
 {
 	g_exit_status = 2;
-	printf("bash: syntax error near unexpected token `newline'\n");
-	return (NULL);
+	ft_putstr_fd(str, 2);
 }
 
 void	execute_simple_redirect(t_cmd *node, t_redirec **stdios)
@@ -109,11 +117,14 @@ void	execute_simple_redirect(t_cmd *node, t_redirec **stdios)
 	t_redirec	*curr;
 
 	if (node->r_child->cmdstr[0] == NULL)
-		return (redir_error_msg());
+	{
+		redir_error_msg("bash: syntax error near unexpected token `newline'\n");
+		return ;
+	}
 	redirection = (t_redirec *)malloc(sizeof(t_redirec));
 	if (redirection == NULL)
 	{
-		fprintf(stderr, "Error: Memory allocation failed\n");
+		redir_error_msg("Error: Memory allocation failed\n");
 		exit(EXIT_FAILURE);
 	}
 	redirection->filename = node->r_child->cmdstr[0];
@@ -122,10 +133,5 @@ void	execute_simple_redirect(t_cmd *node, t_redirec **stdios)
 	if (*stdios == NULL)
 		*stdios = redirection;
 	else
-	{
-		curr = *stdios;
-		while (curr->next_redirec)
-			curr = curr->next_redirec;
-		curr->next_redirec = redirection;
-	}
+		trav_redirec(redirection, curr, stdios);
 }

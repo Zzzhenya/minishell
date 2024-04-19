@@ -18,6 +18,17 @@ static void	set_status_print(char *str)
 	print_export_error(str, NULL, " : not a valid identifier");
 }
 
+void	export_one_var(char *str, char *var, t_envp *my_data)
+{
+	char	*line;
+
+	line = NULL;
+	line = ft_strdup(str);
+	unset_one_var(var, my_data);
+	ft_lstadd_back(&my_data->envlist, ft_lstnew(line));
+	my_data->count++;
+}
+
 void	multi_export(char **argv, t_envp *my_data, int count, int i)
 {
 	char	*str;
@@ -27,10 +38,11 @@ void	multi_export(char **argv, t_envp *my_data, int count, int i)
 	arr = NULL;
 	while (i < count)
 	{
+		printf("str %s\n", argv[i]);
 		str = ft_strchr(argv[i], '=');
 		if (str && argv[i][0] != '=')
 		{
-			arr = split_at_first_occ(argv[i], '=', 0, 0);
+			arr = split_at_first_occ(argv[i], '=', 0);
 			if (!is_valid_var_start(arr[0][0]) || !is_valid_var_char(arr[0]))
 				set_status_print(arr[0]);
 			else
