@@ -20,6 +20,24 @@
 	else
 */
 
+static int is_a_minus_n_combo(char *str)
+{
+	int i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	if (str[i] && str[i] == '-')
+		i ++;
+	while (str[i] != '\0')
+	{
+		if (str[i] != 'n')
+			return (0);
+		i ++;
+	}
+	return (1);
+}
+
 void	exec_echo(char **argv, int count, char **arr, t_envp *my_data)
 {
 	int	i;
@@ -33,7 +51,8 @@ void	exec_echo(char **argv, int count, char **arr, t_envp *my_data)
 	if (count > 0 && !ft_strncmp(arr[i], "-n", 3))
 	{
 		opt = 1;
-		i ++;
+		while (is_a_minus_n_combo(arr[i]))
+			i ++;
 	}
 	while (i < count)
 	{
