@@ -285,7 +285,7 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	static int		initial_input = -1;
 	pid_t			pid;
 
-	if (env->cmds == 1 && check_builtin(cmd->r_child))
+	if (env->cmds == 1 && check_builtin(cmd->r_child, cmd))
 		return (exec_one_builtin_cmd(cmd, stdios, env));
 	if (pipe(pipefd) == -1)
 		return (perror("pipe: "));

@@ -148,7 +148,7 @@ void	exec(char **cmd, char **env, t_envp *envo)
 */
 void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, pid_t pid)
 {
-	if (check_builtin(cmd->l_child))
+	if (check_builtin(cmd->l_child, cmd))
 		builtin_router(cmd, env, pid);
 	else
 	{

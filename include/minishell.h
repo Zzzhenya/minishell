@@ -449,7 +449,7 @@ int			count_commands(t_cmd *tree);
 
 // [route_builtins.c]
 //void		builtin_action(t_cmd *builtin, char **cmdline, t_envp *env);
-int			check_builtin(t_cmd *file_path);
+int			check_builtin(t_cmd *file_path, t_cmd *cmd);
 //void		pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env, pid_t pid);
 void		builtin_router(t_cmd *cmd, t_envp *env, pid_t pid);
 

@@ -12,14 +12,14 @@
 
 #include "../../include/minishell.h"
 
-int	check_builtin(t_cmd *file_path)
+int	check_builtin(t_cmd *file_path, t_cmd *cmd)
 {
 	if (!ft_strcmp(file_path->cmdstr[0], "echo")
 		|| !ft_strcmp(file_path->cmdstr[0], "cd")
 		|| !ft_strcmp(file_path->cmdstr[0], "pwd")
 		|| !ft_strcmp(file_path->cmdstr[0], "export")
 		|| !ft_strcmp(file_path->cmdstr[0], "unset")
-		|| !ft_strcmp(file_path->cmdstr[0], "env")
+		|| (!ft_strcmp(file_path->cmdstr[0], "env") && !cmd->r_child->cmdstr[1])
 		|| !ft_strcmp(file_path->cmdstr[0], "exit"))
 	{
 		return (1);
