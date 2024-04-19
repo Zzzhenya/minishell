@@ -25,7 +25,7 @@ char	**save_all_env_paths(char **envp)
 			return (ft_split(&envp[i][ft_strlen("PATH=")], ':'));
 		i++;
 	}
-	perror("save_all_env_paths: ");
+	ft_putstr_fd("No PATH variable in env: Aborting...\n", 2);
 	exit(EXIT_FAILURE);
 }
 
