@@ -38,7 +38,8 @@ int	is_valid_var_char(char *var)
 	i = 0;
 	while (var[i] != '\0')
 	{
-		if (!(ft_isalnum((unsigned char)var[i]) || var[i] == '_' || var[i] == '='))
+		if (!(ft_isalnum((unsigned char)var[i]) || var[i] == '_'
+				|| var[i] == '='))
 			return (0);
 		i ++;
 	}
@@ -60,25 +61,9 @@ void	print_variables_list(char **arr)
 	}
 }
 
-void	export_one_var(char *str,char *var, t_envp *my_data)
+void	export_one_var(char *str, char *var, t_envp *my_data)
 {
-	/*
-	char	*var;
-	char	*val;
-	char	*str;
-	char	*mid;*/
-
-	/*if (arr[1] == NULL)
-		val = ft_strdup("");*/
-	//else
-	//val = arr[1];
-	//var = arr[0];
-	//mid = ft_strjoin(var, "=");
-	//str = ft_strjoin(mid, val);
-	/*if (arr[1] == NULL)
-		free(val);*/
-	//free (mid);
-	char *line;
+	char	*line;
 
 	line = NULL;
 	line = ft_strdup(str);

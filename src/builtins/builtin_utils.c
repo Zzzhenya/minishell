@@ -12,6 +12,56 @@
 
 #include "../../include/minishell.h"
 
+static char	*free_and_ret(char **arr)
+{
+	free (arr);
+	arr = NULL;
+	return (NULL);
+}
+
+static int	find_loc(char *str, int i, char c)
+{
+	int	loc;
+
+	loc = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == c)
+		{
+			loc = i;
+			break ;
+		}
+		i ++;
+	}
+	return (loc);
+}
+
+char	**split_at_first_occ(char *str, char c, int i, int loc)
+{
+	char	**arr;
+
+	arr = NULL;
+	loc = find_loc(str, 0, c);
+	arr = (char **)malloc(sizeof(char *) * 3);
+	if (!arr)
+		return (NULL);
+	arr[0] = malloc(sizeof(char) * loc + 1);
+	if (!arr[0])
+		return (free_and_ret(arr));
+	ft_strlcpy(arr[0], str, loc + 1);
+	if (loc + 1 == '\0')
+		arr[1] = ft_strdup("");
+	else
+	{
+		arr[1] = malloc(sizeof(char) * (ft_strlen(str) - loc));
+		if (!arr[1])
+			return (free_and_ret(arr));
+		ft_strlcpy(arr[1], str + loc + 1, (ft_strlen(str) - loc));
+	}
+	arr[2] = NULL;
+	return (arr);
+}
+
 /*
 	Count the number of non-NULL but empty strings in
 	the cmdstr array
