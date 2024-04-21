@@ -53,7 +53,7 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 	i = 0;
 	if (env->cmds == 1 && env->builtin == 1)
 		return ;
-	if (env->procs == 1)
+	if (env->procs == 1 && env->builtin == 1)
 		return;
 	/*
 	while (waitpid(-1, &status, WUNTRACED) > 0)
