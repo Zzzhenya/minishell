@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-char	*get_pwd(void)
+char	*get_pwd(t_envp *my_data, int c)
 {
 	char	*path;
 
@@ -20,7 +20,7 @@ char	*get_pwd(void)
 	path = getcwd(path, PATH_MAX);
 	if (!path)
 	{
-		g_exit_status = EX_CMD_NOT_FOUND;
+		my_data->arr[c].status = EX_CMD_NOT_FOUND;
 		return (NULL);
 	}
 	else
@@ -33,12 +33,12 @@ char	*get_pwd(void)
  is 127 the correct exit code for when getcwd fails? 
  */
 
-void	exec_pwd(void)
+void	exec_pwd(t_envp *my_data, int c)
 {
 	char	*path;
 
 	path = NULL;
-	path = get_pwd();
+	path = get_pwd(my_data, c);
 	if (!path)
 		return ;
 	else
@@ -47,6 +47,6 @@ void	exec_pwd(void)
 		ft_putchar_fd('\n', 1);
 		free (path);
 	}
-	g_exit_status = EXIT_SUCCESS;
+	my_data->arr[c].status = EXIT_SUCCESS;
 	return ;
 }

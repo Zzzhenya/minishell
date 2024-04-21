@@ -38,9 +38,10 @@ static int is_a_minus_n_combo(char *str)
 	return (1);
 }
 
-void	exec_echo(char **argv, int count, char **arr, t_envp *my_data)
+void	exec_echo(char **argv, int c, char **arr, t_envp *my_data)
 {
 	int	i;
+	int count = 0;
 	int	opt;
 	char *path = NULL;
 
@@ -72,5 +73,5 @@ void	exec_echo(char **argv, int count, char **arr, t_envp *my_data)
 		ft_putchar_fd('\n', 1);
 	if (arr)
 		free_arr(arr, count);
-	g_exit_status = 0;
+	my_data->arr[c].status = 0;
 }

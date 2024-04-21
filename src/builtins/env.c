@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-void	exec_env(char **argv, t_envp *my_data)
+void	exec_env(char **argv, t_envp *my_data, int c)
 {
 	t_list	*lst;
 
@@ -24,4 +24,5 @@ void	exec_env(char **argv, t_envp *my_data)
 		ft_putchar_fd('\n', 1);
 		lst = lst->next;
 	}
+	my_data->arr[c].status = 0;
 }

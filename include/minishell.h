@@ -405,14 +405,14 @@ void		exec_cd(char **argv, t_envp *my_data, char *path, int c);
 char		*change_to_home(t_envp	*my_data);
 
 // [env.c]
-void		exec_env(char **argv, t_envp *my_data);
+void		exec_env(char **argv, t_envp *my_data, int c);
 
 // [pwd.c]
-void		exec_pwd(void);
-char		*get_pwd(void);
+void		exec_pwd(t_envp *my_data, int c);
+char		*get_pwd(t_envp *my_data, int c);
 
 // [echo.c]
-void		exec_echo(char **argv, int count, char **arr, t_envp *my_data);
+void		exec_echo(char **argv, int c, char **arr, t_envp *my_data);
 
 // [exit.c]
 void		exec_exit(char **argv, t_envp *my_data, int c);

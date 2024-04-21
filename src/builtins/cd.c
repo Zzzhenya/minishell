@@ -113,7 +113,7 @@ void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
 	else if (my_data->cd_hist == NULL && argv[1]
 		&& !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
 	{
-		path = get_pwd();
+		path = get_pwd(my_data, c);
 		ft_putendl_fd(path, 1);
 	}
 	else if (argv[1] == NULL || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
@@ -134,7 +134,7 @@ void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
 		free(my_data->cd_hist);
 		my_data->cd_hist = NULL;
 	}
-	my_data->cd_hist = get_pwd();
+	my_data->cd_hist = get_pwd(my_data, c);
 	execute_path(path, c, my_data);
 	free (path);
 }
