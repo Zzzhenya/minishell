@@ -290,6 +290,8 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	i = env->c;
 	if (env->cmds == 1 && check_builtin(cmd->r_child, cmd))
 		return (exec_one_builtin_cmd(cmd, stdios, env, i));
+	if (g_exit_status == 2)
+		return;
 	if (pipe(pipefd) == -1)
 		return (perror("pipe: "));
 	env->arr[i].pid = fork();
