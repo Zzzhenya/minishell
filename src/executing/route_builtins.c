@@ -28,7 +28,7 @@ int	check_builtin(t_cmd *file_path, t_cmd *cmd)
 		return (0);
 }
 
-void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid)
+void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid, int i)
 {
 	if (redirection_error_handle(cmd->l_child, pid) != 0)
 	{
@@ -38,7 +38,7 @@ void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid)
 			exit(g_exit_status);
 	}
 	if (!ft_strcmp(cmd->r_child->cmdstr[0], "exit"))
-		exec_exit(cmd->r_child->cmdstr, env);
+		exec_exit(cmd->r_child->cmdstr, env, i);
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "unset"))
 		exec_unset(cmd->r_child->cmdstr, env);
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "export"))
@@ -52,7 +52,11 @@ void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid)
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "env"))
 		exec_env(NULL, env);
 	if (pid == 0)
-		exit(g_exit_status);
+		exit(env->arr[i].status);
+		//exit(g_exit_status);
 	else
+	{
+		g_exit_status = env->arr[i].status;
 		return ;
+	}
 }

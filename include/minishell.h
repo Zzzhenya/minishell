@@ -209,6 +209,13 @@ typedef struct s_cmd
 	number of env variables stored in the envlist
 */
 
+typedef struct s_ps
+{
+	pid_t	pid;
+	int		status;
+	
+}	t_ps;
+
 typedef struct s_envp
 {
 	t_list	*envlist;
@@ -220,6 +227,9 @@ typedef struct s_envp
 	char	**paths;
 	t_cmd	*tree;
 	char 	*user_input;
+	int		procs;
+	int		c;
+	t_ps	*arr;
 }	t_envp;
 
 /*	[F]
@@ -362,7 +372,7 @@ void		init_env(t_envp *env);
 // [cmd_functions.c]
 char		*check_cmd_in_path(char **envp, char *command);
 void		print_error_cmd(t_cmd *file_path, char **envp);
-void		exec(char **cmd, char **env, t_envp *envo);
+void		exec(char **cmd, char **env, t_envp *envo, int i);
 // [search_tree.c]
 void		search_tree(t_cmd *node, char **envp, t_envp *env);
 
@@ -405,8 +415,8 @@ char		*get_pwd(void);
 void		exec_echo(char **argv, int count, char **arr, t_envp *my_data);
 
 // [exit.c]
-void		exec_exit(char **argv, t_envp *my_data);
-void		free_stuff_and_exit(t_envp *my_data, int yes);
+void		exec_exit(char **argv, t_envp *my_data, int c);
+void		free_stuff_and_exit(t_envp *my_data, int yes, int i);
 
 // [unset.c]
 void		exec_unset(char **argv, t_envp *my_data);
@@ -451,7 +461,7 @@ int			count_commands(t_cmd *tree);
 //void		builtin_action(t_cmd *builtin, char **cmdline, t_envp *env);
 int			check_builtin(t_cmd *file_path, t_cmd *cmd);
 //void		pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env, pid_t pid);
-void		builtin_router(t_cmd *cmd, t_envp *env, pid_t pid);
+void		builtin_router(t_cmd *cmd, t_envp *env, pid_t pid, int i);
 
 /* readline */
 void		rl_replace_line(const char *text, int clear_undo);

@@ -108,23 +108,24 @@ int	find_matching_env_row(char *str, char **env)
 
 	// if (find_matching_env_row("PATH", envo->envarr) != -1)
 */
-
-static void execve_fail(char *cmd, t_envp *envo)
+/*
+static void execve_fail(char *cmd, t_envp *envo, int i)
 {
-	g_exit_status = EX_CMD_NOT_FOUND;
+	//g_exit_status = EX_CMD_NOT_FOUND;
+	envo->arr[i].status = EX_CMD_NOT_FOUND;
 	ft_putstr_fd("bash: ", 2);
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd(": command not found\n", 2);
-	free_stuff_and_exit(envo, 1);
+	free_stuff_and_exit(envo, 1, i);
 }
-
-void	exec(char **cmd, char **env, t_envp *envo)
+*/
+void	exec(char **cmd, char **env, t_envp *envo, int i)
 {
 	char	*path_cmd;
 	int		exit_status;
 
 	if (!cmd || !cmd[0])
-		exit(0);
+		exit(1);
 	path_cmd = NULL;
 	if (access(cmd[0], X_OK) == 0)
 		path_cmd = ft_strdup(cmd[0]);
@@ -132,15 +133,19 @@ void	exec(char **cmd, char **env, t_envp *envo)
 		path_cmd = check_cmd_in_path(env, cmd[0]);
 	if (!path_cmd)
 	{
-		exit_status = 2;
-		free_stuff_and_exit(envo, 1);
+		envo->arr[i].status = EX_CMD_NOT_FOUND;
+		free_stuff_and_exit(envo, 1, i);
 	}
 	exit_status = execve(path_cmd, cmd, envo->envarr);
 	if (path_cmd)
 		free(path_cmd);
-	exit_status = errno;
 	if (exit_status != 0)
-		execve_fail(cmd[0], envo);
+		//execve_fail(cmd[0], envo, i);
+	{
+		exit_status = errno;
+		envo->arr[i].status = exit_status;
+		exit (envo->arr[i].status);
+	}
 }
 
 /*	[F]
@@ -155,15 +160,15 @@ void	exec(char **cmd, char **env, t_envp *envo)
 			-> print error message about cmd.
 			-> exec
 */
-void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, pid_t pid)
+void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, int i)
 {
 	if (check_builtin(cmd->l_child, cmd))
-		builtin_router(cmd, env, pid);
+		builtin_router(cmd, env, env->arr[i].pid, i);
 	else
 	{
-		if (redirection_error_handle(cmd->l_child, pid) != 0)
+		if (redirection_error_handle(cmd->l_child, env->arr[i].pid) != 0)
 			return ;
 		print_error_cmd(cmd->l_child, envp);
-		exec(cmd->r_child->cmdstr, envp, env);
+		exec(cmd->r_child->cmdstr, envp, env, i);
 	}
 }

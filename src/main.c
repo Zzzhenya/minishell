@@ -61,8 +61,40 @@ void	free_things(t_cmd **tree, t_envp *env, char **envp, char *user_input)
 		free_2d(envp);
 	if (user_input)
 		free (user_input);
+	if (env->arr)
+		free (env->arr);
+	env->procs = 0;
+	env->c = 0;
 	env->cmds = 0;
 	env->builtin = 0;
+}
+
+int	count_procs(t_cmd *tree)
+{
+	int	count;
+
+	count = 0;
+	if (tree == NULL)
+		return (0);
+	if (tree->node_type == N_SIMPLE_CMD)
+		count ++;
+	count = count + count_commands(tree->l_child);
+	count = count + count_commands(tree->r_child);
+	return (count);
+}
+
+void	setup_env(t_cmd *tree, t_envp *env)
+{
+	int i = 0;
+	env->cmds = count_commands(tree);
+	env->procs = count_procs(tree);
+	env->arr = (t_ps *)malloc(sizeof(t_ps) * env->procs);
+	while (i < env->procs)
+	{
+		env->arr[i].pid = 0;
+		env->arr[i].status = 0;
+		i ++;
+	}
 }
 
 void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
@@ -85,7 +117,7 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
 				break ;
 			envp = save_all_env_paths(env->envarr);
 			*tree = parse_user_input(user_input, env);
-			env->cmds = count_commands(*tree);
+			setup_env(*tree, env);
 			search_tree(*tree, envp, env);
 			wait_each_command(*tree, env);
 		}

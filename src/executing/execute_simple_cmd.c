@@ -186,7 +186,8 @@ void	write_pipefd(int pipefd[2], int *initial_input, int flag_pipe_exist)
 */
 void	waiting_child_process(t_redirec **stdios, pid_t pid)
 {
-	waitpid(pid, NULL, WNOHANG);
+	(void)pid;
+	//waitpid(pid, NULL, WNOHANG);
 	if (find_last(*stdios, 'l', NULL) != NULL
 		&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
 		waitpid(-1, &g_exit_status, 0);
@@ -264,11 +265,11 @@ void	waiting_child_process(t_redirec **stdios, pid_t pid)
 			Wait until the child process completes execution.
 */
 
-void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env)
+void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 {
 	env->builtin = 1;
 	setup_redirections(*stdios, env);
-	builtin_router(cmd, env, 1);
+	builtin_router(cmd, env, 1, i);
 	if (find_last(*stdios, 'l', NULL) != NULL
 		&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
 		waitpid(-1, &g_exit_status, 0);
@@ -283,27 +284,31 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 {
 	int				pipefd[2];
 	static int		initial_input = -1;
-	pid_t			pid;
+	//pid_t			pid;
+	int 			i;
 
+	i = env->c;
 	if (env->cmds == 1 && check_builtin(cmd->r_child, cmd))
-		return (exec_one_builtin_cmd(cmd, stdios, env));
+		return (exec_one_builtin_cmd(cmd, stdios, env, i));
 	if (pipe(pipefd) == -1)
 		return (perror("pipe: "));
-	pid = fork();
-	if (pid < 0)
+	env->arr[i].pid = fork();
+	if (env->arr[i].pid < 0)
 		return (perror("fork: "));
-	else if (pid == 0)
+	else if (env->arr[i].pid == 0)
 	{
 		//redirection_error_handle(cmd->l_child, pid);
 		install_signals_main();
 		setup_redirections(*stdios, env);
 		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
-		pid_zero_exec(cmd, envp, env, pid);
+		pid_zero_exec(cmd, envp, env, i);
 	}
 	else
 	{
+		//env->arr[i].pid = pid;
 		install_signals_child();
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
-		waiting_child_process(stdios, pid);
+		waiting_child_process(stdios, env->arr[i].pid);
+		env->c ++;
 	}
 }

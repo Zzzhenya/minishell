@@ -24,6 +24,9 @@ void	init_env(t_envp *env)
 	env->paths = NULL;
 	env->tree = NULL;
 	env->user_input = NULL;
+	env->procs = 0;
+	env->c = 0;
+	env->arr = NULL;
 }
 
 /* 
