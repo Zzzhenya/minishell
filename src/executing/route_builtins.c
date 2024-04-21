@@ -40,11 +40,11 @@ void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid, int i)
 	if (!ft_strcmp(cmd->r_child->cmdstr[0], "exit"))
 		exec_exit(cmd->r_child->cmdstr, env, i);
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "unset"))
-		exec_unset(cmd->r_child->cmdstr, env);
+		exec_unset(cmd->r_child->cmdstr, env, i);
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "export"))
-		exec_export(cmd->r_child->cmdstr, env);
+		exec_export(cmd->r_child->cmdstr, env, i);
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "cd"))
-		exec_cd(cmd->r_child->cmdstr, env, NULL);
+		exec_cd(cmd->r_child->cmdstr, env, NULL, i);
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "echo"))
 		exec_echo(cmd->r_child->cmdstr, 0, NULL, env);
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "pwd"))
@@ -53,7 +53,6 @@ void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid, int i)
 		exec_env(NULL, env);
 	if (pid == 0)
 		exit(env->arr[i].status);
-		//exit(g_exit_status);
 	else
 	{
 		g_exit_status = env->arr[i].status;

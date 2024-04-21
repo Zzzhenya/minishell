@@ -77,17 +77,17 @@ char	*change_to_home(t_envp	*my_data)
 	return (path);
 }
 
-void	execute_path(char	*path)
+void	execute_path(char	*path, int c, t_envp *my_data)
 {
 	if (not_a_dir(path))
 	{
-		g_exit_status = 1;
+		my_data->arr[c].status = 1;
 		print_cd_error(path, ": Not a directory\n");
 		return ;
 	}
 	else if (chdir(path) == -1)
 	{
-		g_exit_status = 1;
+		my_data->arr[c].status = 1;
 		if (errno == EACCES)
 			print_cd_error(path, ": Permission denied\n");
 		else
@@ -96,12 +96,12 @@ void	execute_path(char	*path)
 	}
 	else
 	{
-		g_exit_status = 0;
+		my_data->arr[c].status = 0;
 		return ;
 	}
 }
 
-void	exec_cd(char **argv, t_envp *my_data, char *path)
+void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
 {
 	char *temp = NULL;
 	if (my_data->cd_hist != NULL && argv[1]
@@ -135,6 +135,6 @@ void	exec_cd(char **argv, t_envp *my_data, char *path)
 		my_data->cd_hist = NULL;
 	}
 	my_data->cd_hist = get_pwd();
-	execute_path(path);
+	execute_path(path, c, my_data);
 	free (path);
 }

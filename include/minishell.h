@@ -401,7 +401,7 @@ void		install_signals_here(void);
 
 // [ BUILT-IN ] 
 // [cd.c]
-void		exec_cd(char **argv, t_envp *my_data, char *path);
+void		exec_cd(char **argv, t_envp *my_data, char *path, int c);
 char		*change_to_home(t_envp	*my_data);
 
 // [env.c]
@@ -419,11 +419,11 @@ void		exec_exit(char **argv, t_envp *my_data, int c);
 void		free_stuff_and_exit(t_envp *my_data, int yes, int i);
 
 // [unset.c]
-void		exec_unset(char **argv, t_envp *my_data);
-void		unset_one_var(char *var, t_envp *my_data);
+void		exec_unset(char **argv, t_envp *my_data, int c);
+void		unset_one_var(char *var, t_envp *my_data, int c);
 
 // [export.c]
-void		exec_export(char **argv, t_envp *my_data);
+void		exec_export(char **argv, t_envp *my_data, int c);
 
 // [export_utils.c]
 void		print_export_error(char *var, char *val, char *message);
@@ -431,7 +431,7 @@ int			is_valid_var_start(unsigned char c);
 int			is_valid_var_char(char *var);
 void		print_variables_list(char **arr);
 //void		export_one_var(char **arr, t_envp *my_data);
-void	export_one_var(char *str,char *var, t_envp *my_data);
+void	export_one_var(char *str,char *var, t_envp *my_data, int c);
 
 // [builtin_utils.c]
 char		**strip_empty_strings(char **cmdstr);

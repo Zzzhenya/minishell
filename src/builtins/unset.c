@@ -49,7 +49,7 @@ int arr_len(char **arr)
 	return (len);
 }
 */
-void	unset_one_var(char *var, t_envp *my_data)
+void	unset_one_var(char *var, t_envp *my_data, int c)
 {
 	t_list	*current;
 	t_list	*prev;
@@ -68,7 +68,7 @@ void	unset_one_var(char *var, t_envp *my_data)
 			ft_lstdelone(current, free_string);
 			my_data->count --;
 			free_arr(arr, get_arg_count(arr));
-			g_exit_status = 0;
+			my_data->arr[c].status = 0;
 			break ;
 		}
 		free_arr (arr, get_arg_count(arr));
@@ -79,15 +79,15 @@ void	unset_one_var(char *var, t_envp *my_data)
 
 /* TESTTTTT */
 
-void	exec_unset(char **argv, t_envp *my_data)
+void	exec_unset(char **argv, t_envp *my_data, int c)
 {
 	int	i;
 
 	i = 1;
-	g_exit_status = 0;
+	my_data->arr[c].status = 0;
 	while (argv[i] != NULL)
 	{
-		unset_one_var(argv[i], my_data);
+		unset_one_var(argv[i], my_data, c);
 		i ++;
 	}
 }
