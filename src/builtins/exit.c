@@ -35,8 +35,10 @@ void	free_stuff_and_exit(t_envp *my_data, int yes, int i)
 		}
 		rl_clear_history();
 	}
-	exit (my_data->arr[i].status);
-	//exit (g_exit_status);
+	if (i > -1)
+		exit (my_data->arr[i].status);
+	else
+		exit (g_exit_status);
 }
 
 int	ft_isanumber(char *str)

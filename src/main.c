@@ -14,7 +14,7 @@
 
 int	g_exit_status = 0;
 
-char	**save_all_env_paths(char **envp)
+char	**save_all_env_paths(char **envp, t_envp *env)
 {
 	int	i;
 
@@ -26,9 +26,12 @@ char	**save_all_env_paths(char **envp)
 		i++;
 	}
 	ft_putstr_fd("No PATH variable in env: Aborting...\n", 2);
-	exit(EXIT_FAILURE);
+	g_exit_status = EXIT_FAILURE;
+	free_stuff_and_exit(env, 1, -1);
+	return (NULL);
 }
 
+/*
 void	non_interactive_mode(t_cmd **tree,
 								char *input, char **envp, t_envp *env)
 {
@@ -38,7 +41,7 @@ void	non_interactive_mode(t_cmd **tree,
 	user_inputs = ft_split(input, ';');
 	i = 0;
 	extract_envarr(env);
-	envp = save_all_env_paths(env->envarr);
+	envp = save_all_env_paths(env->envarr, env);
 	while (user_inputs[i])
 	{
 		*tree = parse_user_input(user_inputs[i], env);
@@ -49,7 +52,7 @@ void	non_interactive_mode(t_cmd **tree,
 	free_2d(user_inputs);
 	free_arr(env->envarr, env->count);
 	free_2d(envp);
-}
+}*/
 
 void	free_things(t_cmd **tree, t_envp *env, char **envp, char *user_input)
 {
@@ -115,7 +118,7 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
 				add_history(user_input);
 			if (extract_envarr(env) != 0)
 				break ;
-			envp = save_all_env_paths(env->envarr);
+			envp = save_all_env_paths(env->envarr, env);
 			*tree = parse_user_input(user_input, env);
 			setup_env(*tree, env);
 			search_tree(*tree, envp, env);
