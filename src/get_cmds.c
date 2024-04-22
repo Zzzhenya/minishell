@@ -38,7 +38,6 @@ void	free_for_norminette(char **validated_input, int *token)
 		Parses the pipe based on it and constructs a command tree.
 	6. Free memory and return for no more useful things.
 */
-
 t_cmd	*parse_user_input(char *user_input, t_envp *env)
 {
 	t_cmd	*cmd_tree;
