@@ -67,12 +67,27 @@ int	expand_token_env_2(t_data *data, char **env, int i)
 		&& data->token[i][i_dollar + 1] != '$')
 	{
 		row_env = find_matching_env_row(data->token[i] + i_dollar + 1, env);
+		// Fixed to like below.
+		if (row_env == -1)
+		{
+			data->token[i]
+				= replace_substring(data->token[i], "", i_dollar);
+			// printf("1. KO, string isn't in env. data->token[i]: %s\n", data->token[i]);
+		}
+		else
+		{
+			data->token[i]
+				= replace_substring(data->token[i], env[row_env], i_dollar);
+			// printf("2. OK, There is string in env. data->token[i]: %s, %s\n", data->token[i], data->token[i+1]);
+		}
+		/* Original one
 		if (row_env == -1)
 			data->token[i]
 				= replace_substring(data->token[i], "\n", i_dollar);
 		else
 			data->token[i]
 				= replace_substring(data->token[i], env[row_env], i_dollar);
+		*/
 		if (data->token[i] == NULL)
 			return (-1);
 	}

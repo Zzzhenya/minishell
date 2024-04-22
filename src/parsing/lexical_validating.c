@@ -63,6 +63,7 @@ char	**validate_input(char *user_input, char **env)
 	if (count_quote(user_input, &data) == -1)
 		return (NULL);
 	data.n_word = count_word(data.str, 0, 0, 0);
+	// printf("data.n_word: %d\n", data.n_word);
 	if (data.n_word == 0)
 		return (NULL);
 	if (data.n_sq + data.n_dq > 0)
@@ -75,5 +76,11 @@ char	**validate_input(char *user_input, char **env)
 		return (NULL);
 	if (expand_env(&data, env, 0) == -1)
 		return (NULL);
+	int i = 0;
+	while (i < data.n_word)
+	{
+		printf("data.token: %s\n", data.token[i]);
+		i++;
+	}
 	return (data.token);
 }
