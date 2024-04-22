@@ -47,6 +47,7 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 {
 	int	status;
 	int i;
+	int sig = 0;
 
 	(void)tree;
 	status = 0;
@@ -66,11 +67,24 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 		waitpid(env->arr[i].pid, &status, 0);
 		if (WIFEXITED(status))
 			env->arr[i].status = WEXITSTATUS(status);
-		//printf("pid: %d , status: %d\n", env->arr[i].pid, env->arr[i].status);
+		else if (WIFSIGNALED(status))
+		{
+			sig = WTERMSIG(status);
+			env->arr[i].status  = sig;
+		}
+		//printf("pid: %d , status: %d %s\n", env->arr[i].pid, env->arr[i].status, strsignal(status));
 		i ++;
 	}
 	g_exit_status = env->arr[i - 1].status;
 	//printf("status %d\n", g_exit_status);
-	if ((status == 2 || status == 3)) // (env->cmds != 1) && 
-		write(1, "\n", 1);
+	if ((sig == 2 || sig == 3)) // (env->cmds != 1) && 
+	{
+		if (sig == 2)
+			printf("\n");
+		else
+			printf("Quit (core dumped)\n");
+		if (status > 0)
+			g_exit_status = 128 + status;
+		//write(1, "\n", 1);
+	}
 }

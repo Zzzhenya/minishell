@@ -150,4 +150,5 @@ int	main(int argc, char **argv, char **envs)
 		free (env.cd_hist);
 		env.cd_hist = NULL;
 	}
+	return (g_exit_status);
 }
