@@ -82,8 +82,7 @@ void	dup_and_redirect(int oldfd, int newfd)
 		O_APPEND - Append to the end
 		0666 - Grants read and write permission to everyone.
 		if open fails, exit and set errno;
-		duplicate fd of the opened file and redirect it to STDOUT
-	close opened fd
+		duplicate fd of the opened file and redirect it to STDOUT - > this closed old fd
 */
 void	setup_last_r(t_redirec *last_r)
 {
@@ -104,7 +103,7 @@ void	setup_last_r(t_redirec *last_r)
 			exit(errno);
 		dup_and_redirect(fd, STDOUT_FILENO);
 	}
-	close(fd);
+	//close(fd);
 }
 
 /*
@@ -130,7 +129,7 @@ void	setup_last_r(t_redirec *last_r)
 		re-open the closed temp file in readonly mode
 		duplicate fd of the temp file and redirect it to STDIN
 		unlink and delete the temp file and path;
-Shouldn't I close the fd?
+Shouldn't I close the fd? No, dup_and _edirect already closed the old fd
 
 */
 void	setup_last_l(t_redirec *last_l, t_envp *env)
@@ -144,7 +143,6 @@ void	setup_last_l(t_redirec *last_l, t_envp *env)
 		if (!fd)
 			exit(errno);
 		dup_and_redirect(fd, STDIN_FILENO);
-		close(fd);
 	}
 	else if (last_l->redirec_type == REDIREC_LL)
 	{
@@ -158,7 +156,7 @@ void	setup_last_l(t_redirec *last_l, t_envp *env)
 		unlink(HEREDOCNAME);
 	}
 }
-
+/*
 t_redirec	*find_last(t_redirec *stdios, char c, t_redirec *last)
 {
 	t_redirec	*curr;
@@ -186,6 +184,25 @@ t_redirec	*find_last(t_redirec *stdios, char c, t_redirec *last)
 	}
 	return (last);
 }
+*/
+void	find_redir(t_redirec *stdios, t_envp *env)
+{
+	t_redirec *curr;
+	curr = stdios;
+	while (curr != NULL)
+	{
+		if (curr->redirec_type == REDIREC_L)
+			setup_last_l(curr, env);
+		else if (curr->redirec_type == REDIREC_LL)
+			setup_last_l(curr, env);
+		else if (curr->redirec_type == REDIREC_R)
+			setup_last_r(curr);
+		else if (curr->redirec_type == REDIREC_RR)
+			setup_last_r(curr);
+		curr = curr->next_redirec;
+	}
+	return ;
+}
 
 /*
 	if the t_redirce node is empty ; return
@@ -196,15 +213,18 @@ t_redirec	*find_last(t_redirec *stdios, char c, t_redirec *last)
 */
 void	setup_redirections(t_redirec *stdios, t_envp *env)
 {
-	t_redirec	*last_l;
-	t_redirec	*last_r;
+	//t_redirec	*last_l;
+	//t_redirec	*last_r;
 
+	//(void)env;
 	if (stdios == NULL)
 		return ;
+	find_redir(stdios, env);
+	/*
 	last_l = find_last(stdios, 'l', NULL);
 	last_r = find_last(stdios, 'r', NULL);
 	if (last_l != NULL)
 		setup_last_l(last_l, env);
 	if (last_r != NULL)
-		setup_last_r(last_r);
+		setup_last_r(last_r);*/
 }

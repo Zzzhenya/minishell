@@ -188,11 +188,11 @@ void	waiting_child_process(t_redirec **stdios, pid_t pid)
 {
 	(void)pid;
 	//waitpid(pid, NULL, WNOHANG);
-	if (find_last(*stdios, 'l', NULL) != NULL
-		&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
-		waitpid(-1, &g_exit_status, 0);
-	else
-		free_stdios(*stdios);
+	//if (find_last(*stdios, 'l', NULL) != NULL
+	//	&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
+	//	waitpid(-1, &g_exit_status, 0);
+	//else
+	free_stdios(*stdios);
 	*stdios = NULL;
 }
 
@@ -270,11 +270,11 @@ void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 	env->builtin = 1;
 	setup_redirections(*stdios, env);
 	builtin_router(cmd, env, 1, i);
-	if (find_last(*stdios, 'l', NULL) != NULL
+	/*if (find_last(*stdios, 'l', NULL) != NULL
 		&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
 		waitpid(-1, &g_exit_status, 0);
-	else
-		free_stdios(*stdios);
+	else*/
+	free_stdios(*stdios);
 	*stdios = NULL;
 	return ;
 }

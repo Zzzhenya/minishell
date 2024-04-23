@@ -115,12 +115,12 @@ void	execute_simple_redirect(t_cmd *node, t_redirec **stdios)
 {
 	t_redirec	*redirection;
 
-	if (node->r_child->cmdstr[0] == NULL)
+	/*if (node->r_child->cmdstr[0] == NULL)
 	{
 		redir_error_msg("bash: syntax error near unexpected token `newline'\n");
 		g_exit_status = 2;
 		return ;
-	}
+	}*/
 	redirection = (t_redirec *)malloc(sizeof(t_redirec));
 	if (redirection == NULL)
 	{
