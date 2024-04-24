@@ -64,7 +64,7 @@ char	*change_to_home(t_envp	*my_data)
 		lst = lst->next;
 	}
 	if (!temp)
-		return (NULL);
+		temp = getenv("HOME");
 	while (*temp)
 	{
 		if (*temp == '/')
@@ -118,7 +118,6 @@ void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
 	}
 	else if (argv[1] == NULL || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
 	{
-		printf("HERE\n");
 		path = change_to_home(my_data);
 	}
 	else if (argv[1][0] == '~' && argv[1][1] == '/')
