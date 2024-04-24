@@ -76,11 +76,11 @@ char	**validate_input(char *user_input, char **env)
 		return (NULL);
 	if (expand_env(&data, env, 0) == -1)
 		return (NULL);
-	int i = 0;
+	/*int i = 0;
 	while (i < data.n_word)
 	{
 		printf("data.token: %s\n", data.token[i]);
 		i++;
-	}
+	}*/
 	return (data.token);
 }
