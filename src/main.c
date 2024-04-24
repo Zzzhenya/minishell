@@ -120,7 +120,7 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
 				break ;
 			envp = save_all_env_paths(env->envarr, env);
 			*tree = parse_user_input(user_input, env);
-			print_tree(*tree);
+			//print_tree(*tree);
 			setup_env(*tree, env);
 			search_tree(*tree, envp, env);
 			wait_each_command(*tree, env);

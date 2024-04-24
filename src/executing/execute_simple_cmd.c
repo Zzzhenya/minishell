@@ -76,9 +76,7 @@
 */
 void	update_pipefd(int pipefd[2], int initial_input, int flag_pipe_exist)
 {
-	close(pipefd[0]);
-	if (initial_input != -1)
-		(dup2(initial_input, STDIN_FILENO));
+	(void)initial_input;
 	if (flag_pipe_exist == -1)
 		close(pipefd[1]);
 	else
@@ -301,6 +299,9 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	{
 		//redirection_error_handle(cmd->l_child, pid);
 		install_signals_main();
+		close(pipefd[0]);
+		if (initial_input != -1)
+			dup2(initial_input, STDIN_FILENO);
 		setup_redirections(*stdios, env);
 		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
 		pid_zero_exec(cmd, envp, env, i);
