@@ -268,12 +268,12 @@ void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 	env->builtin = 1;
 	setup_redirections(*stdios, env);
 	builtin_router(cmd, env, 1, i);
+	free_stdios(*stdios);
+	*stdios = NULL;
 	/*if (find_last(*stdios, 'l', NULL) != NULL
 		&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
 		waitpid(-1, &g_exit_status, 0);
 	else*/
-	free_stdios(*stdios);
-	*stdios = NULL;
 	return ;
 }
 
@@ -288,7 +288,11 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	i = env->c;
 	if ((env->procs == 1 && check_builtin(cmd->r_child, cmd)) || 
 			(env->cmds == 1 && check_builtin(cmd->r_child, cmd)))
-		return (exec_one_builtin_cmd(cmd, stdios, env, i));
+	{
+		initial_input = -1;
+		exec_one_builtin_cmd(cmd, stdios, env, i);
+		return ;
+	}
 	if (g_exit_status == 2)
 		return;
 	if (pipe(pipefd) == -1)
