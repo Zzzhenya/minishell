@@ -63,9 +63,15 @@ void	free_things(t_cmd **tree, t_envp *env, char **envp, char *user_input)
 	if (envp)
 		free_2d(envp);
 	if (user_input)
+	{
 		free (user_input);
+		user_input = NULL;
+	}
 	if (env->arr)
+	{
 		free (env->arr);
+		env->arr = NULL;
+	}
 	env->procs = 0;
 	env->c = 0;
 	env->cmds = 0;
