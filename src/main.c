@@ -81,8 +81,8 @@ int	count_procs(t_cmd *tree)
 		return (0);
 	if (tree->node_type == N_SIMPLE_CMD)
 		count ++;
-	count = count + count_commands(tree->l_child);
-	count = count + count_commands(tree->r_child);
+	count = count + count_procs(tree->l_child);
+	count = count + count_procs(tree->r_child);
 	return (count);
 }
 

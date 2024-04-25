@@ -52,8 +52,8 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 	(void)tree;
 	status = 0;
 	i = 0;
-	if (env->cmds == 1 && env->builtin == 1)
-		return ;
+	/*if (env->cmds == 1 && env->builtin == 1)
+		return ;*/
 	if (env->procs == 1 && env->builtin == 1)
 		return;
 	/*
