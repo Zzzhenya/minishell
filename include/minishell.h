@@ -349,7 +349,7 @@ void		free_arr(char **arr, int loc);
 // [ main.c ]
 char		**save_all_env_paths(char **envp, t_envp *env);
 char		*get_allocated_cwd(void);
-void		interactive_mode(t_cmd **tree, char **envp, t_envp *env,
+void		interactive_mode(t_cmd **tree, t_envp *env,
 				char *user_input);
 void		non_interactive_mode(t_cmd **tree,
 				char *input, char **envp, t_envp *env);
