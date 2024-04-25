@@ -311,6 +311,11 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
 		if (ret == 0)
 			pid_zero_exec(cmd, envp, env, i);
+		else
+		{
+			g_exit_status = 1;
+			free_stuff_and_exit(env, 1, -1);
+		}
 	}
 	else
 	{
