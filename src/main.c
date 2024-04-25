@@ -106,7 +106,7 @@ void	setup_env(t_cmd *tree, t_envp *env)
 	}
 }
 
-void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
+void	interactive_mode(t_cmd **tree, t_envp *env,
 					char *user_input)
 {
 	while (1)
@@ -124,17 +124,16 @@ void	interactive_mode(t_cmd **tree, char **envp, t_envp *env,
 				add_history(user_input);
 			if (extract_envarr(env) != 0)
 				break ;
-			envp = save_all_env_paths(env->envarr, env);
+			env->paths = save_all_env_paths(env->envarr, env);
 			*tree = parse_user_input(user_input, env);
 			if (*tree != NULL)
 			{
-				//print_tree(*tree);
 				setup_env(*tree, env);
-				search_tree(*tree, envp, env);
+				search_tree(*tree, env->paths, env);
 				wait_each_command(*tree, env);
 			}
 		}
-		free_things(tree, env, envp, user_input);
+		free_things(tree, env, env->paths, user_input);
 	}
 }
 
@@ -150,7 +149,7 @@ int	main(int argc, char **argv, char **envs)
 	{
 		if (isatty(STDIN_FILENO) == 1)
 		{
-			interactive_mode(&(env.tree), env.paths, &env, env.user_input);
+			interactive_mode(&(env.tree), &env, env.user_input);
 			rl_clear_history();
 		}
 	}
