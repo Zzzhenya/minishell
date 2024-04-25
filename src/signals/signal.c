@@ -45,19 +45,28 @@ void	handle_prompt(int sig)
 	rl_redisplay();
 }
 
+void	handle_bs(int sig)
+{
+	g_exit_status = sig;
+	return;
+}
+
 /* 	
 	signal definitions for 
 		the main before executing 
 		the child after executing
 */
-void	install_signals_main(void)
+void	install_signals_main(int c)
 {
 	struct sigaction	act1;
 	struct sigaction	act2;
 
 	ft_bzero(&act1, sizeof(act1));
 	ft_bzero(&act2, sizeof(act2));
-	act1.sa_handler = SIG_IGN;
+	if (c == 10)
+		act1.sa_handler = SIG_IGN;
+	else
+		act1.sa_handler = &handle_bs;
 	act2.sa_handler = &handle_prompt;
 	sigaction(SIGQUIT, &act1, NULL);
 	sigaction(SIGINT, &act2, NULL);

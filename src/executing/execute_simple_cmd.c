@@ -303,7 +303,7 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	else if (env->arr[i].pid == 0)
 	{
 		//redirection_error_handle(cmd->l_child, pid);
-		install_signals_main();
+		install_signals_main(0);
 		close(pipefd[0]);
 		if (initial_input != -1)
 			dup2(initial_input, STDIN_FILENO);

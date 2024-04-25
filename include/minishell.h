@@ -394,7 +394,7 @@ int			get_arg_count(char **argv);
 
 // [ SIGNAL ]
 // [signals.c]
-void		install_signals_main(void);
+void		install_signals_main(int c);
 void		install_signals_hang(void);
 void		install_signals_child(void);
 void		install_signals_here(void);

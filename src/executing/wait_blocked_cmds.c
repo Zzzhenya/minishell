@@ -80,11 +80,14 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 	if ((sig == 2 || sig == 3)) // (env->cmds != 1) && 
 	{
 		if (sig == 2)
+		{
 			printf("\n");
-		else
-			printf("Quit (core dumped)\n");
-		if (status > 0)
 			g_exit_status = 128 + status;
-		//write(1, "\n", 1);
+		}
+		else
+		{
+			printf("Quit (core dumped)\n");
+			g_exit_status = status;
+		}
 	}
 }
