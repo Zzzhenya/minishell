@@ -35,7 +35,14 @@ void	free_stuff_and_exit(t_envp *my_data, int yes, int i)
 		}
 		rl_clear_history();
 	}
-	if (i > -1)
+	
+	if (my_data->builtin == 1 && my_data->procs == 1)
+	{
+		i = my_data->arr[i].status;
+		free (my_data->arr);
+		exit (i);
+	}
+	else if (i > -1)
 		exit (my_data->arr[i].status);
 	else
 		exit (g_exit_status);
@@ -113,7 +120,7 @@ void	exec_exit(char **argv, t_envp *my_data, int c)
 	arr = strip_empty_strings(&argv[1]);
 	count = count_non_empty_strings(&argv[1]);
 	if (count == 0)
-		free_stuff_and_exit(my_data, 0, 0); // same
+		free_stuff_and_exit(my_data, 0, c); // same
 	digcount = ft_isanumber(arr[0]);
 	if (digcount != 0)
 	{
