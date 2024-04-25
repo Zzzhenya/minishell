@@ -14,7 +14,7 @@
 
 void	free_stuff_and_exit(t_envp *my_data, int yes, int i)
 {
-	if ((my_data->builtin == 1 && my_data->cmds == 1) || yes == 1)
+	if ((my_data->builtin == 1 && my_data->procs == 1) || yes == 1)
 	{
 		clear_envlist(my_data);
 		if (my_data->cd_hist != NULL)

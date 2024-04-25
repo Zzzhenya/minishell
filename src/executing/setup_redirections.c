@@ -61,8 +61,9 @@ void	dup_and_redirect(int oldfd, int newfd)
 	if (ret == -1)
 	{
 		close (oldfd);
-		exit (errno);
+		//exit (errno);
 	}
+	close (oldfd);
 }
 
 /*
@@ -84,7 +85,7 @@ void	dup_and_redirect(int oldfd, int newfd)
 		if open fails, exit and set errno;
 		duplicate fd of the opened file and redirect it to STDOUT - > this closed old fd
 */
-void	setup_last_r(t_redirec *last_r)
+int	setup_last_r(t_redirec *last_r)
 {
 	int	fd;
 
@@ -93,16 +94,25 @@ void	setup_last_r(t_redirec *last_r)
 	{
 		fd = open(last_r->filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 		if (fd == -1)
-			exit(errno);
+		{
+			printf("bash: %s: Open error\n", last_r->filename);
+			g_exit_status = errno;
+			return (1);
+		}
 		dup_and_redirect(fd, STDOUT_FILENO);
 	}
 	else if (last_r->redirec_type == REDIREC_RR)
 	{
 		fd = open(last_r->filename, O_WRONLY | O_CREAT | O_APPEND, 0666);
 		if (fd == -1)
-			exit(errno);
+		{
+			printf("bash: %s: Open error\n", last_r->filename);
+			g_exit_status = errno;
+			return (1);
+		}
 		dup_and_redirect(fd, STDOUT_FILENO);
 	}
+	return (0);
 	//close(fd);
 }
 
@@ -132,7 +142,7 @@ void	setup_last_r(t_redirec *last_r)
 Shouldn't I close the fd? No, dup_and _edirect already closed the old fd
 
 */
-void	setup_last_l(t_redirec *last_l, t_envp *env)
+int	setup_last_l(t_redirec *last_l, t_envp *env)
 {
 	int	fd;
 
@@ -140,21 +150,34 @@ void	setup_last_l(t_redirec *last_l, t_envp *env)
 	if (last_l->redirec_type == REDIREC_L)
 	{
 		fd = open(last_l->filename, O_RDONLY);
-		if (!fd)
-			exit(errno);
+		if (fd == -1)
+		{
+			printf("bash: %s: No such file or directory\n", last_l->filename);
+			g_exit_status = 1;
+			return (1);
+			//exit(errno);
+		}
 		dup_and_redirect(fd, STDIN_FILENO);
+		return (0);
 	}
 	else if (last_l->redirec_type == REDIREC_LL)
 	{
 		fd = open(HEREDOCNAME, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (!fd)
-			exit(errno);
+		if (fd == -1)
+		{
+			printf("bash: Too many heredocs\n");
+			g_exit_status = 1;
+			return (1);
+			//exit(errno);
+		}
 		heredoc_input(fd, last_l->filename, env, NULL);
 		close(fd);
 		fd = open(HEREDOCNAME, O_RDONLY);
 		dup_and_redirect(fd, STDIN_FILENO);
 		unlink(HEREDOCNAME);
+		return (0);
 	}
+	return (0);
 }
 /*
 t_redirec	*find_last(t_redirec *stdios, char c, t_redirec *last)
@@ -185,14 +208,17 @@ t_redirec	*find_last(t_redirec *stdios, char c, t_redirec *last)
 	return (last);
 }
 */
-void	find_redir(t_redirec *stdios, t_envp *env)
+int	find_redir(t_redirec *stdios, t_envp *env)
 {
 	t_redirec *curr;
 	curr = stdios;
 	while (curr != NULL)
 	{
 		if (curr->redirec_type == REDIREC_L)
-			setup_last_l(curr, env);
+		{
+			if(setup_last_l(curr, env) != 0)
+				return (1);
+		}
 		else if (curr->redirec_type == REDIREC_LL)
 			setup_last_l(curr, env);
 		else if (curr->redirec_type == REDIREC_R)
@@ -201,7 +227,7 @@ void	find_redir(t_redirec *stdios, t_envp *env)
 			setup_last_r(curr);
 		curr = curr->next_redirec;
 	}
-	return ;
+	return (0);
 }
 
 /*
@@ -211,15 +237,18 @@ void	find_redir(t_redirec *stdios, t_envp *env)
 	if last left redirec is not null ; setup the last left redirec
 	if last right redirec is not null ; setup the last right redirec
 */
-void	setup_redirections(t_redirec *stdios, t_envp *env)
+int	setup_redirections(t_redirec *stdios, t_envp *env)
 {
 	//t_redirec	*last_l;
 	//t_redirec	*last_r;
 
 	//(void)env;
 	if (stdios == NULL)
-		return ;
-	find_redir(stdios, env);
+		return (0);
+	if (find_redir(stdios, env) == 0)
+		return (0);
+	else
+		return (1);
 	/*
 	last_l = find_last(stdios, 'l', NULL);
 	last_r = find_last(stdios, 'r', NULL);
