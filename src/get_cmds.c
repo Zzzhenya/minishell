@@ -59,11 +59,11 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	token_sequence[0] = 0;
 	token_sequence[1] = check_token_length(token);
 	tmp = syntax_pipe(validated_input, token, token_sequence, &cmd_tree);
+	free_for_norminette(validated_input, token);
 	if (tmp == -1)
 		free_tree(cmd_tree);
 	if (tmp == -1)
 		return (NULL);
-	free_for_norminette(validated_input, token);
 	return (cmd_tree);
 }
 /*
