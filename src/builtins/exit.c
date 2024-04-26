@@ -35,7 +35,7 @@ void	free_stuff_and_exit(t_envp *my_data, int yes, int i)
 		}
 		rl_clear_history();
 	}
-	if ((my_data->builtin == 1 && my_data->procs == 1) || my_data->procs == 1)
+	if (my_data->builtin == 1 || my_data->procs == 1)
 	{
 		i = my_data->arr[0].status;
 		free (my_data->arr);
@@ -43,7 +43,13 @@ void	free_stuff_and_exit(t_envp *my_data, int yes, int i)
 		exit (g_exit_status);
 	}
 	else if (i > -1)
-		exit (my_data->arr[i].status);
+	{
+		i = my_data->arr[0].status;
+		free (my_data->arr);
+		g_exit_status = i;
+		exit (g_exit_status);
+		//exit (my_data->arr[i].status);
+	}
 	else
 		exit (g_exit_status);
 }

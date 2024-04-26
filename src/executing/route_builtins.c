@@ -52,7 +52,10 @@ void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid, int i)
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "env"))
 		exec_env(NULL, env, i);
 	if (pid == 0)
-		exit(env->arr[i].status);
+	{
+		free_stuff_and_exit(env, 1, i);
+		//exit(env->arr[i].status);
+	}
 	else
 	{
 		g_exit_status = env->arr[i].status;
