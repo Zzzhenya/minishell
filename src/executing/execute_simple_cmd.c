@@ -267,13 +267,20 @@ void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 {
 	env->builtin = 1;
 	if (setup_redirections(*stdios, env) == 0)
+	{
+		free_stdios(*stdios);
+		*stdios = NULL;
 		builtin_router(cmd, env, 1, i);
-	free_stdios(*stdios);
-	*stdios = NULL;
+	}
+	else
+	{
+		free_stdios(*stdios);
+		*stdios = NULL;
 	/*if (find_last(*stdios, 'l', NULL) != NULL
 		&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
 		waitpid(-1, &g_exit_status, 0);
 	else*/
+	}
 	return ;
 }
 
