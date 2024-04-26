@@ -323,18 +323,21 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
 		if (ret == 0)
 		{
-			if (env->procs == 1 && cmd->r_child->cmdstr[0] == NULL)
+			//if (env->procs == 1 && cmd->r_child->cmdstr[0] == NULL)
+			if (*stdios)
 			{
-				if (*stdios)
-				{
-					free_stdios(*stdios);
-					*stdios = NULL;
-				}
+				free_stdios(*stdios);
+				*stdios = NULL;
 			}
 			pid_zero_exec(cmd, envp, env, i);
 		}
 		else
 		{
+			if (*stdios)
+			{
+				free_stdios(*stdios);
+				*stdios = NULL;
+			}
 			g_exit_status = 1;
 			free_stuff_and_exit(env, 1, -1);
 		}
@@ -346,14 +349,13 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
 		waiting_child_process(stdios, env->arr[i].pid);
 		env->c ++;
-		/*
-		if (env->procs == 1 && cmd->r_child->cmdstr[0] == NULL)
+		if (env->procs == 1)
 		{
 			if (*stdios)
 			{
 				free_stdios(*stdios);
 				*stdios = NULL;
 			}
-		}*/
+		}
 	}
 }

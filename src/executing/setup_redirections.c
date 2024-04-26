@@ -222,7 +222,10 @@ int	find_redir(t_redirec *stdios, t_envp *env)
 		else if (curr->redirec_type == REDIREC_LL)
 			setup_last_l(curr, env);
 		else if (curr->redirec_type == REDIREC_R)
-			setup_last_r(curr);
+		{
+			if (setup_last_r(curr) != 0)
+				return (1);
+		}
 		else if (curr->redirec_type == REDIREC_RR)
 			setup_last_r(curr);
 		curr = curr->next_redirec;
