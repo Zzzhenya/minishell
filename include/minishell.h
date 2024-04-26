@@ -448,7 +448,7 @@ File descriptor of STDOUT, relating with output source like Monitor.
 */
 
 // [redirection_error_handle.c]
-int			redirection_error_handle(t_cmd *type, pid_t pid);
+int			redirection_error_handle(t_cmd *type, pid_t pid, t_envp *env);
 
 // [child_process.c]
 void		pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, pid_t pid);

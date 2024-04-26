@@ -30,12 +30,14 @@ int	check_builtin(t_cmd *file_path, t_cmd *cmd)
 
 void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid, int i)
 {
-	if (redirection_error_handle(cmd->l_child, pid) != 0)
+	if (redirection_error_handle(cmd->l_child, pid, env) != 0)
 	{
 		if (pid != 0)
 			return ;
 		else
+		{
 			exit(g_exit_status);
+		}
 	}
 	if (!ft_strcmp(cmd->r_child->cmdstr[0], "exit"))
 		exec_exit(cmd->r_child->cmdstr, env, i);

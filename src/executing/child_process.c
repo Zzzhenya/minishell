@@ -166,7 +166,7 @@ void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, int i)
 		builtin_router(cmd, env, env->arr[i].pid, i);
 	else
 	{
-		if (redirection_error_handle(cmd->l_child, env->arr[i].pid) != 0)
+		if (redirection_error_handle(cmd->l_child, env->arr[i].pid, env) != 0)
 			return ;
 		print_error_cmd(cmd->l_child, envp);
 		exec(cmd->r_child->cmdstr, envp, env, i);

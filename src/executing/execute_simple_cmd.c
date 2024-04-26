@@ -270,7 +270,12 @@ void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 	{
 		free_stdios(*stdios);
 		*stdios = NULL;
-		builtin_router(cmd, env, 1, i);
+		if (cmd->r_child->cmdstr[0] != NULL)
+			builtin_router(cmd, env, 1, i);
+		/*else
+		{
+			return ;
+		}*/
 	}
 	else
 	{
@@ -294,7 +299,7 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	int ret = 0;
 
 	i = env->c;
-	if (env->procs == 1 && check_builtin(cmd->r_child, cmd))
+	if (env->procs == 1 && (check_builtin(cmd->r_child, cmd)))// || cmd->r_child->cmdstr[0] == NULL))
 	{
 		initial_input = -1;
 		exec_one_builtin_cmd(cmd, stdios, env, i);
@@ -317,7 +322,17 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		ret = setup_redirections(*stdios, env);
 		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
 		if (ret == 0)
+		{
+			if (env->procs == 1 && cmd->r_child->cmdstr[0] == NULL)
+			{
+				if (*stdios)
+				{
+					free_stdios(*stdios);
+					*stdios = NULL;
+				}
+			}
 			pid_zero_exec(cmd, envp, env, i);
+		}
 		else
 		{
 			g_exit_status = 1;
@@ -331,5 +346,14 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
 		waiting_child_process(stdios, env->arr[i].pid);
 		env->c ++;
+		/*
+		if (env->procs == 1 && cmd->r_child->cmdstr[0] == NULL)
+		{
+			if (*stdios)
+			{
+				free_stdios(*stdios);
+				*stdios = NULL;
+			}
+		}*/
 	}
 }
