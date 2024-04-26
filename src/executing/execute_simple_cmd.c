@@ -338,8 +338,9 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 				free_stdios(*stdios);
 				*stdios = NULL;
 			}
-			g_exit_status = 1;
-			free_stuff_and_exit(env, 1, -1);
+			env->arr[i].status = 1;
+			//g_exit_status = 1;
+			free_stuff_and_exit(env, 1, i);
 		}
 	}
 	else
