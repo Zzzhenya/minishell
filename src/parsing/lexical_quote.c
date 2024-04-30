@@ -12,6 +12,39 @@
 
 #include "../../include/minishell.h"
 
+/*
+
+*/
+
+int	count_quote(char *str, t_data *data)
+{
+	int	i;
+	int	dq;
+	int	sq;
+
+	i = 0;
+	dq = 0;
+	sq = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' && dq % 2 == 0)
+			sq++;
+		if (str[i] == '\"' && sq % 2 == 0)
+			dq++;
+		i ++;
+	}
+	if (sq % 2 == 0 && dq % 2 == 0)
+	{
+		// store values in the data struct
+		data->n_sq = sq;
+		data->n_dq = dq;
+		// return sq count
+		return (sq);
+	}
+	return (-1);
+}
+
+/*
 int	count_quote(char *str, t_data *data)
 {
 	int	i;
@@ -23,20 +56,27 @@ int	count_quote(char *str, t_data *data)
 	n_dq = 0;
 	while (str[i])
 	{
+		// if char is ' -> increment n_sq
 		if (str[i] == '\'')
 			n_sq++;
+		// if char is " -> increment n_dq
 		if (str[i] == '\"')
 			n_dq++;
+		// go to next char
 		i++;
 	}
+	// if sq count is even AND dq count is even
 	if (n_sq % 2 == 0 && n_dq % 2 == 0)
 	{
+		// store values in the data struct
 		data->n_sq = n_sq;
 		data->n_dq = n_dq;
+		// return sq count
 		return (n_sq);
 	}
+	// for any other case return  -1
 	return (-1);
-}
+}*/
 
 char	*extract_quoted_string(char *str, int i)
 {

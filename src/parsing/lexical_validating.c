@@ -32,16 +32,23 @@ int	count_word(const char *str, int n_word, int flag_inword, int flag_inquote)
 {
 	while (*str)
 	{
+		// if char is a space and inquote is 0 -> convert inword to 0
 		if (*str == ' ' && flag_inquote == 0)
 			flag_inword = 0;
+		// if char is < or > or | or $ -> increment n_word; convert inword to 0
 		else if (*str == '<' || *str == '>'
 			|| *str == '|' || *str == '$')
 		{
 			n_word++;
 			flag_inword = 0;
 		}
+		// if char is a " or ' -> 
+			// if inquote is 1 -> increment n_word, reset inword and inquote to 0
+			// if inquote is 0 -> set inword and inquote to 1
 		else if (*str == '"' || *str == '\'')
 			toggle_inword_inquote(&flag_inword, &n_word, &flag_inquote);
+		// if char is anythong else
+			// if inword is 0 -> increment n_word; set inword to 1
 		else
 		{
 			if (flag_inword == 0)
@@ -50,8 +57,10 @@ int	count_word(const char *str, int n_word, int flag_inword, int flag_inquote)
 				flag_inword = 1;
 			}
 		}
+		// move to next char
 		str++;
 	}
+	// return n_word value
 	return (n_word);
 }
 
@@ -151,6 +160,7 @@ char	**validate_input(char *user_input, char **env)
 	data.str = user_input;
 	if (count_quote(user_input, &data) == -1)
 	{
+		printf("Syntax error\n");
 		return (NULL);
 	}
 	/* memo */
