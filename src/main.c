@@ -126,13 +126,13 @@ void	interactive_mode(t_cmd **tree, t_envp *env,
 				break ;
 			env->paths = save_all_env_paths(env->envarr, env);
 			*tree = parse_user_input(user_input, env);
-			if (*tree != NULL)
-			{
-				//print_tree(*tree);
-				setup_env(*tree, env);
-				search_tree(*tree, env->paths, env);
-				wait_each_command(*tree, env);
-			}
+			// if (*tree != NULL)
+			// {
+			// 	//print_tree(*tree);
+			// 	setup_env(*tree, env);
+			// 	search_tree(*tree, env->paths, env);
+			// 	wait_each_command(*tree, env);
+			// }
 		}
 		free_things(tree, env, env->paths, user_input);
 	}

@@ -28,39 +28,53 @@ void	toggle_inword_inquote(int *flag_inword, int *n_word, int *flag_inquote)
 	return ;
 }
 
+/*
+	Count word when the char is;
+		<
+		>
+		|
+		$
+
+*/
+
 int	count_word(const char *str, int n_word, int flag_inword, int flag_inquote)
 {
+	(void)flag_inquote;
+	int sq = 0; int dq = 0;
 	while (*str)
 	{
-		// if char is a space and inquote is 0 -> convert inword to 0
-		if (*str == ' ' && flag_inquote == 0)
+		if (*str == ' ' && (sq % 2 == 0 && dq % 2 == 0))
 			flag_inword = 0;
-		// if char is < or > or | or $ -> increment n_word; convert inword to 0
-		else if (*str == '<' || *str == '>'
-			|| *str == '|' || *str == '$')
+		else if ((*str == '<' || *str == '>' || *str == '|') && (sq % 2 == 0 && dq % 2 == 0))
 		{
 			n_word++;
 			flag_inword = 0;
 		}
-		// if char is a " or ' -> 
-			// if inquote is 1 -> increment n_word, reset inword and inquote to 0
-			// if inquote is 0 -> set inword and inquote to 1
 		else if (*str == '"' || *str == '\'')
-			toggle_inword_inquote(&flag_inword, &n_word, &flag_inquote);
-		// if char is anythong else
-			// if inword is 0 -> increment n_word; set inword to 1
-		else
 		{
-			if (flag_inword == 0)
+			if ((sq % 2 == 0 && dq % 2 == 0))
+			{
+				flag_inword = 0;
+			}
+			else
+			{
+				flag_inword = 1;
+			}
+			if (*str == '\'' && dq % 2 == 0)
+				sq++;
+			if (*str == '\"' && sq % 2 == 0)
+				dq++;
+		}
+		else //if (!(*str == '"' || *str == '\''))
+		{
+			if (flag_inword == 0 )
 			{
 				n_word++;
 				flag_inword = 1;
 			}
 		}
-		// move to next char
-		str++;
+		str ++;
 	}
-	// return n_word value
 	return (n_word);
 }
 
@@ -163,16 +177,12 @@ char	**validate_input(char *user_input, char **env)
 		printf("Syntax error\n");
 		return (NULL);
 	}
-	/* memo */
-	// printf("\n\t1-1: user_input: %s\n", user_input);
-	// printf("\n\t1-2: data.str: %s\n", data.str);
-	data.str = omit_pair_quotes_from_string1(user_input);
-	// printf("\n\t\t1-3: data.str: %s\n", data.str);
-	data.str = omit_pair_quotes_from_string2(data.str);
-	/* memo */
-	// printf("\n\t\t1-3: data.str: %s\n", data.str);
+	// Commented out. if quotes are omitted before word split, cannot differenciate word spaces 
+		//from spaces within strings
+	// data.str = omit_pair_quotes_from_string1(user_input);
+	// data.str = omit_pair_quotes_from_string2(data.str);
 	data.n_word = count_word(data.str, 0, 0, 0);
-	// printf("\n\t2. data.n_word: %d\n", data.n_word);
+	printf("n_word: %d\n", data.n_word);
 	if (data.n_word == 0)
 		return (NULL);
 	if (data.n_sq + data.n_dq > 0)
