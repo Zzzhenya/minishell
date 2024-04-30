@@ -128,7 +128,7 @@ void	interactive_mode(t_cmd **tree, t_envp *env,
 			*tree = parse_user_input(user_input, env);
 			if (*tree != NULL)
 			{
-				print_tree(*tree);
+				//print_tree(*tree);
 				setup_env(*tree, env);
 				search_tree(*tree, env->paths, env);
 				wait_each_command(*tree, env);

@@ -265,13 +265,19 @@ void	waiting_child_process(t_redirec **stdios, pid_t pid)
 
 void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 {
+	int saved_stdout = 0;
+
+	saved_stdout = dup(STDOUT_FILENO);
 	env->builtin = 1;
 	if (setup_redirections(*stdios, env) == 0)
 	{
 		free_stdios(*stdios);
 		*stdios = NULL;
 		if (cmd->r_child->cmdstr[0] != NULL)
+		{
+			//(void)i;
 			builtin_router(cmd, env, 1, i);
+		}
 		/*else
 		{
 			return ;
@@ -286,6 +292,7 @@ void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 		waitpid(-1, &g_exit_status, 0);
 	else*/
 	}
+	dup2(saved_stdout, STDOUT_FILENO);
 	return ;
 }
 
@@ -299,9 +306,16 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	int ret = 0;
 
 	i = env->c;
-	if (env->procs == 1 && (check_builtin(cmd->r_child, cmd)))// || cmd->r_child->cmdstr[0] == NULL))
+	if (env->cmds == 1 && (check_builtin(cmd->r_child, cmd)))// || cmd->r_child->cmdstr[0] == NULL))
 	{
 		initial_input = -1;
+		exec_one_builtin_cmd(cmd, stdios, env, i);
+		return ;
+	}
+	if (env->procs == 1 && !ft_strcmp(cmd->r_child->cmdstr[0], "exit"))
+	{
+		initial_input = -1;
+		//exec_exit(cmd->r_child->cmdstr, env, i);
 		exec_one_builtin_cmd(cmd, stdios, env, i);
 		return ;
 	}
