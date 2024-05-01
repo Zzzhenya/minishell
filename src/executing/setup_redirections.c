@@ -152,7 +152,9 @@ int	setup_last_l(t_redirec *last_l, t_envp *env)
 		fd = open(last_l->filename, O_RDONLY);
 		if (fd == -1)
 		{
-			printf("bash: %s: No such file or directory\n", last_l->filename);
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(last_l->filename, 2);
+			ft_putstr_fd(": No such file or directory\n", 2);
 			g_exit_status = 1;
 			return (1);
 			//exit(errno);
