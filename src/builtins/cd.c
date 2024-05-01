@@ -134,6 +134,8 @@ void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
 		my_data->cd_hist = NULL;
 	}
 	my_data->cd_hist = get_pwd(my_data, c);
+	if (my_data->cd_hist == NULL)
+		print_cd_error(path, ": error retrieving current directory\n");
 	execute_path(path, c, my_data);
 	free (path);
 }

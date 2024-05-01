@@ -20,7 +20,7 @@ char	*get_pwd(t_envp *my_data, int c)
 	path = getcwd(path, PATH_MAX);
 	if (!path)
 	{
-		my_data->arr[c].status = EX_CMD_NOT_FOUND;
+		my_data->arr[c].status = 0;
 		return (NULL);
 	}
 	else
@@ -40,7 +40,11 @@ void	exec_pwd(t_envp *my_data, int c)
 	path = NULL;
 	path = get_pwd(my_data, c);
 	if (!path)
+	{
+		ft_putstr_fd("getcwd: cannot access parent directories: No such file or directory", 1);
+		ft_putchar_fd('\n', 1);
 		return ;
+	}
 	else
 	{
 		ft_putstr_fd(path, 1);
