@@ -53,6 +53,14 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	temp_arr = validate_input(user_input, env->envarr);
 	if (!temp_arr)
 		return (NULL);
+	/* memo */
+	// while (*temp_arr != NULL)
+	// {
+	// 	printf("\n\ttemp_arr: %s", *temp_arr);
+	// 	temp_arr++;
+	// }
+	// printf("\n");
+	/* memo */
 	validated_input = strip_empty_strings(temp_arr);
 	free_2d(temp_arr);
 	if (!validated_input)
