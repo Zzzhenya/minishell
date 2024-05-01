@@ -66,13 +66,15 @@ void	exec_export(char **argv, t_envp *my_data, int c)
 
 	count = 0;
 	arr = NULL;
-	count = count_non_empty_strings(&argv[1]);
-	arr = strip_empty_strings(&argv[1]);
+	count = get_arg_count(&argv[1]);
+	arr = &argv[1];
+	// count = count_non_empty_strings(&argv[1]);
+	// arr = strip_empty_strings(&argv[1]);
 	my_data->arr[c].status = 0;
 	if (count == 0)
 		print_variables_list(my_data->envarr);
 	else
 		multi_export(arr, my_data, count, c);
-	if (arr)
-		free_arr(arr, count);
+	// if (arr)
+	// 	free_arr(arr, count);
 }

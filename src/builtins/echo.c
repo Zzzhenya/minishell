@@ -45,8 +45,10 @@ void	exec_echo(char **argv, int c, char **arr, t_envp *my_data)
 	int	opt;
 	char *path = NULL;
 
-	count = count_non_empty_strings(&argv[1]);
-	arr = strip_empty_strings(&argv[1]);
+	// count = count_non_empty_strings(&argv[1]);
+	// arr = strip_empty_strings(&argv[1]);
+	count = get_arg_count(&argv[1]);
+	arr = &argv[1];
 	i = 0;
 	opt = 0;
 	if (count > 0 && !ft_strncmp(arr[i], "-n", 3))
@@ -71,7 +73,7 @@ void	exec_echo(char **argv, int c, char **arr, t_envp *my_data)
 	}
 	if (opt == 0)
 		ft_putchar_fd('\n', 1);
-	if (arr)
-		free_arr(arr, count);
+	// if (arr)
+	// 	free_arr(arr, count);
 	my_data->arr[c].status = 0;
 }

@@ -123,11 +123,13 @@ void	exec_exit(char **argv, t_envp *my_data, int c)
 	if (my_data->builtin == 1 && my_data->procs == 1)
 		ft_putstr_fd("exit\n", 2);
 	arr = NULL;
-	arr = strip_empty_strings(&argv[1]);
-	count = count_non_empty_strings(&argv[1]);
+	// arr = strip_empty_strings(&argv[1]);
+	arr = &argv[1];
+	count = get_arg_count(&argv[1]);
+	// count = count_non_empty_strings(&argv[1]);
 	if (count == 0)
 	{
-		free_arr(arr, count);
+		//free_arr(arr, count);
 		free_stuff_and_exit(my_data, 0, c); // same
 	}
 	digcount = ft_isanumber(arr[0]);
@@ -137,7 +139,7 @@ void	exec_exit(char **argv, t_envp *my_data, int c)
 		if (ret != 0)
 		{
 			my_data->arr[c].status = ret;
-			free_arr(arr, count);
+			//free_arr(arr, count);
 			free_stuff_and_exit(my_data, 0, c); // same look below
 		}
 	}
@@ -146,7 +148,7 @@ void	exec_exit(char **argv, t_envp *my_data, int c)
 		print_exit_error(arr[0], ": numeric argument required\n");
 		my_data->arr[c].status = 2;
 		//g_exit_status = 2;
-		free_arr(arr, count);
+		//free_arr(arr, count);
 		free_stuff_and_exit(my_data, 0, 0); // last variable should be the cmd index of exec exit
 	}
 }
