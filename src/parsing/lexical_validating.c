@@ -40,11 +40,13 @@ void	toggle_inword_inquote(int *flag_inword, int *n_word, int *flag_inquote)
 int	count_word(const char *str, int n_word, int inword, int inquote)
 {
 	char prev;
+
+	prev = 0;
 	while (*str)
 	{
 		if (*str == ' ' && inquote == 0)
 			inword = 0;
-		else if (*str == '<' || *str == '>' || *str == '|')
+		else if ((*str == '<' || *str == '>' || *str == '|') && inquote == 0)
 		{
 			n_word ++;
 			inword = 0;
@@ -53,16 +55,37 @@ int	count_word(const char *str, int n_word, int inword, int inquote)
 		{
 			if (inquote == 1)
 			{
-				n_word ++;
-				inword = 0;
-				inquote = 0;
-				prev = 0;
+				if (prev != *str)
+				{
+					if (prev == 0)
+						prev = *str;
+					inquote = 1;
+					inword = 1;
+				}
+				else
+				{
+					n_word ++;
+					inword = 0;
+					inquote = 0;
+					prev = 0;
+				}
 			}
-			else if (prev == *str)
+			else
 			{
-				prev = *str;
-				inquote = 1;
-				inword = 1;
+				if (prev != *str)
+				{
+					if (prev == 0)
+						prev = *str;
+					inquote = 1;
+					inword = 1;
+				}
+				else
+				{
+					n_word ++;
+					inword = 0;
+					inquote = 0;
+					prev = 0;
+				}
 			}
 		}
 		else
@@ -72,8 +95,10 @@ int	count_word(const char *str, int n_word, int inword, int inquote)
 				n_word ++;
 				inword = 1;
 			}
-		}							
+		}
+		printf("%c	%d	%d	%c\n", *str, inquote, inword, prev);			
 		str ++;
+		
 	}
 	return (n_word);
 }
@@ -188,7 +213,8 @@ char	**validate_input(char *user_input, char **env)
 	// if (data.n_sq + data.n_dq > 0)
 	// 	if (check_quote_order(data.str, &data, 0, 0) == -1)
 	// 		return (NULL);
-	data.token = malloc((data.n_word + 1) * sizeof(char *));
+	//data.token = malloc((data.n_word + 1) * sizeof(char *));
+	data.token = malloc((10) * sizeof(char *));
 	if (data.token == NULL)
 		return (NULL);
 	if (ft_chopper(&data, data.str, 0) == -1)
