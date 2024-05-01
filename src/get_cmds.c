@@ -41,7 +41,7 @@ void	free_for_norminette(char **validated_input, int *token)
 t_cmd	*parse_user_input(char *user_input, t_envp *env)
 {
 	t_cmd	*cmd_tree;
-	char	**temp_arr;
+	//char	**temp_arr;
 	char	**validated_input;
 	int		*token;
 	int		token_sequence[2];
@@ -50,9 +50,10 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	if (user_input == NULL || user_input[0] == 0)
 		return (NULL);
 	cmd_tree = NULL;
-	temp_arr = validate_input(user_input, env->envarr);
-	if (!temp_arr)
-		return (NULL);
+	//temp_arr = validate_input(user_input, env->envarr);
+	validated_input = validate_input(user_input, env->envarr);
+	//if (!temp_arr)
+	//	return (NULL);
 	/* memo */
 	// while (*temp_arr != NULL)
 	// {
@@ -61,8 +62,8 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	// }
 	// printf("\n");
 	/* memo */
-	validated_input = strip_empty_strings(temp_arr);
-	free_2d(temp_arr);
+	//validated_input = strip_empty_strings(temp_arr);
+	//free_2d(temp_arr);
 	if (!validated_input)
 	{
 		g_exit_status = EX_CMD_NOT_FOUND;
