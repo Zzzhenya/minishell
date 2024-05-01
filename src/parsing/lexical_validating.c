@@ -196,13 +196,13 @@ char	**validate_input(char *user_input, char **env)
 	if (expand_env(&data, env, 0) == -1)
 		return (NULL);
 	/* memo */
-	// int i = 0;
-	// while (i < data.n_word)
-	// {
-	// 	printf("\n\t3. data.token[%d]: %s", i, data.token[i]);
-	// 	i++;
-	// }
-	// printf("\n");
+	int i = 0;
+	while (i < data.n_word)
+	{
+		printf("\n\tdata.token[%d]: %s", i, data.token[i]);
+		i++;
+	}
+	printf("\n");
 	/* memo */
 	return (data.token);
 }
