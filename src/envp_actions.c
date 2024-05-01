@@ -49,6 +49,24 @@ void	clear_envlist(t_envp *env)
 	ft_lstclear(&env->envlist, free_string);
 }
 
+char	*increment_shlvl(char *str)
+{
+	char	*val;
+	int		num;
+	char	*ret;
+
+	val = NULL;
+	ret = NULL;
+	num = 0;
+	val = ft_strchr(str, '=');
+	num = ft_atoi(val + 1);
+	ret = ft_itoa(num + 1);
+	val = ft_strjoin("SHLVL=", ret);
+	free (ret);
+	free (str);
+	return (val);
+}
+
 /*
 	Store env variables in a linked list pointed by env->envlist
 	Store number of of variables in env->count 
@@ -68,6 +86,8 @@ int	store_envp(t_envp *env, char **envs)
 			clear_envlist(env);
 			return (-1);
 		}
+		if (ft_strncmp(temp, "SHLVL=", 6) == 0)
+			temp = increment_shlvl(temp);
 		ft_lstadd_back(&env->envlist, ft_lstnew(temp));
 		temp = NULL;
 		env->count ++;
