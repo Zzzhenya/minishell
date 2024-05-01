@@ -185,9 +185,9 @@ char	**validate_input(char *user_input, char **env)
 	printf("n_word: %d\n", data.n_word);
 	if (data.n_word == 0)
 		return (NULL);
-	if (data.n_sq + data.n_dq > 0)
-		if (check_quote_order(data.str, &data, 0, 0) == -1)
-			return (NULL);
+	// if (data.n_sq + data.n_dq > 0)
+	// 	if (check_quote_order(data.str, &data, 0, 0) == -1)
+	// 		return (NULL);
 	data.token = malloc((data.n_word + 1) * sizeof(char *));
 	if (data.token == NULL)
 		return (NULL);
