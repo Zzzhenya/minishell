@@ -311,6 +311,9 @@ int			find_index_next_redirec(int *token, int *i);
 void		update_pipe_index(int *i, int pipe_index, int tmp);
 
 // [ get_cmds.c ]
+void		free_for_norminette(char **validated_input, int *token);
+int			error_parsing_exit_2(int *tokens, int numTokens, char **input);
+int			check_token_order(const int *tokens, int numTokens);
 t_cmd		*parse_user_input(char *user_input, t_envp *env);
 
 /* [ UTILS ] */

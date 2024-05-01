@@ -100,8 +100,6 @@ int	ft_chopper(t_data *data, char *str, int j)
 		i = ft_strcpy(data, str, 1, j);
 	if (ft_chopper(data, str + i, ++j) == -1 || str[i] == '\0')
 		data->token[j] = NULL;
-	if (str[0] == '\0')
-		return (-1);
 	return (0);
 }
 
