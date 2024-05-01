@@ -74,36 +74,11 @@ char	*elsehelper(t_data *data, char *tmp, int i, int k)
 }
 */
 
-/*
-
-find start of word
-find end of word
-find length from start to end
-copy the word to char *
-
-
-*/
-
 int	ft_chopper(t_data *data, char *str, int j)
 {
 	int	i;
-	int start = 0;
-	int end = 0;
 
 	i = 0;
-	while (str[i] == ' ')
-		i ++;
-	if (str[i] && str[i] != '\0')
-		start = i;
-	if (str[i] == '>' || str[i] == '<' || str[i] == '|')
-	{
-		i ++;
-		end = i;
-		*(data->token) = malloc(sizeof(char) * ((end - start) + 1))
-		ft_strlcpy(*(data->token), &str[start], (end - start));
-		*(data->token)++;
-	}
-	/*
 	if (str[0] == '\0')
 		return (-1);
 	while (str[i] == ' ')
@@ -125,7 +100,9 @@ int	ft_chopper(t_data *data, char *str, int j)
 		i = ft_strcpy(data, str, 1, j);
 	if (ft_chopper(data, str + i, ++j) == -1 || str[i] == '\0')
 		data->token[j] = NULL;
-	return (0);*/
+	if (str[0] == '\0')
+		return (-1);
+	return (0);
 }
 
 char	*get_pid_string(void)
