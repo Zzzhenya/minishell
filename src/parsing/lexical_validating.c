@@ -37,42 +37,42 @@ void	toggle_inword_inquote(int *flag_inword, int *n_word, int *flag_inquote)
 
 */
 
-int	count_word(const char *str, int n_word, int flag_inword, int flag_inquote)
+int	count_word(const char *str, int n_word, int inword, int inquote)
 {
-	(void)flag_inquote;
-	int sq = 0; int dq = 0;
+	char prev;
 	while (*str)
 	{
-		if (*str == ' ' && (sq % 2 == 0 && dq % 2 == 0))
-			flag_inword = 0;
-		else if ((*str == '<' || *str == '>' || *str == '|') && (sq % 2 == 0 && dq % 2 == 0))
+		if (*str == ' ' && inquote == 0)
+			inword = 0;
+		else if (*str == '<' || *str == '>' || *str == '|')
 		{
-			n_word++;
-			flag_inword = 0;
+			n_word ++;
+			inword = 0;
 		}
 		else if (*str == '"' || *str == '\'')
 		{
-			if ((sq % 2 == 0 && dq % 2 == 0))
+			if (inquote == 1)
 			{
-				flag_inword = 0;
+				n_word ++;
+				inword = 0;
+				inquote = 0;
+				prev = 0;
 			}
-			else
+			else if (prev == *str)
 			{
-				flag_inword = 1;
+				prev = *str;
+				inquote = 1;
+				inword = 1;
 			}
-			if (*str == '\'' && dq % 2 == 0)
-				sq++;
-			if (*str == '\"' && sq % 2 == 0)
-				dq++;
 		}
-		else //if (!(*str == '"' || *str == '\''))
+		else
 		{
-			if (flag_inword == 0 )
+			if (inword == 0)
 			{
-				n_word++;
-				flag_inword = 1;
+				n_word ++;
+				inword = 1;
 			}
-		}
+		}							
 		str ++;
 	}
 	return (n_word);
