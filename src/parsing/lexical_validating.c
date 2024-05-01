@@ -12,31 +12,6 @@
 
 #include "../../include/minishell.h"
 
-void	toggle_inword_inquote(int *flag_inword, int *n_word, int *flag_inquote)
-{
-	if (*flag_inquote == 1)
-	{
-		*n_word += 1;
-		*flag_inword = 0;
-		*flag_inquote = 0;
-	}
-	else
-	{
-		*flag_inword = 1;
-		*flag_inquote = 1;
-	}
-	return ;
-}
-
-/*
-	Count word when the char is;
-		<
-		>
-		|
-		$
-
-*/
-
 int	count_word(const char *str, int n_word, int inword, int inquote)
 {
 	char prev;
@@ -103,39 +78,6 @@ int	count_word(const char *str, int n_word, int inword, int inquote)
 	return (n_word);
 }
 
-/*	Add function for delete ""	*/
-/*
-char	*omit_pair_quotes_from_string(char *input)
-{
-	int		i;
-	int		output_index;
-	int		quote_count;
-	int		length_input;
-	char	*result;
-
-	printf("1.\n");
-	i = 0;
-	output_index = 0;
-	quote_count = 0;
-	length_input = strlen(input);
-	result = (char *)malloc(length_input + 1);
-	while (i < length_input)
-	{
-		if (input[i] == '\"')
-		{
-			printf("2. input[%d]\n", i);
-			quote_count++;
-			if (quote_count % 2 == 0)
-				continue ;
-		}
-		result[output_index++] = input[i];
-		i++;
-	}
-	printf("3. result: %s\n", result);
-	result[output_index] = '\0';
-	return (result);
-}
-*/
 char	*omit_pair_quotes_from_string1(char *input)
 {
 	int		i;
@@ -202,10 +144,6 @@ char	**validate_input(char *user_input, char **env)
 		printf("Syntax error\n");
 		return (NULL);
 	}
-	// Commented out. if quotes are omitted before word split, cannot differenciate word spaces 
-		//from spaces within strings
-	// data.str = omit_pair_quotes_from_string1(user_input);
-	// data.str = omit_pair_quotes_from_string2(data.str);
 	data.n_word = count_word(data.str, 0, 0, 0);
 	printf("n_word: %d\n", data.n_word);
 	if (data.n_word == 0)
@@ -214,24 +152,20 @@ char	**validate_input(char *user_input, char **env)
 	// 	if (check_quote_order(data.str, &data, 0, 0) == -1)
 	// 		return (NULL);
 	//data.token = malloc((data.n_word + 1) * sizeof(char *));
-	data.token = malloc((10) * sizeof(char *));
+	data.token = malloc((data.n_word + 1) * sizeof(char *));
 	if (data.token == NULL)
 		return (NULL);
 	if (ft_chopper(&data, data.str, 0) == -1)
 		return (NULL);
 	if (expand_env(&data, env, 0) == -1)
 		return (NULL);
-	/* memo */
-	int i = 0;
-	while (i < data.n_word)
-	{
-		printf("\n\tdata.token[%d]: %s", i, data.token[i]);
-		i++;
-	}
-	printf("\n");
-	/* memo */
 	return (data.token);
 }
+
+// Commented out. if quotes are omitted before word split, cannot differenciate word spaces 
+	//from spaces within strings
+// data.str = omit_pair_quotes_from_string1(user_input);
+// data.str = omit_pair_quotes_from_string2(data.str);
 
 // #include "../../include/minishell.h"
 
