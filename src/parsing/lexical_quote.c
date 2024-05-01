@@ -35,10 +35,8 @@ int	count_quote(char *str, t_data *data)
 	}
 	if (sq % 2 == 0 && dq % 2 == 0)
 	{
-		// store values in the data struct
 		data->n_sq = sq;
 		data->n_dq = dq;
-		// return sq count
 		return (sq);
 	}
 	return (-1);
