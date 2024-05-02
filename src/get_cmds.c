@@ -109,7 +109,20 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	token_sequence[1] = check_token_length(token);
 	if (if_token_order_weird(token, token_sequence[1], validated_input) == -1)
 		return (NULL);
+
+	/* memo */
+	int i = 0;
+	while (validated_input[i] != NULL)
+	{
+		printf("\tword[%d]: %s\n", i, validated_input[i]);
+		i++;
+	}
+	printf("\n-------------------------------------------------------\n");
+	printf(C"\n[2] How is 'USER_INPUT' saved in struct?\n\n"RS);
+	/* memo */
+
 	tmp = syntax_pipe(validated_input, token, token_sequence, &cmd_tree);
+	printf("-------------------------------------------------------\n\n");
 	free_for_norminette(validated_input, token);
 	if (tmp == -1)
 		free_tree(cmd_tree);

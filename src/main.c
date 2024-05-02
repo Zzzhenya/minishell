@@ -126,9 +126,19 @@ void	interactive_mode(t_cmd **tree, t_envp *env,
 				break ;
 			env->paths = save_all_env_paths(env->envarr, env);
 			*tree = parse_user_input(user_input, env);
+
+			/* memo */
+			printf(C"[3] Executing starts\n\n"RS);
+			/* memo */
+
 			if (*tree != NULL)
 			{
-				//print_tree(*tree);
+				/* memo */
+				printf("pre_flag  pipe_exist  cmdstr\n");
+				print_tree(*tree);
+				printf("\n-------------------------------------------------------\n\n");
+				/* memo */
+
 				setup_env(*tree, env);
 				search_tree(*tree, env->paths, env);
 				wait_each_command(*tree, env);
