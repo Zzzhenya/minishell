@@ -362,13 +362,13 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
 		waiting_child_process(stdios, env->arr[i].pid);
 		env->c ++;
-		if (env->procs == 1)
-		{
-			if (*stdios)
-			{
-				free_stdios(*stdios);
-				*stdios = NULL;
-			}
-		}
+		// if (env->procs == 1)
+		// {
+		// 	if (*stdios)
+		// 	{
+		// 		free_stdios(*stdios);
+		// 		*stdios = NULL;
+		// 	}
+		// }
 	}
 }
