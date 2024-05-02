@@ -306,19 +306,21 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	int ret = 0;
 
 	i = env->c;
-	if (env->cmds == 1 && (check_builtin(cmd->r_child, cmd)))// || cmd->r_child->cmdstr[0] == NULL))
+	//if (env->cmds == 1 && (check_builtin(cmd->r_child, cmd)))// || cmd->r_child->cmdstr[0] == NULL))
+	if (env->procs == 1 && (check_builtin(cmd->r_child, cmd)))// || cmd->r_child->cmdstr[0] == NULL))
 	{
 		initial_input = -1;
 		exec_one_builtin_cmd(cmd, stdios, env, i);
 		return ;
 	}
+	/*
 	if (env->procs == 1 && !ft_strcmp(cmd->r_child->cmdstr[0], "exit"))
 	{
 		initial_input = -1;
 		//exec_exit(cmd->r_child->cmdstr, env, i);
 		exec_one_builtin_cmd(cmd, stdios, env, i);
 		return ;
-	}
+	}*/
 	if (g_exit_status == 2)
 		return;
 	if (pipe(pipefd) == -1)
@@ -335,23 +337,19 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 			dup2(initial_input, STDIN_FILENO);
 		ret = setup_redirections(*stdios, env);
 		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
+		if (*stdios)
+		{
+			free_stdios(*stdios);
+			*stdios = NULL;
+		}
 		if (ret == 0)
 		{
 			//if (env->procs == 1 && cmd->r_child->cmdstr[0] == NULL)
-			if (*stdios)
-			{
-				free_stdios(*stdios);
-				*stdios = NULL;
-			}
 			pid_zero_exec(cmd, envp, env, i);
 		}
 		else
 		{
-			if (*stdios)
-			{
-				free_stdios(*stdios);
-				*stdios = NULL;
-			}
+
 			env->arr[i].status = 1;
 			//g_exit_status = 1;
 			free_stuff_and_exit(env, 1, i);
