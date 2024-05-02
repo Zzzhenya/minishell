@@ -125,7 +125,10 @@ void	exec(char **cmd, char **env, t_envp *envo, int i)
 	int		exit_status;
 
 	if (!cmd || !cmd[0])
-		exit(1);
+	{
+		free_stuff_and_exit(envo, 1, i);
+		//exit(1);
+	}
 	path_cmd = NULL;
 	if (access(cmd[0], X_OK) == 0)
 		path_cmd = ft_strdup(cmd[0]);
@@ -143,8 +146,12 @@ void	exec(char **cmd, char **env, t_envp *envo, int i)
 		//execve_fail(cmd[0], envo, i);
 	{
 		exit_status = errno;
+		//g_exit_status = exit_status;
+		if (exit_status == 13)
+			exit_status = EX_CMD_NOT_FOUND;
 		envo->arr[i].status = exit_status;
-		exit (envo->arr[i].status);
+		free_stuff_and_exit(envo, 1, i);
+		//exit (envo->arr[i].status);
 	}
 }
 
