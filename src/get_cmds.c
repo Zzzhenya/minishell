@@ -98,10 +98,15 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	validated_input = validate_input(user_input, env->envarr);
 	if (!validated_input)
 	{
-		g_exit_status = EX_CMD_NOT_FOUND;
 		return (NULL);
 	}
 	replace_exit_status(&validated_input, 0, 0, 0);
+	// int i = 0;
+	// while (validated_input[i])
+	// {
+	// 	printf("%d: %s\n", i + 1, validated_input[i]);
+	// 	i ++;
+	// }
 	token = token_malloc(validated_input);
 	if (!token)
 		return (NULL);
