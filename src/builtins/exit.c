@@ -44,7 +44,7 @@ void	free_stuff_and_exit(t_envp *my_data, int yes, int i)
 	}
 	else if (i > -1)
 	{
-		i = my_data->arr[0].status;
+		i = my_data->arr[i].status;
 		free (my_data->arr);
 		g_exit_status = i;
 		exit (g_exit_status);
@@ -130,7 +130,7 @@ void	exec_exit(char **argv, t_envp *my_data, int c)
 	if (count == 0)
 	{
 		//free_arr(arr, count);
-		free_stuff_and_exit(my_data, 0, c); // same
+		free_stuff_and_exit(my_data, 1, c); // same
 	}
 	digcount = ft_isanumber(arr[0]);
 	if (digcount != 0)
@@ -140,7 +140,7 @@ void	exec_exit(char **argv, t_envp *my_data, int c)
 		{
 			my_data->arr[c].status = ret;
 			//free_arr(arr, count);
-			free_stuff_and_exit(my_data, 0, c); // same look below
+			free_stuff_and_exit(my_data, 1, c); // same look below
 		}
 	}
 	else
@@ -149,6 +149,6 @@ void	exec_exit(char **argv, t_envp *my_data, int c)
 		my_data->arr[c].status = 2;
 		//g_exit_status = 2;
 		//free_arr(arr, count);
-		free_stuff_and_exit(my_data, 0, 0); // last variable should be the cmd index of exec exit
+		free_stuff_and_exit(my_data, 1, c); // last variable should be the cmd index of exec exit
 	}
 }
