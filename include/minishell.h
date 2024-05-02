@@ -83,6 +83,17 @@
 // 4. ????
 # define _XOPEN_SOURCE 700
 
+// 5. Color way
+# define RS		"\033[0m"		// RESET
+# define C      "\033[1;36m"	// CYAN
+# define G      "\033[1;32m"	// GREEN
+# define B      "\033[1;34m"	// BLUE
+# define P      "\033[1;35m"	// PURPLE
+# define RED	"\033[1;31m"	// RED
+# define W      "\033[1;37m"	// WHITE
+# define Y      "\033[1;33m"	// YELLOW
+# define EMP	"\033[30;47;20m"
+
 // [HEADER FILE]
 // 1. [f] close, read, write, access, dup, dup2, execve, fork, pipe, unlink
 // 	  STDIO_FILENO, STDOUT_FILENO, getcwd, chdir, isatty, ttyname, ttyslot
@@ -270,8 +281,7 @@ int			expand_token_env_2(t_data *data, char **env, int i);
 int			expand_env(t_data *data, char **env, int i);
 
 // [ lexical_validating.c ]
-void		toggle_inword_inquote(int *flag_inword,
-				int *n_word, int *flag_inquote);
+// void		toggle_inword_inquote(int *flag_inword, int *n_word, int *flag_inquote);
 int			count_word(const char *str,
 				int n_word, int flag_inword, int flag_inquote);
 char		**validate_input(char *user_input, char **env);

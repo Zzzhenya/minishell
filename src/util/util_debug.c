@@ -40,17 +40,20 @@ void	print_node(t_cmd *node)
 	int	i;
 
 	i = 0;
-	printf ("%d 	", node->pre_flag);
-	printf ("%d 	", node->pipe_exist);
+	printf ("%d 	      ", node->pre_flag);
+	if (node->pipe_exist < 0 && node != NULL)
+		printf ("%d      ", node->pipe_exist);
+	else if (node->pipe_exist >= 0 && node != NULL)
+		printf (" %d      ", node->pipe_exist);
 	if (!node->cmdstr)
 	{
-		printf ("Empty\n");
+		printf ("NULL\n");
 		return ;
 	}
 	while (node->cmdstr[i])
 	{
-		printf ("%s 	", node->cmdstr[i]);
-		i ++;
+		printf ("[%d]: %s     ", i, node->cmdstr[i]);
+		i++;
 	}
 	printf ("\n");
 }
