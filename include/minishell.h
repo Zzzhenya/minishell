@@ -326,6 +326,9 @@ int			error_parsing_exit_2(int *tokens, int numTokens, char **input);
 int			check_token_order(const int *tokens, int numTokens);
 t_cmd		*parse_user_input(char *user_input, t_envp *env);
 
+//[]
+void		setup_and_run_heredoc(int *token, char  **arr, t_envp *env);
+
 /* [ UTILS ] */
 // [ util_skip.c ]
 int			ft_isspace(char c);

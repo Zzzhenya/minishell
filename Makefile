@@ -45,7 +45,8 @@ SRCS = src/parsing/change_exit_status.c\
  src/executing/redirection_error_handle.c\
  src/executing/wait_blocked_cmds.c\
  src/builtins/builtin_utils.c\
- src/executing/here_doc_functions.c
+ src/executing/here_doc_functions.c\
+ src/parsing/setup_and_run_heredoc.c
 
 OBJS = $(SRCS:.c=.o)
 
