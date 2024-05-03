@@ -30,7 +30,10 @@ int	count_word(const char *str, int n_word, int inword, int inquote, t_data data
 	while (*str)
 	{
 		if (*str == ' ' && inquote == 0)
+		{
+			printf(RED"Reset\n"RS);
 			inword = 0;
+		}
 		else if ((*str == '<' || *str == '>' || *str == '|') && inquote == 0)
 		{
 			n_word++;
@@ -38,92 +41,135 @@ int	count_word(const char *str, int n_word, int inword, int inquote, t_data data
 		}
 		else if (*str == '\"' || *str == '\'')
 		{
-			if (inquote == 1)
+			if (inquote == 1) // Already in 'quote' // ' ' ' '
 			{
 				printf(G"IN QUOTE\n"RS);
-				if (prev != *str)
+				if (prev != *str) // ' != "
 				{
 					if (prev == 0)
 					{
 						prev = *str;
 						n_word++;
+						inquote = 1;
+						inword = 1;
 					}
-					inquote = 1;
-					inword = 1;
+					else
+					{
+						if (*str == '\'' && prev != '\"')
+							cpy_n_sq--;
+						else if (*str == '\"' && prev != '\'')
+							cpy_n_dq--;
+					}
 				}
 				else // prev quote type == current quote type (ex) "double = "double
 				{
+					printf(G"Prev quote type = curr quote type\n"RS);
 					if (*str == '\"')
-						cpy_n_dq--;
-					else
-						cpy_n_sq--;
-					if (*(str + 1) == ' ' && *(str - 1) != prev)
 					{
-						printf("Jason\n");
-						inword = 0;
-						inquote = 0;
-						prev = 0;
+						if (*(str + 1) == ' ' && (cpy_n_dq % 2 != 0))
+						{
+							printf(RED"Reset everything, cause quote is pair and next is 'space'\n"RS);
+							inword = 0;
+							inquote = 0;
+							prev = 0;
+						}
+						else if (ft_isalpha(*(str + 1)))
+						{
+							printf("Next char is alphabet\n");
+							if (cpy_n_dq % 2 != 0) // 5
+							{
+								inquote = 0;
+								prev = 0;
+							}
+							else
+							{
+								inword = 1;
+								inquote = 1;
+							}
+						}
+						if (prev != '\'')
+							cpy_n_dq--;
+						//if (prev != '\'' || prev != 0)
+						// cpy_n_dq--;
+						// if (prev != '\'')
+						// 	cpy_n_dq--;
 					}
-					else if (ft_isalpha(*(str + 1)))
+					else // *str == \'
 					{
-						printf("Team\n");
-						if (cpy_n_dq == 0)
+						printf("111\n");
+						if (*(str + 1) == ' ' && (cpy_n_sq % 2 != 0))
 						{
+							printf(RED"Reset everything, cause quote is pair and next is 'space'\n"RS);
+							inword = 0;
 							inquote = 0;
 							prev = 0;
+							cpy_n_sq--;
 						}
-						else if (cpy_n_sq == 0)
+						else if (ft_isalpha(*(str + 1)))
 						{
-							inquote = 0;
-							prev = 0;
-						}
-						else
-						{
-							inword = 1;
-							inquote = 1;
+							printf("Next char is alphabet\n");
+							if (cpy_n_sq % 2 != 0) // 5
+							{
+								inquote = 0;
+								prev = 0;
+							}
+							else
+							{
+								inword = 1;
+								inquote = 1;
+							}
+							if (prev != '\"')
+								cpy_n_sq--;
+							//if (prev != '\"' || prev != 0)
+							//cpy_n_sq--;
 						}
 					}
 				}
 			}
-			else
+			else // Not in quote: inquote == 0, start in 'quote' (' or ")
 			{
-				printf(RED"NOT IN QUOTE\n"RS);
-				if (prev != *str) // Not stored any other ' or "
+				printf(RED"NOT IN QUOTE YET\n"RS);
+				// if (prev != *str) // Not stored any other ' or "
+				// {
+					// if (prev == 0)
+					// {
+				prev = *str; // save ' or " for prev
+				if (*str == '\'')
 				{
-					printf(G"QUOTE START\n"RS);
-					if (prev == 0)
-					{
-						prev = *str; // save ' or " for prev
-						if (*str == '\'')
-						{
-							printf(G"SINGLE\n"RS);
-							n_word++;
-							cpy_n_sq--;
-							if (cpy_n_sq == 0)
-								n_word++;
-						}
-						else if (*str == '\"')
-						{
-							printf(G"DOUBLE\n"RS);
-							n_word++;
-							cpy_n_dq--;
-							if (cpy_n_dq == 0)
-								n_word++;
-						}
-					}
-					inquote = 1;
-					inword = 1;
+					printf(G"START SINGLE QUOTE\n"RS);
+					if (inword == 0)
+						n_word++;
+					cpy_n_sq--;
+					// if (cpy_n_sq == 0)
+					// {
+					// 	printf("ss\n");
+					// 	n_word++;
+					// }
 				}
-				else
+				else if (*str == '\"')
 				{
-					n_word++;
-					inword = 0;
-					inquote = 0;
-					prev = 0;
+					printf(G"START DOUBLE QUOTE\n"RS);
+					if (inword == 0)
+						n_word++;
+					cpy_n_dq--;
+					// if (cpy_n_dq == 0)
+					// 	n_word++;
 				}
+					// }
+				inquote = 1;
+				inword = 1;
+				// }
+				// else
+				// {
+				// 	printf(C"1111\n"RS);
+				// 	n_word++;
+				// 	inword = 0;
+				// 	inquote = 0;
+				// 	prev = 0;
+				// }
 			}
 		}
-		else
+		else // NOT(5): SPACE > | " '
 		{
 			if (inword == 0)
 			{
@@ -282,16 +328,16 @@ char	**validate_input(char *user_input, char **env)
 	if (data.token == NULL)
 		return (NULL);
 
-	/* memo */
-	printf("\n\tdata.str: %s$\n", data.str);
-	printf("\torignal_n_backslash: %d\n\n", count_backslash(data.str));
-	/* memo */
+	// /* memo */
+	// printf("\n\tdata.str: %s$\n", data.str);
+	// printf("\torignal_n_backslash: %d\n\n", count_backslash(data.str));
+	// /* memo */
 
-	/* memo */
-	compress_backslash(data.str);
-	printf("\n\tAfter compress_data.str: %s$\n", data.str);
-	printf("\tfinal_n_backslash: %d\n\n", count_backslash(data.str));
-	/* memo */
+	// /* memo */
+	// compress_backslash(data.str);
+	// printf("\n\tAfter compress_data.str: %s$\n", data.str);
+	// printf("\tfinal_n_backslash: %d\n\n", count_backslash(data.str));
+	// /* memo */
 
 	if (ft_chopper(&data, data.str, 0) == -1)
 		return (NULL);
