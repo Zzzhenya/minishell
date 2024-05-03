@@ -283,7 +283,7 @@ int			expand_env(t_data *data, char **env, int i);
 // [ lexical_validating.c ]
 // void		toggle_inword_inquote(int *flag_inword, int *n_word, int *flag_inquote);
 int			count_word(const char *str,
-				int n_word, int flag_inword, int flag_inquote);
+				int n_word, int flag_inword, int flag_inquote, t_data data);
 char		**validate_input(char *user_input, char **env);
 
 // [ lexical_analysis.c ]

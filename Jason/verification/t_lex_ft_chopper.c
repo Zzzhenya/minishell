@@ -222,36 +222,36 @@ int	check_str_null(t_data *data, char *str, int i, int j)
 	6. 재귀 호출을 통해 다음 토큰 처리
 	7. 재귀 호출이 끝난 경우 -> 배열의 마지막에 NULL 포인터 설정.
 */
-int	ft_chopper(t_data *data, char *str, int j)
-{
-	int	i;
+// int	ft_chopper(t_data *data, char *str, int j)
+// {
+// 	int	i;
 
-	i = 0;
-	if (str[0] == '\0' || str == NULL)
-		return (-1);
-	while (ft_isspace(str[i]) == -1)
-		i++;
-	if (check_str_null(data, str, i, j) == -1)
-		return (0);
-	skip_normal_char(str, &i);
-	skip_space_in_str(str, &i);
-	printf("\t 2. current str: %s\n", str);
-	if (str[0] == '\'')
-		str = case_s_quote(data, str, i + 1, j);
-	else if (str[0] == '\"')
-		str = case_d_quote(data, str, i + 1, j);
-	else if (str[0] != '=' && str[0] != '\0'
-		&& str[0] != '<' && str[0] != '>' && str[0] != '|')
-		ft_strcpy2(data, str, i, j);
-	else if ((str[0] == '>' && str[1] == '>')
-		|| (str[0] == '<' && str[1] == '<'))
-		i = ft_strcpy(data, str, 2, j);
-	else if (str[0] == '=' || str[0] == '<' || str[0] == '>' || str[0] == '|')
-			i = ft_strcpy(data, str, 1, j);
-	if (ft_chopper(data, str + i, ++j) == -1 || str[i] == '\0')
-		data->token[j] = NULL;
-	return (0);
-}
+// 	i = 0;
+// 	if (str[0] == '\0' || str == NULL)
+// 		return (-1);
+// 	while (ft_isspace(str[i]) == -1)
+// 		i++;
+// 	if (check_str_null(data, str, i, j) == -1)
+// 		return (0);
+// 	skip_normal_char(str, &i);
+// 	skip_space_in_str(str, &i);
+// 	printf("\t 2. current str: %s\n", str);
+// 	if (str[0] == '\'')
+// 		str = case_s_quote(data, str, i + 1, j);
+// 	else if (str[0] == '\"')
+// 		str = case_d_quote(data, str, i + 1, j);
+// 	else if (str[0] != '=' && str[0] != '\0'
+// 		&& str[0] != '<' && str[0] != '>' && str[0] != '|')
+// 		ft_strcpy2(data, str, i, j);
+// 	else if ((str[0] == '>' && str[1] == '>')
+// 		|| (str[0] == '<' && str[1] == '<'))
+// 		i = ft_strcpy(data, str, 2, j);
+// 	else if (str[0] == '=' || str[0] == '<' || str[0] == '>' || str[0] == '|')
+// 			i = ft_strcpy(data, str, 1, j);
+// 	if (ft_chopper(data, str + i, ++j) == -1 || str[i] == '\0')
+// 		data->token[j] = NULL;
+// 	return (0);
+// }
 /*
 	[Q1]
 	Use "user_input" as a parameter directly instead of data.str(= already cpy user_input to str)

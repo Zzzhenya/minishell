@@ -12,15 +12,19 @@
 
 #include "../../include/minishell.h"
 
-int	count_word(const char *str, int n_word, int inword, int inquote)
+int	count_word(const char *str, int n_word, int inword, int inquote, t_data data)
 {
 	char prev;
 
 	prev = 0;
+	printf("2.n_dq: %d, n_sq: %d\n", data.n_dq, data.n_sq);
 
+	int	cpy_n_sq = data.n_sq;
+	int	cpy_n_dq = data.n_dq;
 	/* memo */
 	printf(C"\n[1] How does 'USER_INPUT' consist?\n\n"RS);
-	printf("\t*str	inquote	inword	previous_quote\n");
+	printf("\t*str	inquote	inword	prev_quote  n_word   cpy_n_sq   cpy_n_dq\n");
+	printf("\t%c	   %d	   %d	   %c	     %d		%d	  %d\n\n", *str, inquote, inword, prev, n_word, cpy_n_sq, cpy_n_dq);
 	/* memo */
 
 	while (*str)
@@ -32,31 +36,80 @@ int	count_word(const char *str, int n_word, int inword, int inquote)
 			n_word++;
 			inword = 0;
 		}
-		else if (*str == '"' || *str == '\'')
+		else if (*str == '\"' || *str == '\'')
 		{
 			if (inquote == 1)
 			{
+				printf(G"IN QUOTE\n"RS);
 				if (prev != *str)
 				{
 					if (prev == 0)
+					{
 						prev = *str;
+						n_word++;
+					}
 					inquote = 1;
 					inword = 1;
 				}
-				else
+				else	// prev quote type == current quote type (ex) " == "
 				{
-					n_word++;
-					inword = 0;
-					inquote = 0;
-					prev = 0;
+					if (*str == '\"')
+						cpy_n_dq--;
+					else
+						cpy_n_sq--;
+					if (*(str + 1) == ' ' && *(str - 1) != prev)
+					{
+						printf("Jason\n");
+						inword = 0;
+						inquote = 0;
+						prev = 0;
+					}
+					else if (ft_isalpha(*(str + 1)))
+					{
+						printf("Team\n");
+						if (cpy_n_dq == 0)
+						{
+							inquote = 0;
+							prev = 0;
+						}
+						else if (cpy_n_sq == 0)
+						{
+							inquote = 0;
+							prev = 0;
+						}
+						else
+						{
+							inword = 1;
+							inquote = 1;
+						}
+					}
 				}
 			}
 			else
 			{
-				if (prev != *str)
+				printf(RED"NOT IN QUOTE\n"RS);
+				if (prev != *str) // Not stored any other ' or "
 				{
+					printf(G"QUOTE START\n"RS);
 					if (prev == 0)
-						prev = *str;
+					{
+						prev = *str;	// save ' or " for prev
+						if (*str == '\'')
+						{
+							cpy_n_sq--;
+							if (cpy_n_sq == 0 || cpy_n_sq == data.n_sq)
+								n_word++;
+						}
+						else if (*str == '\"')
+						{
+							printf(G"DOUBLE\n"RS);
+							// if (cpy_n_dq == data.n_dq)
+								n_word++;
+							cpy_n_dq--;
+							if (cpy_n_dq == 0)
+								n_word++;
+						}
+					}
 					inquote = 1;
 					inword = 1;
 				}
@@ -76,13 +129,14 @@ int	count_word(const char *str, int n_word, int inword, int inquote)
 				n_word++;
 				inword = 1;
 			}
+			// else
+			// {
+			// 	if (*(str + 1) == ' ')
+			// 		inword = 0;
+			// }
 		}
-
-		/* memo */
-		printf("\t%c	   %d	   %d	   %c\n", *str, inquote, inword, prev);
-		printf("\t----------------------------------------\n");
-		/* memo */
-
+		printf("\t%c	   %d	   %d	   %c	     %d		%d	  %d\n", *str, inquote, inword, prev, n_word, cpy_n_sq, cpy_n_dq);
+		printf("-------------------------------------------------------------------------\n");
 		str++;
 	}
 	return (n_word);
@@ -98,7 +152,7 @@ char	**validate_input(char *user_input, char **env)
 		printf("Syntax error\n");
 		return (NULL);
 	}
-	data.n_word = count_word(data.str, 0, 0, 0);
+	data.n_word = count_word(data.str, 0, 0, 0, data);
 
 	/* memo */
 	printf(RED"\tn_word: %d\n"RS, data.n_word);
@@ -109,6 +163,11 @@ char	**validate_input(char *user_input, char **env)
 	data.token = malloc((data.n_word + 1) * sizeof(char *));
 	if (data.token == NULL)
 		return (NULL);
+
+	/* memo */
+	printf("\n\tinput: %s$\n\n", data.str);
+	/* memo */
+
 	if (ft_chopper(&data, data.str, 0) == -1)
 		return (NULL);
 	if (expand_env(&data, env, 0) == -1)
