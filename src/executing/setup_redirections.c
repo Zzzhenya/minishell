@@ -164,19 +164,20 @@ int	setup_last_l(t_redirec *last_l, t_envp *env)
 	}
 	else if (last_l->redirec_type == REDIREC_LL)
 	{
-		fd = open(HEREDOCNAME, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (fd == -1)
-		{
-			printf("bash: Too many heredocs\n");
-			g_exit_status = 1;
-			return (1);
-			//exit(errno);
-		}
-		heredoc_input(fd, last_l->filename, env, NULL);
-		close(fd);
-		fd = open(HEREDOCNAME, O_RDONLY);
+		// fd = open(HEREDOCNAME, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		// if (fd == -1)
+		// {
+		// 	printf("bash: Too many heredocs\n");
+		// 	g_exit_status = 1;
+		// 	return (1);
+		// 	//exit(errno);
+		// }
+		// heredoc_input(fd, last_l->filename, env, NULL);
+		// close(fd);
+		(void)env;
+		fd = open(last_l->filename, O_RDONLY);
 		dup_and_redirect(fd, STDIN_FILENO);
-		unlink(HEREDOCNAME);
+		unlink(last_l->filename);
 		return (0);
 	}
 	return (0);
@@ -214,6 +215,7 @@ int	find_redir(t_redirec *stdios, t_envp *env)
 {
 	t_redirec *curr;
 	curr = stdios;
+
 	while (curr != NULL)
 	{
 		if (curr->redirec_type == REDIREC_L)
