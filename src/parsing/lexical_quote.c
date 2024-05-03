@@ -12,10 +12,6 @@
 
 #include "../../include/minishell.h"
 
-/*
-
-*/
-
 int	count_quote(char *str, t_data *data)
 {
 	int	i;

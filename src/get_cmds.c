@@ -17,10 +17,26 @@ void	free_for_norminette(char **validated_input, int *token)
 	free(token);
 }
 
+/*
+	int i = 0;
+	while (input[i])
+	{
+		if (*tokens == T_WORD && (ft_strchr(input[i], ';') || ft_strchr(input[i], '&')))
+		{
+			g_exit_status = 2;
+			free_for_norminette(input, tokens);
+			printf("Syntax error\n");
+			return (-1);
+		}
+		tokens++;
+		i++;
+	}
+*/
 int	if_token_order_weird(int *tokens, int numTokens, char **input)
 {
 	if (check_token_order(tokens, numTokens) == -1)
 	{
+
 		g_exit_status = 2;
 		free_for_norminette(input, tokens);
 		printf("Syntax error\n");
@@ -57,6 +73,7 @@ int check_token_order(const int *tokens, int numTokens)
             if ((nextToken != -1 && (nextToken == T_REDIREC || nextToken == T_PIPE)) || nextToken == -1 || (currentToken == T_PIPE && i == 0))
                 return (-1);
         }
+
 		i++;
     }
     return (0);
@@ -125,7 +142,7 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	printf("\n-------------------------------------------------------\n");
 	printf(C"\n[2] How is 'USER_INPUT' saved in struct?\n\n"RS);
 	/* memo */
-
+	return (0);
 	tmp = syntax_pipe(validated_input, token, token_sequence, &cmd_tree);
 	printf("-------------------------------------------------------\n\n");
 	free_for_norminette(validated_input, token);
