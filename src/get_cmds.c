@@ -143,6 +143,7 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	printf(C"\n[2] How is 'USER_INPUT' saved in struct?\n\n"RS);
 	/* memo */
 	return (0);
+	setup_and_run_heredoc(token, validated_input, env);
 	tmp = syntax_pipe(validated_input, token, token_sequence, &cmd_tree);
 	printf("-------------------------------------------------------\n\n");
 	free_for_norminette(validated_input, token);
