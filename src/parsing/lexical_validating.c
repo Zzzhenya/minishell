@@ -51,7 +51,7 @@ int	count_word(const char *str, int n_word, int inword, int inquote, t_data data
 					inquote = 1;
 					inword = 1;
 				}
-				else	// prev quote type == current quote type (ex) " == "
+				else // prev quote type == current quote type (ex) "double = "double
 				{
 					if (*str == '\"')
 						cpy_n_dq--;
@@ -93,18 +93,19 @@ int	count_word(const char *str, int n_word, int inword, int inquote, t_data data
 					printf(G"QUOTE START\n"RS);
 					if (prev == 0)
 					{
-						prev = *str;	// save ' or " for prev
+						prev = *str; // save ' or " for prev
 						if (*str == '\'')
 						{
+							printf(G"SINGLE\n"RS);
+							n_word++;
 							cpy_n_sq--;
-							if (cpy_n_sq == 0 || cpy_n_sq == data.n_sq)
+							if (cpy_n_sq == 0)
 								n_word++;
 						}
 						else if (*str == '\"')
 						{
 							printf(G"DOUBLE\n"RS);
-							// if (cpy_n_dq == data.n_dq)
-								n_word++;
+							n_word++;
 							cpy_n_dq--;
 							if (cpy_n_dq == 0)
 								n_word++;
@@ -129,11 +130,6 @@ int	count_word(const char *str, int n_word, int inword, int inquote, t_data data
 				n_word++;
 				inword = 1;
 			}
-			// else
-			// {
-			// 	if (*(str + 1) == ' ')
-			// 		inword = 0;
-			// }
 		}
 		printf("\t%c	   %d	   %d	   %c	     %d		%d	  %d\n", *str, inquote, inword, prev, n_word, cpy_n_sq, cpy_n_dq);
 		printf("-------------------------------------------------------------------------\n");
@@ -141,6 +137,128 @@ int	count_word(const char *str, int n_word, int inword, int inquote, t_data data
 	}
 	return (n_word);
 }
+
+int	count_backslash(const char *input)
+{
+	int	i;
+	int	res;
+
+	i = 0;
+	res = 0;
+	// printf("Success to call the [f] count_backslashes.\n");
+	while (input[i] != '\0')
+	{
+		// printf("input[%d]: %c\n", i, input[i]);
+		if (input[i] == '\\')
+			res++;
+		// printf("res: %d\n", res);
+		i++;
+	}
+	return (res);
+}
+
+void	compress_backslash(char *input)
+{
+	int	i;
+	int	j;
+	int	consecutive_backslash;
+	
+	i = 0;
+	j = 0;
+	consecutive_backslash = 0;
+	while (input[i] != '\0')
+	{
+		if (input[i] == '\\' && input[i + 1] == '\\')
+			consecutive_backslash++;
+		else
+		{
+			if (consecutive_backslash > 0)
+			{
+				if (consecutive_backslash % 2 != 0)
+					input[j++] = '\\';
+				consecutive_backslash = 0;
+			}
+			input[j++] = input[i++];
+		}
+		i++;
+	}
+	if (consecutive_backslash > 0 && consecutive_backslash % 2 != 0)
+		input[j++] = '\\';
+	input[j] = '\0';
+}
+
+/*
+void	compress_backslash(char *input)
+{
+	int	i;
+	int	j;
+	int	origin_n_backslash;
+	int	consecutive_backslash;
+	int	final_n_backslash;
+	
+	i = 0;
+	j = 0;
+	origin_n_backslash = count_backslash(input);
+	consecutive_backslash = 0;
+	final_n_backslash = 0;
+	while (input[i] != '\0')
+	{
+		if (input[i] == '\\' && input[i + 1] == '\\')
+		{
+			consecutive_backslash++;
+			i++;
+		}
+		else
+		{
+			if (consecutive_backslash > 0)
+			{
+				input[j++] = '\\';
+				consecutive_backslash = 0;
+			}
+			input[j++] = input[i++];
+		}
+	}
+	input[j] = '\0';
+	final_n_backslash = origin_n_backslash - consecutive_backslash;
+	if (final_n_backslash % 2 != 0)
+	{
+		input[j - 1] = '\\';
+		input[j] = '\0';
+	}
+}
+
+void	compress_backslash(char *input)
+{
+	int i;
+	int j;
+	int	origin_n_backslash;
+	int	final_n_backslash;
+	
+	i = 0;
+	j = 0;
+	origin_n_backslash = count_backslash(input);
+	final_n_backslash = 0;
+	if (origin_n_backslash % 2 == 0) // 백슬래시의 개수가 짝수일 경우에만 압축
+	{
+        final_n_backslash = origin_n_backslash / 2;
+		while (input[i] != '\0')
+		{
+			if (input[i] == '\\' && input[i + 1] == '\\')
+                i++;
+			input[j] = input[i];
+			i++;
+			j++;
+		}
+        input[ft_strlen(input) - final_n_backslash] = '\0';
+    }
+	else
+	{
+		final_n_backslash = (origin_n_backslash - 1) / 2;
+		while ()
+
+	}
+}
+*/
 
 char	**validate_input(char *user_input, char **env)
 {
@@ -165,7 +283,14 @@ char	**validate_input(char *user_input, char **env)
 		return (NULL);
 
 	/* memo */
-	printf("\n\tinput: %s$\n\n", data.str);
+	printf("\n\tdata.str: %s$\n", data.str);
+	printf("\torignal_n_backslash: %d\n\n", count_backslash(data.str));
+	/* memo */
+
+	/* memo */
+	compress_backslash(data.str);
+	printf("\n\tAfter compress_data.str: %s$\n", data.str);
+	printf("\tfinal_n_backslash: %d\n\n", count_backslash(data.str));
 	/* memo */
 
 	if (ft_chopper(&data, data.str, 0) == -1)
