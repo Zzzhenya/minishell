@@ -127,17 +127,17 @@ void	interactive_mode(t_cmd **tree, t_envp *env,
 			env->paths = save_all_env_paths(env->envarr, env);
 			*tree = parse_user_input(user_input, env);
 
-			/* memo */
-			printf(C"[3] Executing starts\n\n"RS);
-			/* memo */
+			// /* memo */
+			// printf(C"[3] Executing starts\n\n"RS);
+			// /* memo */
 
 			if (*tree != NULL)
 			{
-				/* memo */
-				printf("pre_flag  pipe_exist  cmdstr\n");
-				print_tree(*tree);
-				printf("\n-------------------------------------------------------\n\n");
-				/* memo */
+				// /* memo */
+				// printf("pre_flag  pipe_exist  cmdstr\n");
+				// print_tree(*tree);
+				// printf("\n-------------------------------------------------------\n\n");
+				// /* memo */
 
 				setup_env(*tree, env);
 				search_tree(*tree, env->paths, env);
