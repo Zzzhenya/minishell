@@ -63,7 +63,18 @@ int   setup_and_run_heredoc(int *token, char  **arr, t_envp *env)
             free(arr[i + 1]);
             arr[i + 1] = name;
             if (status != 0)
+            {
+                while (count > 0)
+                {
+                    ret = ft_itoa(count);
+                    name = ft_strjoin(HEREDOCNAME, ret);
+                    unlink(name);
+                    count --;
+                    free (ret);
+                    free (name);
+                }
                 return (1);
+            }
         }
         i ++;
         token ++;
