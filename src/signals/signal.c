@@ -94,7 +94,12 @@ void	handle_here(int sig)
 {
 	(void)sig;
 	write (1, "\n", 1);
-	exit(130);
+	g_exit_status = 130;
+	exit (g_exit_status);
+	//exit(g_exit_status);
+	//
+	//exit(130);
+	
 }
 
 /*

@@ -12,17 +12,35 @@ void    heredoc_input(int fd, char *word, t_envp *env, char *line);
 
 */
 
-void   setup_and_run_heredoc(int *token, char  **arr, t_envp *env)
+int stage_heredoc(int fd, char *word, t_envp *env)
+{
+    pid_t pid = 0;
+    int status = 0;
+    pid = fork();
+    if (pid == 0)
+    {
+        heredoc_input(fd, word, env, NULL); // need env for expanding in the heredoc
+        exit(g_exit_status);
+    }
+    else
+    {
+        install_signals_child();
+        waitpid(pid, &status, 0);
+        if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+        return (g_exit_status);
+    }
+}
+
+int   setup_and_run_heredoc(int *token, char  **arr, t_envp *env)
 {
     int i = 0;
     int fd = 0;
     int count = 1;
     char *ret = NULL;
     char *name = NULL;
-    // int savedin = 0;
-    // int savedout = 0;
+    int status = 0;
 
-    //(void)token;
     while (arr[i])
     {
         if (*token == T_REDIREC && !ft_strncmp(arr[i], "<<", 3))
@@ -34,23 +52,21 @@ void   setup_and_run_heredoc(int *token, char  **arr, t_envp *env)
 		    {
 			    printf("bash: Too many heredocs\n");
 			    g_exit_status = 1;
-                //break; ?? What happens when a heredoc fails in bash????
-			    //return (1);
+                free(ret);
+                free(name);
+                return (1);
 		    }
-		    heredoc_input(fd, arr[i+1], env, NULL); // need env for expanding in the heredoc 
+            status = stage_heredoc(fd, arr[i+1], env);
 		    close(fd);
-            count ++;
             free(ret);
+            count ++;
             free(arr[i + 1]);
             arr[i + 1] = name;
-            //free(name);
-		    /*fd = open(HEREDOCNAME, O_RDONLY);
-		    dup_and_redirect(fd, STDIN_FILENO);
-		    unlink(HEREDOCNAME);*/ // Do this part in the executor but like a normal left redirect 
-            //printf("%s\n", arr[i]); // redirection sign
-            //printf("%s\n", arr[i+1]); // file name
+            if (status != 0)
+                return (1);
         }
         i ++;
         token ++;
     }
+    return (0);
 }
