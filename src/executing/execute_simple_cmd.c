@@ -266,7 +266,9 @@ void	waiting_child_process(t_redirec **stdios, pid_t pid)
 void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 {
 	int saved_stdout = 0;
+	int saved_stdin = 0;
 
+	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	env->builtin = 1;
 	if (setup_redirections(*stdios, env) == 0)
@@ -293,6 +295,7 @@ void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 	else*/
 	}
 	dup2(saved_stdout, STDOUT_FILENO);
+	dup2(saved_stdin, STDIN_FILENO);
 	return ;
 }
 
