@@ -119,59 +119,53 @@ static void execve_fail(char *cmd, t_envp *envo, int i)
 	free_stuff_and_exit(envo, 1, i);
 }
 */
+
+static void	handle_binary(char *path_cmd, t_envp *envo, int i, char **cmd)
+{
+	if (access(cmd[0], X_OK) == 0)
+		path_cmd = ft_strdup(cmd[0]);
+	else
+	{
+		ft_putstr_fd("bash: ", 2);
+		ft_putstr_fd(cmd[0], 2);
+		ft_putstr_fd(": Permission denied\n", 2);
+		envo->arr[i].status = 126;
+		free_stuff_and_exit(envo, 1, i);
+	}
+}
+
+static void	handle_execve_failure(int status, int i, char **cmd, t_envp *envo)
+{
+	status = errno;
+	if (status > 0)
+	{
+		ft_putstr_fd(cmd[0], 2);
+		ft_putstr_fd(": command not found\n", 2);
+		status = EX_CMD_NOT_FOUND;
+	}
+	envo->arr[i].status = status;
+	free_stuff_and_exit(envo, 1, i);
+}
+
 void	exec(char **cmd, char **env, t_envp *envo, int i)
 {
 	char	*path_cmd;
 	int		exit_status;
 
 	if (!cmd || !cmd[0])
-	{
 		free_stuff_and_exit(envo, 1, i);
-		//exit(1);
-	}
 	path_cmd = NULL;
 	if (check_cmd_in_path(env, cmd[0]))
 		path_cmd = check_cmd_in_path(env, cmd[0]);
 	else if (cmd[0][0] == '.' && cmd[0][1] == '/')
-	{ 
-		if (access(cmd[0], X_OK) == 0)
-			path_cmd = ft_strdup(cmd[0]);
-		else
-		{
-			ft_putstr_fd("bash: " , 2);
-			ft_putstr_fd(cmd[0], 2);
-			ft_putstr_fd(": Permission denied\n", 2);
-			envo->arr[i].status = 126;
-	 		free_stuff_and_exit(envo, 1, i);
-		}
-	}
+		handle_binary(path_cmd, envo, i, cmd);
 	else
 		path_cmd = ft_strdup(cmd[0]);
-	// else
-	// 	path_cmd = check_cmd_in_path(env, cmd[0]);
-	// if (!path_cmd)
-	// {
-	// 	envo->arr[i].status = EX_CMD_NOT_FOUND;
-	// 	free_stuff_and_exit(envo, 1, i);
-	// }
 	exit_status = execve(path_cmd, cmd, envo->envarr);
 	if (path_cmd)
 		free(path_cmd);
 	if (exit_status != 0)
-		//execve_fail(cmd[0], envo, i);
-	{
-		exit_status = errno;
-		//g_exit_status = exit_status;
-		if (exit_status > 0)
-		{
-			ft_putstr_fd(cmd[0], 2);
-			ft_putstr_fd(": command not found\n", 2);
-			exit_status = EX_CMD_NOT_FOUND;
-		}
-		envo->arr[i].status = exit_status;
-		free_stuff_and_exit(envo, 1, i);
-		//exit (envo->arr[i].status);
-	}
+		handle_execve_failure(exit_status, i, cmd, envo);
 }
 
 /*	[F]
@@ -185,16 +179,15 @@ void	exec(char **cmd, char **env, t_envp *envo, int i)
 	2. no	-> redirection_error_handle [f]red_error_handle
 			-> print error message about cmd.
 			-> exec
+	else
+		if (redirection_error_handle(cmd->l_child, env->arr[i].pid, env) != 0)
+			return ;
+		print_error_cmd(cmd->l_child, envp);
 */
 void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, int i)
 {
 	if (check_builtin(cmd->l_child, cmd))
 		builtin_router(cmd, env, env->arr[i].pid, i);
 	else
-	{
-		if (redirection_error_handle(cmd->l_child, env->arr[i].pid, env) != 0)
-			return ;
-		//print_error_cmd(cmd->l_child, envp);
 		exec(cmd->r_child->cmdstr, envp, env, i);
-	}
 }
