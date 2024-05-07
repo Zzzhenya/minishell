@@ -29,27 +29,31 @@ void	export_one_var(char *str, char *var, t_envp *my_data, int c)
 	my_data->count++;
 }
 
+void	split_and_export(char **argv, int i, int c, t_envp *my_data)
+{
+	char	**arr;
+
+	arr = NULL;
+	arr = split_at_first_occ(argv[i], '=', 0);
+	if (!is_valid_var_start(arr[0][0]) || !is_valid_var_char(arr[0]))
+		set_status_print(arr[0], c, my_data);
+	else
+		export_one_var(argv[i], arr[0], my_data, c);
+	free_arr(arr, get_arg_count(arr));
+}
+
 void	multi_export(char **argv, t_envp *my_data, int count, int c)
 {
 	char	*str;
-	char	**arr;
-	int i;
+	int		i;
 
 	str = NULL;
-	arr = NULL;
 	i = 0;
 	while (i < count)
 	{
 		str = ft_strchr(argv[i], '=');
 		if (str && argv[i][0] != '=')
-		{
-			arr = split_at_first_occ(argv[i], '=', 0);
-			if (!is_valid_var_start(arr[0][0]) || !is_valid_var_char(arr[0]))
-				set_status_print(arr[0], c, my_data);
-			else
-				export_one_var(argv[i], arr[0], my_data, c);
-			free_arr(arr, get_arg_count(arr));
-		}
+			split_and_export(argv, i, c, my_data);
 		else
 		{
 			if (!is_valid_var_start(argv[i][0]) || !is_valid_var_char(argv[i]))
@@ -68,13 +72,9 @@ void	exec_export(char **argv, t_envp *my_data, int c)
 	arr = NULL;
 	count = get_arg_count(&argv[1]);
 	arr = &argv[1];
-	// count = count_non_empty_strings(&argv[1]);
-	// arr = strip_empty_strings(&argv[1]);
 	my_data->arr[c].status = 0;
 	if (count == 0)
 		print_variables_list(my_data->envarr);
 	else
 		multi_export(arr, my_data, count, c);
-	// if (arr)
-	// 	free_arr(arr, count);
 }
