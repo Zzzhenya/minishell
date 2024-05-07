@@ -41,7 +41,8 @@ void	exec_pwd(t_envp *my_data, int c)
 	path = get_pwd(my_data, c);
 	if (!path)
 	{
-		ft_putstr_fd("getcwd: cannot access parent directories: No such file or directory", 1);
+		ft_putstr_fd("getcwd: cannot access parent directories: ", 1);
+		ft_putstr_fd("No such file or directory", 1);
 		ft_putchar_fd('\n', 1);
 		return ;
 	}
