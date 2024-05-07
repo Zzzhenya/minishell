@@ -29,6 +29,7 @@ RETURN VALUES
      of -1 is returned and errno is set to indicate the error.
 if (S_ISDIR(statbuf.st_mode))
 */
+/*
 int	not_a_dir(char	*path)
 {
 	struct stat	statbuf;
@@ -46,7 +47,7 @@ void	print_cd_error(char *path, char *message)
 	ft_putstr_fd("bash: cd: ", 2);
 	ft_putstr_fd(path, 2);
 	ft_putstr_fd(message, 2);
-}
+}*/
 
 char	*change_to_home(t_envp	*my_data)
 {
@@ -101,9 +102,28 @@ void	execute_path(char	*path, int c, t_envp *my_data)
 	}
 }
 
+static void	get_home_join(t_envp *my_data, char **argv, char *path)
+{
+	char	*temp;
+
+	temp = NULL;
+	temp = change_to_home(my_data);
+	path = ft_strjoin(temp, ft_strdup(&argv[1][1]));
+	free (temp);
+}
+
+void	update_cd_hist(t_envp *my_data, int c)
+{
+	if (my_data->cd_hist != NULL)
+	{
+		free(my_data->cd_hist);
+		my_data->cd_hist = NULL;
+	}
+	my_data->cd_hist = get_pwd(my_data, c);
+}
+
 void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
 {
-	char *temp = NULL;
 	if (my_data->cd_hist != NULL && argv[1]
 		&& !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
 	{
@@ -117,23 +137,12 @@ void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
 		ft_putendl_fd(path, 1);
 	}
 	else if (argv[1] == NULL || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
-	{
 		path = change_to_home(my_data);
-	}
 	else if (argv[1][0] == '~' && argv[1][1] == '/')
-	{
-		temp = change_to_home(my_data);
-		path = ft_strjoin(temp, ft_strdup(&argv[1][1]));
-		free (temp);
-	}
+		get_home_join(my_data, argv, path);
 	else
 		path = ft_strdup(argv[1]);
-	if (my_data->cd_hist != NULL)
-	{
-		free(my_data->cd_hist);
-		my_data->cd_hist = NULL;
-	}
-	my_data->cd_hist = get_pwd(my_data, c);
+	update_cd_hist(my_data, c);
 	if (my_data->cd_hist == NULL)
 		print_cd_error(path, ": error retrieving current directory\n");
 	execute_path(path, c, my_data);

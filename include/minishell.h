@@ -425,6 +425,10 @@ void		install_signals_here(void);
 void		exec_cd(char **argv, t_envp *my_data, char *path, int c);
 char		*change_to_home(t_envp	*my_data);
 
+// [cd_utils.c]
+void		print_cd_error(char *path, char *message);
+int			not_a_dir(char	*path);
+
 // [env.c]
 void		exec_env(char **argv, t_envp *my_data, int c);
 
