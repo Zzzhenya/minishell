@@ -35,6 +35,7 @@ SRCS = src/parsing/change_exit_status.c\
  src/builtins/echo.c\
  src/builtins/env.c\
  src/builtins/exit.c\
+ src/builtins/exit_utils.c\
  src/builtins/export.c\
  src/builtins/export_utils.c\
  src/builtins/pwd.c\
@@ -48,7 +49,7 @@ SRCS = src/parsing/change_exit_status.c\
  src/executing/here_doc_functions.c\
  src/parsing/setup_and_run_heredoc.c\
  src/environment/create_env_list.c\
- src/environment/create_env_arr.c\
+ src/environment/extract_env_arr.c\
  src/environment/init_env.c
 
 OBJS = $(SRCS:.c=.o)

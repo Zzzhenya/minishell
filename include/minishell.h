@@ -437,6 +437,8 @@ void		exec_echo(char **argv, int c, char **arr, t_envp *my_data);
 
 // [exit.c]
 void		exec_exit(char **argv, t_envp *my_data, int c);
+
+// [exit_utils.c]
 void		free_stuff_and_exit(t_envp *my_data, int yes, int i);
 
 // [unset.c]
