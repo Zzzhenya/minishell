@@ -82,7 +82,7 @@ void	heredoc_input(int fd, char *word, t_envp *env, char *line)
 		if (!line && g_exit_status == 0)
 		{
 			print_here_error(k, word);
-			break;
+			break ;
 		}
 		if (ft_strcmp(line, word) == 0)
 		{
@@ -95,6 +95,5 @@ void	heredoc_input(int fd, char *word, t_envp *env, char *line)
 		k ++;
 		free (line);
 		line = NULL;
-		
 	}
 }
