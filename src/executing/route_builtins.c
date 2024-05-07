@@ -28,8 +28,7 @@ int	check_builtin(t_cmd *file_path, t_cmd *cmd)
 		return (0);
 }
 
-void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid, int i)
-{
+/*
 	if (redirection_error_handle(cmd->l_child, pid, env) != 0)
 	{
 		if (pid != 0)
@@ -39,6 +38,9 @@ void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid, int i)
 			exit(g_exit_status);
 		}
 	}
+*/
+void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid, int i)
+{
 	if (!ft_strcmp(cmd->r_child->cmdstr[0], "exit"))
 		exec_exit(cmd->r_child->cmdstr, env, i);
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "unset"))
@@ -54,10 +56,7 @@ void	builtin_router(t_cmd *cmd, t_envp *env, pid_t pid, int i)
 	else if (!ft_strcmp(cmd->r_child->cmdstr[0], "env"))
 		exec_env(NULL, env, i);
 	if (pid == 0)
-	{
 		free_stuff_and_exit(env, 1, i);
-		//exit(env->arr[i].status);
-	}
 	else
 	{
 		g_exit_status = env->arr[i].status;
