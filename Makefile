@@ -25,7 +25,6 @@ SRCS = src/parsing/change_exit_status.c\
  src/util/util_debug.c\
  src/get_cmds.c\
  src/main.c\
- src/envp_actions.c\
  src/signals/signal.c\
  src/signals/heredoc_signal.c\
  src/executing/execute_simple_cmd.c\
@@ -47,7 +46,10 @@ SRCS = src/parsing/change_exit_status.c\
  src/executing/wait_blocked_cmds.c\
  src/builtins/builtin_utils.c\
  src/executing/here_doc_functions.c\
- src/parsing/setup_and_run_heredoc.c
+ src/parsing/setup_and_run_heredoc.c\
+ src/environment/create_env_list.c\
+ src/environment/create_env_arr.c\
+ src/environment/init_env.c
 
 OBJS = $(SRCS:.c=.o)
 

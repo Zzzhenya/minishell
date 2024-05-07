@@ -372,12 +372,16 @@ void		non_interactive_mode(t_cmd **tree,
 int			main(int argc, char **argv, char **envs);
 void	free_things(t_cmd **tree, t_envp *env, char **envp, char *user_input);
 
-/* [ ENV ] */
-// [ envp_actions.c ]
+/* [ ENVIRONMENT ] */
+// [create_env_list.c]
 int			store_envp(t_envp *env, char **envs);
+
+// [extract_env_arr.c]
 void		clear_envlist(t_envp *env);
 int			extract_envarr(t_envp *my_data);
 void		free_string(void *input);
+
+// [init_env.c]
 void		init_env(t_envp *env);
 
 // [ Executing ]
