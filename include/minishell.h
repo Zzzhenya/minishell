@@ -411,8 +411,9 @@ int			get_arg_count(char **argv);
 // [ SIGNAL ]
 // [signals.c]
 void		install_signals_main(int c);
-void		install_signals_hang(void);
 void		install_signals_child(void);
+
+// [heredoc_signal.c]
 void		install_signals_here(void);
 
 // [ BUILT-IN ] 

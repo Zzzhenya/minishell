@@ -27,6 +27,7 @@ SRCS = src/parsing/change_exit_status.c\
  src/main.c\
  src/envp_actions.c\
  src/signals/signal.c\
+ src/signals/heredoc_signal.c\
  src/executing/execute_simple_cmd.c\
  src/executing/cmd_functions.c\
  src/executing/execute_simple_redirect.c\
