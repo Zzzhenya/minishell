@@ -20,9 +20,9 @@
 	else
 */
 
-static int is_a_minus_n_combo(char *str)
+static int	is_a_minus_n_combo(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str)
@@ -38,25 +38,11 @@ static int is_a_minus_n_combo(char *str)
 	return (1);
 }
 
-void	exec_echo(char **argv, int c, char **arr, t_envp *my_data)
+static void	print_words(char **arr, int i, int count, t_envp *my_data)
 {
-	int	i;
-	int count = 0;
-	int	opt;
-	char *path = NULL;
+	char	*path;
 
-	// count = count_non_empty_strings(&argv[1]);
-	// arr = strip_empty_strings(&argv[1]);
-	count = get_arg_count(&argv[1]);
-	arr = &argv[1];
-	i = 0;
-	opt = 0;
-	if (count > 0 && !ft_strncmp(arr[i], "-n", 3))
-	{
-		opt = 1;
-		while (is_a_minus_n_combo(arr[i]))
-			i ++;
-	}
+	path = NULL;
 	while (i < count)
 	{
 		if (!ft_strcmp(arr[i], "~"))
@@ -71,9 +57,27 @@ void	exec_echo(char **argv, int c, char **arr, t_envp *my_data)
 			ft_putchar_fd(' ', 1);
 		i ++;
 	}
+}
+
+void	exec_echo(char **argv, int c, char **arr, t_envp *my_data)
+{
+	int	i;
+	int	count;
+	int	opt;
+
+	count = 0;
+	count = get_arg_count(&argv[1]);
+	arr = &argv[1];
+	i = 0;
+	opt = 0;
+	if (count > 0 && !ft_strncmp(arr[i], "-n", 3))
+	{
+		opt = 1;
+		while (is_a_minus_n_combo(arr[i]))
+			i ++;
+	}
+	print_words(arr, i, count, my_data);
 	if (opt == 0)
 		ft_putchar_fd('\n', 1);
-	// if (arr)
-	// 	free_arr(arr, count);
 	my_data->arr[c].status = 0;
 }
