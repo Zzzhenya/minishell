@@ -74,14 +74,14 @@
 		From now on, “standard output” will be pipefd[1].
 		이제부터 "표준출력"은 pipefd[1](= FD)로 한다.
 */
-void	update_pipefd(int pipefd[2], int initial_input, int flag_pipe_exist)
-{
-	(void)initial_input;
-	if (flag_pipe_exist == -1)
-		close(pipefd[1]);
-	else
-		dup2(pipefd[1], STDOUT_FILENO);
-}
+// void	update_pipefd(int pipefd[2], int initial_input, int flag_pipe_exist)
+// {
+// 	(void)initial_input;
+// 	if (flag_pipe_exist == -1)
+// 		close(pipefd[1]);
+// 	else
+// 		dup2(pipefd[1], STDOUT_FILENO);
+// }
 
 /*	[F]
 	[Role]
@@ -299,6 +299,22 @@ void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 	return ;
 }
 
+	// if (flag_pipe_exist == -1)
+	// 	close(pipefd[1]);
+	// else
+	// 	dup2(pipefd[1], STDOUT_FILENO);
+
+void setup_pipe_for_child(int *pipefd, int pipe_exist, int initial_input)
+{
+	close(pipefd[0]);
+	if (pipe_exist != -1)
+		dup2(initial_input, STDIN_FILENO);
+	if (pipe_exist == -1)
+		close(pipefd[1]);
+	else
+		dup2(pipefd[1], STDOUT_FILENO);
+}
+
 void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		, t_envp *env)
 {
@@ -335,11 +351,16 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 	{
 		//redirection_error_handle(cmd->l_child, pid);
 		install_signals_main(0);
-		close(pipefd[0]);
-		if (initial_input != -1)
-			dup2(initial_input, STDIN_FILENO);
+		setup_pipe_for_child(pipefd, cmd->pipe_exist, initial_input);
+		// close(pipefd[0]);
+		// if (initial_input != -1)
+		// 	dup2(initial_input, STDIN_FILENO);
+		// if (initial_input == -1)
+		// 	close(pipefd[1]);
+		// else
+		// 	dup2(pipefd[1], STDOUT_FILENO);
 		ret = setup_redirections(*stdios, env);
-		update_pipefd(pipefd, initial_input, cmd->pipe_exist);
+		//update_pipefd(pipefd, initial_input, cmd->pipe_exist);
 		if (*stdios)
 		{
 			free_stdios(*stdios);
