@@ -182,11 +182,13 @@ void	write_pipefd(int pipefd[2], int *initial_input, int flag_pipe_exist)
 	if (find_last_in(*(stdios)) != NULL
 		&& find_last_in(*(stdios))->redirec_type == REDIREC_LL)
 */
-void	waiting_child_process(t_redirec **stdios, pid_t pid)
+static void	clean_stdios_list(t_redirec **stdios)
 {
-	(void)pid;
-	free_stdios(*stdios);
-	*stdios = NULL;
+	if (*stdios)
+	{
+		free_stdios(*stdios);
+		*stdios = NULL;
+	}
 }
 
 /*	[F]
@@ -270,16 +272,12 @@ void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 	env->builtin = 1;
 	if (setup_redirections(*stdios) == 0)
 	{
-		free_stdios(*stdios);
-		*stdios = NULL;
+		clean_stdios_list(stdios);
 		if (cmd->r_child->cmdstr[0] != NULL)
 			builtin_router(cmd, env, 1, i);
 	}
 	else
-	{
-		free_stdios(*stdios);
-		*stdios = NULL;
-	}
+		clean_stdios_list(stdios);
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
 	return ;
@@ -295,6 +293,10 @@ void	setup_pipe_for_child(int *pipefd, int pipe_exist, int initial_input)
 	else
 		dup2(pipefd[1], STDOUT_FILENO);
 }
+/*
+	if (g_exit_status == 2)
+		return ; - Probably handled in the parser
+*/
 
 void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env)
 {
@@ -311,8 +313,6 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env)
 		exec_one_builtin_cmd(cmd, stdios, env, i);
 		return ;
 	}
-	if (g_exit_status == 2)
-		return ;
 	if (pipe(pipefd) == -1)
 		return (perror("pipe: "));
 	env->arr[i].pid = fork();
@@ -323,11 +323,7 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env)
 		install_signals_main(0);
 		setup_pipe_for_child(pipefd, cmd->pipe_exist, initial_input);
 		ret = setup_redirections(*stdios);
-		if (*stdios)
-		{
-			free_stdios(*stdios);
-			*stdios = NULL;
-		}
+		clean_stdios_list(stdios);
 		if (ret == 0)
 			pid_zero_exec(cmd, env, i);
 		else
@@ -340,7 +336,7 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env)
 	{
 		install_signals_child();
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
-		waiting_child_process(stdios, env->arr[i].pid);
+		clean_stdios_list(stdios);
 		env->c ++;
 	}
 }
