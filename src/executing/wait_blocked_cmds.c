@@ -61,7 +61,7 @@ static void	handle_sig_numbers(int sig, int status, t_envp *env, int i)
 		else
 		{
 			printf("Quit (core dumped)\n");
-			env->arr[i].status = status;
+			env->arr[i].status = 128 + status;
 		}
 	}
 }
@@ -87,9 +87,9 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 		{
 			sig = WTERMSIG(status);
 			env->arr[i].status = sig;
+			handle_sig_numbers(sig, status, env, i);
 		}
 		i ++;
 	}
 	g_exit_status = env->arr[i - 1].status;
-	handle_sig_numbers(sig, status, env, i);
 }
