@@ -102,7 +102,7 @@ void	execute_path(char	*path, int c, t_envp *my_data)
 	}
 }
 
-static void	get_home_join(t_envp *my_data, char **argv, char *path)
+static char	*get_home_join(t_envp *my_data, char **argv, char *path)
 {
 	char	*temp;
 
@@ -110,6 +110,7 @@ static void	get_home_join(t_envp *my_data, char **argv, char *path)
 	temp = change_to_home(my_data);
 	path = ft_strjoin(temp, ft_strdup(&argv[1][1]));
 	free (temp);
+	return (path);
 }
 
 void	update_cd_hist(t_envp *my_data, int c)
@@ -139,7 +140,7 @@ void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
 	else if (argv[1] == NULL || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
 		path = change_to_home(my_data);
 	else if (argv[1][0] == '~' && argv[1][1] == '/')
-		get_home_join(my_data, argv, path);
+		path = get_home_join(my_data, argv, path);
 	else
 		path = ft_strdup(argv[1]);
 	update_cd_hist(my_data, c);

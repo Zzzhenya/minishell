@@ -120,7 +120,7 @@ static void execve_fail(char *cmd, t_envp *envo, int i)
 }
 */
 
-static void	handle_binary(char *path_cmd, t_envp *envo, int i, char **cmd)
+static char	*handle_binary(char *path_cmd, t_envp *envo, int i, char **cmd)
 {
 	if (access(cmd[0], X_OK) == 0)
 		path_cmd = ft_strdup(cmd[0]);
@@ -132,6 +132,7 @@ static void	handle_binary(char *path_cmd, t_envp *envo, int i, char **cmd)
 		envo->arr[i].status = 126;
 		free_stuff_and_exit(envo, 1, i);
 	}
+	return (path_cmd);
 }
 
 static void	handle_execve_failure(int status, int i, char **cmd, t_envp *envo)
@@ -158,7 +159,7 @@ void	exec(char **cmd, char **env, t_envp *envo, int i)
 	if (check_cmd_in_path(env, cmd[0]))
 		path_cmd = check_cmd_in_path(env, cmd[0]);
 	else if (cmd[0][0] == '.' && cmd[0][1] == '/')
-		handle_binary(path_cmd, envo, i, cmd);
+		path_cmd = handle_binary(path_cmd, envo, i, cmd);
 	else
 		path_cmd = ft_strdup(cmd[0]);
 	exit_status = execve(path_cmd, cmd, envo->envarr);
