@@ -49,19 +49,19 @@ int	count_commands(t_cmd *tree)
 			g_exit_status = WEXITSTATUS(status);
 	}
 */
-static void	handle_sig_numbers(int sig, int status)
+static void	handle_sig_numbers(int sig, int status, t_envp *env, int i)
 {
 	if ((sig == 2 || sig == 3))
 	{
 		if (sig == 2)
 		{
 			printf("\n");
-			g_exit_status = 128 + status;
+			env->arr[i].status = 128 + status;
 		}
 		else
 		{
 			printf("Quit (core dumped)\n");
-			g_exit_status = status;
+			env->arr[i].status = status;
 		}
 	}
 }
@@ -90,6 +90,7 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 		}
 		i ++;
 	}
+	printf("sig %d, status %d\n", sig, status);
 	g_exit_status = env->arr[i - 1].status;
-	handle_sig_numbers(sig, status);
+	handle_sig_numbers(sig, status, env, i);
 }
