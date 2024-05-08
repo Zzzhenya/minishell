@@ -185,11 +185,6 @@ void	write_pipefd(int pipefd[2], int *initial_input, int flag_pipe_exist)
 void	waiting_child_process(t_redirec **stdios, pid_t pid)
 {
 	(void)pid;
-	//waitpid(pid, NULL, WNOHANG);
-	//if (find_last(*stdios, 'l', NULL) != NULL
-	//	&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
-	//	waitpid(-1, &g_exit_status, 0);
-	//else
 	free_stdios(*stdios);
 	*stdios = NULL;
 }
@@ -276,33 +271,17 @@ void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 		free_stdios(*stdios);
 		*stdios = NULL;
 		if (cmd->r_child->cmdstr[0] != NULL)
-		{
-			//(void)i;
 			builtin_router(cmd, env, 1, i);
-		}
-		/*else
-		{
-			return ;
-		}*/
 	}
 	else
 	{
 		free_stdios(*stdios);
 		*stdios = NULL;
-	/*if (find_last(*stdios, 'l', NULL) != NULL
-		&& find_last(*stdios, 'l', NULL)->redirec_type == REDIREC_LL)
-		waitpid(-1, &g_exit_status, 0);
-	else*/
 	}
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
 	return ;
 }
-
-	// if (flag_pipe_exist == -1)
-	// 	close(pipefd[1]);
-	// else
-	// 	dup2(pipefd[1], STDOUT_FILENO);
 
 void setup_pipe_for_child(int *pipefd, int pipe_exist, int initial_input)
 {
@@ -320,26 +299,16 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 {
 	int				pipefd[2];
 	static int		initial_input = -1;
-	//pid_t			pid;
 	int 			i;
 	int ret = 0;
 
 	i = env->c;
-	//if (env->cmds == 1 && (check_builtin(cmd->r_child, cmd)))// || cmd->r_child->cmdstr[0] == NULL))
-	if (env->procs == 1 && (check_builtin(cmd->r_child, cmd)))// || cmd->r_child->cmdstr[0] == NULL))
+	if (env->procs == 1 && (check_builtin(cmd->r_child, cmd)))
 	{
 		initial_input = -1;
 		exec_one_builtin_cmd(cmd, stdios, env, i);
 		return ;
 	}
-	/*
-	if (env->procs == 1 && !ft_strcmp(cmd->r_child->cmdstr[0], "exit"))
-	{
-		initial_input = -1;
-		//exec_exit(cmd->r_child->cmdstr, env, i);
-		exec_one_builtin_cmd(cmd, stdios, env, i);
-		return ;
-	}*/
 	if (g_exit_status == 2)
 		return;
 	if (pipe(pipefd) == -1)
@@ -349,50 +318,27 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		return (perror("fork: "));
 	else if (env->arr[i].pid == 0)
 	{
-		//redirection_error_handle(cmd->l_child, pid);
 		install_signals_main(0);
 		setup_pipe_for_child(pipefd, cmd->pipe_exist, initial_input);
-		// close(pipefd[0]);
-		// if (initial_input != -1)
-		// 	dup2(initial_input, STDIN_FILENO);
-		// if (initial_input == -1)
-		// 	close(pipefd[1]);
-		// else
-		// 	dup2(pipefd[1], STDOUT_FILENO);
 		ret = setup_redirections(*stdios);
-		//update_pipefd(pipefd, initial_input, cmd->pipe_exist);
 		if (*stdios)
 		{
 			free_stdios(*stdios);
 			*stdios = NULL;
 		}
 		if (ret == 0)
-		{
-			//if (env->procs == 1 && cmd->r_child->cmdstr[0] == NULL)
 			pid_zero_exec(cmd, envp, env, i);
-		}
 		else
 		{
-
 			env->arr[i].status = 1;
-			//g_exit_status = 1;
 			free_stuff_and_exit(env, 1, i);
 		}
 	}
 	else
 	{
-		//env->arr[i].pid = pid;
 		install_signals_child();
 		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
 		waiting_child_process(stdios, env->arr[i].pid);
 		env->c ++;
-		// if (env->procs == 1)
-		// {
-		// 	if (*stdios)
-		// 	{
-		// 		free_stdios(*stdios);
-		// 		*stdios = NULL;
-		// 	}
-		// }
 	}
 }
