@@ -298,14 +298,46 @@ void	setup_pipe_for_child(int *pipefd, int pipe_exist, int initial_input)
 		return ; - Probably handled in the parser
 */
 
+pid_t	pipe_and_fork(int *pipefd, t_envp *env, int i)
+{
+	if (pipe(pipefd) == -1)
+		ft_putstr_fd("pipe error\n", 2);
+	env->arr[i].pid = fork();
+	if (env->arr[i].pid < 0)
+		ft_putstr_fd("fork error\n", 2);
+	return (env->arr[i].pid);
+}
+
+void	parent_process(int *pipefd, int *initial_input,
+		t_cmd *cmd, t_redirec **stdios)
+{
+	install_signals_child();
+	write_pipefd(pipefd, initial_input, cmd->pipe_exist);
+	clean_stdios_list(stdios);
+}
+
+void	child_process(t_redirec **stdios, t_cmd *cmd, t_envp *env, int i)
+{
+	int				ret;
+
+	ret = 0;
+	ret = setup_redirections(*stdios);
+	clean_stdios_list(stdios);
+	if (ret == 0)
+		pid_zero_exec(cmd, env, i);
+	else
+	{
+		env->arr[i].status = 1;
+		free_stuff_and_exit(env, 1, i);
+	}
+}
+
 void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env)
 {
 	int				pipefd[2];
 	static int		initial_input = -1;
 	int				i;
-	int				ret;
 
-	ret = 0;
 	i = env->c;
 	if (env->procs == 1 && (check_builtin(cmd->r_child, cmd)))
 	{
@@ -313,30 +345,18 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env)
 		exec_one_builtin_cmd(cmd, stdios, env, i);
 		return ;
 	}
-	if (pipe(pipefd) == -1)
-		return (perror("pipe: "));
-	env->arr[i].pid = fork();
-	if (env->arr[i].pid < 0)
-		return (perror("fork: "));
-	else if (env->arr[i].pid == 0)
+	env->arr[i].pid = pipe_and_fork(pipefd, env, i);
+	if (env->arr[i].pid == 0)
 	{
 		install_signals_main(0);
 		setup_pipe_for_child(pipefd, cmd->pipe_exist, initial_input);
-		ret = setup_redirections(*stdios);
-		clean_stdios_list(stdios);
-		if (ret == 0)
-			pid_zero_exec(cmd, env, i);
-		else
-		{
-			env->arr[i].status = 1;
-			free_stuff_and_exit(env, 1, i);
-		}
+		child_process(stdios, cmd, env, i);
 	}
 	else
 	{
-		install_signals_child();
-		write_pipefd(pipefd, &initial_input, cmd->pipe_exist);
-		clean_stdios_list(stdios);
+		parent_process(pipefd, &initial_input, cmd, stdios);
 		env->c ++;
 	}
 }
+
+// 32 - 9 = 23

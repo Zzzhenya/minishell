@@ -51,17 +51,19 @@ int	count_commands(t_cmd *tree)
 */
 static void	handle_sig_numbers(int sig, int status, t_envp *env, int i)
 {
+	(void)status;
+	(void)i;
 	if ((sig == 2 || sig == 3))
 	{
 		if (sig == 2)
 		{
-			printf("\n");
-			env->arr[i].status = 128 + status;
+			if (env->procs == 1)
+				printf("\n");
 		}
 		else
 		{
-			printf("Quit (core dumped)\n");
-			env->arr[i].status = 128 + status;
+			if (env->procs == 1)
+				printf("Quit (core dumped)\n");
 		}
 	}
 }
@@ -86,10 +88,11 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 		else if (WIFSIGNALED(status))
 		{
 			sig = WTERMSIG(status);
-			env->arr[i].status = sig;
-			handle_sig_numbers(sig, status, env, i);
+			env->arr[i].status = 128 + sig;
 		}
+		printf("i%d\n", i);
 		i ++;
 	}
+	handle_sig_numbers(sig, status, env, i);
 	g_exit_status = env->arr[i - 1].status;
 }

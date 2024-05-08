@@ -23,6 +23,7 @@ void	handle_prompt(int sig)
 
 void	handle_bs(int sig)
 {
+	write (1, "\n", 1);
 	g_exit_status = sig;
 	return ;
 }
