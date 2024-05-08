@@ -260,9 +260,11 @@ void	waiting_child_process(t_redirec **stdios, pid_t pid)
 
 void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 {
-	int saved_stdout = 0;
-	int saved_stdin = 0;
+	int	saved_stdout;
+	int	saved_stdin;
 
+	saved_stdout = 0;
+	saved_stdin = 0;
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	env->builtin = 1;
@@ -283,7 +285,7 @@ void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 	return ;
 }
 
-void setup_pipe_for_child(int *pipefd, int pipe_exist, int initial_input)
+void	setup_pipe_for_child(int *pipefd, int pipe_exist, int initial_input)
 {
 	close(pipefd[0]);
 	if (pipe_exist != -1)
@@ -299,9 +301,10 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 {
 	int				pipefd[2];
 	static int		initial_input = -1;
-	int 			i;
-	int ret = 0;
+	int				i;
+	int				ret;
 
+	ret = 0;
 	i = env->c;
 	if (env->procs == 1 && (check_builtin(cmd->r_child, cmd)))
 	{
@@ -310,7 +313,7 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		return ;
 	}
 	if (g_exit_status == 2)
-		return;
+		return ;
 	if (pipe(pipefd) == -1)
 		return (perror("pipe: "));
 	env->arr[i].pid = fork();
