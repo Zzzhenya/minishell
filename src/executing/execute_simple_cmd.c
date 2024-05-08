@@ -296,8 +296,7 @@ void	setup_pipe_for_child(int *pipefd, int pipe_exist, int initial_input)
 		dup2(pipefd[1], STDOUT_FILENO);
 }
 
-void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
-		, t_envp *env)
+void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env)
 {
 	int				pipefd[2];
 	static int		initial_input = -1;
@@ -330,7 +329,7 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 			*stdios = NULL;
 		}
 		if (ret == 0)
-			pid_zero_exec(cmd, envp, env, i);
+			pid_zero_exec(cmd, env, i);
 		else
 		{
 			env->arr[i].status = 1;

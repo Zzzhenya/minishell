@@ -54,12 +54,12 @@ void	execute_simple_redirect(t_cmd *node, t_redirec **stdios);
 		N_REDIREC_TYPE		N_FILE_NAME
 
 */
-void	execute_tree(t_cmd *node, t_redirec **stdios, char **envp, t_envp *envs)
+void	execute_tree(t_cmd *node, t_redirec **stdios, t_envp *envs)
 {
 	if (node->node_type == N_CMD || node->node_type == N_REDIREC)
 		return ;
 	else if (node->node_type == N_SIMPLE_CMD)
-		execute_simple_cmd(node, stdios, envp, envs);
+		execute_simple_cmd(node, stdios, envs);
 	else if (node->node_type == N_SIMPLE_REDIREC)
 		execute_simple_redirect(node, stdios);
 }
@@ -107,19 +107,19 @@ void	execute_tree(t_cmd *node, t_redirec **stdios, char **envp, t_envp *envs)
 		There is more nodes from r_child's node
 		= search more about r_child node.
 */
-void	search_tree(t_cmd *node, char **envp, t_envp *env)
+void	search_tree(t_cmd *node, t_envp *env)
 {
 	static t_redirec	*stdios;
 
 	if (node == NULL)
 		return ;
-	execute_tree(node, &stdios, envp, env);
+	execute_tree(node, &stdios, env);
 	if (node->l_child && (node->l_child->node_type != N_REDIREC_TYPE
 			|| node->l_child->node_type != N_FILE_PATH))
-		search_tree(node->l_child, envp, env);
+		search_tree(node->l_child, env);
 	if (node->r_child && (node->r_child->node_type != N_FILE_NAME
 			|| node->r_child->node_type != N_ARGV))
-		search_tree(node->r_child, envp, env);
+		search_tree(node->r_child, env);
 }
 
 /*	[F]

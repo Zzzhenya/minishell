@@ -90,7 +90,6 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 		}
 		i ++;
 	}
-	printf("sig %d, status %d\n", sig, status);
 	g_exit_status = env->arr[i - 1].status;
 	handle_sig_numbers(sig, status, env, i);
 }

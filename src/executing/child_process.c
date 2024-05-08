@@ -185,8 +185,12 @@ void	exec(char **cmd, char **env, t_envp *envo, int i)
 			return ;
 		print_error_cmd(cmd->l_child, envp);
 */
-void	pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, int i)
+void	pid_zero_exec(t_cmd *cmd, t_envp *env, int i)
 {
+	char	**envp;
+
+	envp = NULL;
+	envp = env->paths;
 	if (check_builtin(cmd->l_child, cmd))
 		builtin_router(cmd, env, env->arr[i].pid, i);
 	else

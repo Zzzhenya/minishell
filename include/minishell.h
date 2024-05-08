@@ -394,7 +394,7 @@ char		*check_cmd_in_path(char **envp, char *command);
 void		print_error_cmd(t_cmd *file_path, char **envp);
 void		exec(char **cmd, char **env, t_envp *envo, int i);
 // [search_tree.c]
-void		search_tree(t_cmd *node, char **envp, t_envp *env);
+void		search_tree(t_cmd *node, t_envp *env);
 
 // [ REDIRECTIONS ]
 // [setup_redirections.c]
@@ -486,7 +486,7 @@ File descriptor of STDOUT, relating with output source like Monitor.
 int			redirection_error_handle(t_cmd *type, pid_t pid, t_envp *env);
 
 // [child_process.c]
-void		pid_zero_exec(t_cmd *cmd, char **envp, t_envp *env, pid_t pid);
+void		pid_zero_exec(t_cmd *cmd, t_envp *env, pid_t pid);
 
 // [wait_blocked_cmds.c]
 void		wait_each_command(t_cmd *tree, t_envp *env);
@@ -501,6 +501,5 @@ void		builtin_router(t_cmd *cmd, t_envp *env, pid_t pid, int i);
 /* readline */
 void		rl_replace_line(const char *text, int clear_undo);
 void		rl_clear_history (void);
-void		execute_simple_cmd(t_cmd *cmd, t_redirec **stdios,
-				char **envp, t_envp *env);
+void		execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env);
 #endif

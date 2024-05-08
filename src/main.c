@@ -140,7 +140,7 @@ void	interactive_mode(t_cmd **tree, t_envp *env,
 				// /* memo */
 
 				setup_env(*tree, env);
-				search_tree(*tree, env->paths, env);
+				search_tree(*tree, env);
 				wait_each_command(*tree, env);
 			}
 		}
