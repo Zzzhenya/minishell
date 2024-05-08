@@ -31,7 +31,9 @@ int	setup_r(t_redirec *stdios)
 		fd = open(stdios->filename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 		if (fd == -1)
 		{
-			printf("bash: %s: Open error\n", stdios->filename);
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(stdios->filename, 2);
+			ft_putstr_fd(": Open error\n", 2);
 			g_exit_status = errno;
 			return (1);
 		}
@@ -50,7 +52,9 @@ int	setup_rr(t_redirec *stdios)
 		fd = open(stdios->filename, O_WRONLY | O_CREAT | O_APPEND, 0666);
 		if (fd == -1)
 		{
-			printf("bash: %s: Open error\n", stdios->filename);
+			ft_putstr_fd("bash: ", 2);
+			ft_putstr_fd(stdios->filename, 2);
+			ft_putstr_fd(": Open error\n", 2);
 			g_exit_status = errno;
 			return (1);
 		}
