@@ -40,13 +40,10 @@ int	redirection_error_handle(t_cmd *type, pid_t pid, t_envp *env)
 {
 	if (type->cmdstr[0][0] == '<' || type->cmdstr[0][0] == '>')
 	{
-		//g_exit_status = 2;
 		if (pid == 0)
 		{
-			//printf("bash: syntax error near unexpected token `newline'\n");
 			free_stuff_and_exit(env, 1, 0);
 			return (0);
-			//exit (g_exit_status);
 		}
 		else
 			return (1);
