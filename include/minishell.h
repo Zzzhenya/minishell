@@ -398,8 +398,16 @@ void		search_tree(t_cmd *node, char **envp, t_envp *env);
 
 // [ REDIRECTIONS ]
 // [setup_redirections.c]
-//void		setup_redirections(t_redirec *stdios);
-int		setup_redirections(t_redirec *stdios, t_envp *env);
+int			setup_redirections(t_redirec *stdios);
+void		dup_and_redirect(int oldfd, int newfd);
+
+// [setup_right_redirections.c]
+int			setup_rr(t_redirec *stdios);
+int 		setup_r(t_redirec *stdios);
+
+// [setup_left_redirections.c]
+int			setup_ll(t_redirec *stdios);
+int 		setup_l(t_redirec *stdios);
 
 // [ETC ]
 //t_redirec	*find_last(t_redirec *stdios, char c, t_redirec *last);

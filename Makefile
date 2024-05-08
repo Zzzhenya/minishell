@@ -31,6 +31,8 @@ SRCS = src/parsing/change_exit_status.c\
  src/executing/cmd_functions.c\
  src/executing/execute_simple_redirect.c\
  src/executing/search_tree.c\
+ src/executing/setup_right_redirections.c\
+ src/executing/setup_left_redirections.c\
  src/builtins/cd.c\
  src/builtins/cd_utils.c\
  src/builtins/echo.c\

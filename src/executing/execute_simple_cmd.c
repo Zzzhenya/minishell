@@ -271,7 +271,7 @@ void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	env->builtin = 1;
-	if (setup_redirections(*stdios, env) == 0)
+	if (setup_redirections(*stdios) == 0)
 	{
 		free_stdios(*stdios);
 		*stdios = NULL;
@@ -359,7 +359,7 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, char **envp
 		// 	close(pipefd[1]);
 		// else
 		// 	dup2(pipefd[1], STDOUT_FILENO);
-		ret = setup_redirections(*stdios, env);
+		ret = setup_redirections(*stdios);
 		//update_pipefd(pipefd, initial_input, cmd->pipe_exist);
 		if (*stdios)
 		{
