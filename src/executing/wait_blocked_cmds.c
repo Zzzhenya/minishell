@@ -57,8 +57,7 @@ static void	handle_sig_numbers(int sig, int status, t_envp *env, int i)
 	{
 		if (sig == 2)
 		{
-			if (env->procs == 1)
-				printf("\n");
+			printf("\n");
 		}
 		else
 		{
