@@ -363,16 +363,20 @@ void		free_arr(char **arr, int loc);
 
 /* [ STARTING POINT ] */
 // [ main.c ]
-char		**save_all_env_paths(char **envp, t_envp *env);
 char		*get_allocated_cwd(void);
 void		interactive_mode(t_cmd **tree, t_envp *env,
 				char *user_input);
-void		non_interactive_mode(t_cmd **tree,
-				char *input, char **envp, t_envp *env);
 int			main(int argc, char **argv, char **envs);
-void	free_things(t_cmd **tree, t_envp *env, char **envp, char *user_input);
 
 /* [ ENVIRONMENT ] */
+// [setup_env.c]
+void	setup_env(t_cmd *tree, t_envp *env);
+int	count_procs(t_cmd *tree);
+char	**save_all_env_paths(char **envp, t_envp *env);
+
+// [reset_env.c]
+void	free_things(t_cmd **tree, t_envp *env, char **envp, char *user_input);
+
 // [create_env_list.c]
 int			store_envp(t_envp *env, char **envs);
 
@@ -385,10 +389,13 @@ void		free_string(void *input);
 void		init_env(t_envp *env);
 
 // [ Executing ]
-/*
-	search_tree
-	wait_each_commands
-*/
+
+// [search_tree.c]
+void		search_tree(t_cmd *node, t_envp *env);
+
+// [execite_simple_cmd.c]
+void		execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env);
+
 // [execute_one_builtin.c]
 void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i);
 
@@ -403,9 +410,6 @@ void	setup_pipe_for_child(int *pipefd, int pipe_exist, int initial_input);
 
 // [execute_simple_cmd.c]
 void	clean_stdios_list(t_redirec **stdios);
-
-// [search_tree.c]
-void		search_tree(t_cmd *node, t_envp *env);
 
 // [ REDIRECTIONS ]
 // [setup_redirections.c]
@@ -512,5 +516,5 @@ void		builtin_router(t_cmd *cmd, t_envp *env, pid_t pid, int i);
 /* readline */
 void		rl_replace_line(const char *text, int clear_undo);
 void		rl_clear_history (void);
-void		execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env);
+
 #endif

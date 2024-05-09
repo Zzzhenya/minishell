@@ -55,7 +55,9 @@ SRCS = src/parsing/change_exit_status.c\
  src/parsing/setup_and_run_heredoc.c\
  src/environment/create_env_list.c\
  src/environment/extract_env_arr.c\
- src/environment/init_env.c
+ src/environment/init_env.c\
+ src/environment/setup_env.c\
+ src/environment/reset_env.c
 
 OBJS = $(SRCS:.c=.o)
 
