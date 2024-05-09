@@ -389,10 +389,21 @@ void		init_env(t_envp *env);
 	search_tree
 	wait_each_commands
 */
+// [execute_one_builtin.c]
+void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i);
+
 // [cmd_functions.c]
 char		*check_cmd_in_path(char **envp, char *command);
 void		print_error_cmd(t_cmd *file_path, char **envp);
 void		exec(char **cmd, char **env, t_envp *envo, int i);
+
+// [configure_pipes.c]
+void	write_pipefd(int pipefd[2], int *initial_input, int flag_pipe_exist);
+void	setup_pipe_for_child(int *pipefd, int pipe_exist, int initial_input);
+
+// [execute_simple_cmd.c]
+void	clean_stdios_list(t_redirec **stdios);
+
 // [search_tree.c]
 void		search_tree(t_cmd *node, t_envp *env);
 
