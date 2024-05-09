@@ -87,6 +87,6 @@ leaks:
 
 leak_log:
 	make re
-	valgrind -s --suppressions=./readline.supp --show-leak-kinds=all --leak-check=full ./$(NAME) 2>&1 | tee log.txt
+	valgrind -s --suppressions=./readline.supp --show-leak-kinds=all --leak-check=full ./$(NAME) 2>&1 | tee log1.txt
 
 .PHONY: all clean fclean re leaks leak_log

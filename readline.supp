@@ -74,4 +74,45 @@
    fun:interactive_mode
    fun:main
 }
-
+{
+   <readline leaks within heredoc - realloc>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:realloc
+   ...
+   fun:readline
+   fun:heredoc_input
+   fun:stage_heredoc
+   fun:open_run_here
+   fun:setup_and_run_heredoc
+   fun:parse_user_input
+   fun:interactive_mode
+}
+{
+   <readline leaks within heredoc - malloc>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:readline
+   fun:heredoc_input
+   fun:stage_heredoc
+   fun:open_run_here
+   fun:setup_and_run_heredoc
+   fun:parse_user_input
+   fun:interactive_mode
+}
+{
+   <readline leaks within heredoc - calloc>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   ...
+   fun:readline
+   fun:heredoc_input
+   fun:stage_heredoc
+   fun:open_run_here
+   fun:setup_and_run_heredoc
+   fun:parse_user_input
+   fun:interactive_mode
+}
