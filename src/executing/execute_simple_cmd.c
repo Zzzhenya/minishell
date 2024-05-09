@@ -286,7 +286,7 @@ void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 void	setup_pipe_for_child(int *pipefd, int pipe_exist, int initial_input)
 {
 	close(pipefd[0]);
-	if (pipe_exist != -1)
+	if (initial_input != -1)
 		dup2(initial_input, STDIN_FILENO);
 	if (pipe_exist == -1)
 		close(pipefd[1]);
@@ -339,6 +339,7 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env)
 	int				i;
 
 	i = env->c;
+	
 	if (env->procs == 1 && (check_builtin(cmd->r_child, cmd)))
 	{
 		initial_input = -1;
