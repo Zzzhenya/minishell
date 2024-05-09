@@ -359,5 +359,3 @@ void	execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env)
 		env->c ++;
 	}
 }
-
-// 32 - 9 = 23

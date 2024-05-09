@@ -90,7 +90,6 @@ void	wait_each_command(t_cmd *tree, t_envp *env)
 			sig = WTERMSIG(status);
 			env->arr[i].status = 128 + sig;
 		}
-		printf("i%d\n", i);
 		i ++;
 	}
 	handle_sig_numbers(sig, status, env, i);
