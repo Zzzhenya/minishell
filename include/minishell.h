@@ -222,16 +222,15 @@ typedef struct s_cmd
 
 typedef struct s_tmp
 {
-	int *token;
-	char **arr;
-	char *name;
+	int		*token;
+	char	**arr;
+	char	*name;
 }	t_tmp;
 
 typedef struct s_ps
 {
 	pid_t	pid;
 	int		status;
-	
 }	t_ps;
 
 typedef struct s_envp
@@ -244,7 +243,7 @@ typedef struct s_envp
 	int		builtin;
 	char	**paths;
 	t_cmd	*tree;
-	char 	*user_input;
+	char	*user_input;
 	int		procs;
 	int		c;
 	t_ps	*arr;
@@ -288,7 +287,8 @@ int			expand_token_env_2(t_data *data, char **env, int i);
 int			expand_env(t_data *data, char **env, int i);
 
 // [ lexical_validating.c ]
-// void		toggle_inword_inquote(int *flag_inword, int *n_word, int *flag_inquote);
+// void		toggle_inword_inquote(int *flag_inword,
+//				int *n_word, int *flag_inquote);
 int			count_word(const char *str,
 				int n_word, int flag_inword, int flag_inquote, t_data data);
 char		**validate_input(char *user_input, char **env);
@@ -334,7 +334,7 @@ int			check_token_order(const int *tokens, int numTokens);
 t_cmd		*parse_user_input(char *user_input, t_envp *env);
 
 //[ setup_and_run_heredoc.c]
-int			setup_and_run_heredoc(int *token, char  **arr, t_envp *env);
+int			setup_and_run_heredoc(int *token, char **arr, t_envp *env);
 
 //[ stage_run_heredoc.c]
 int			open_run_here(char *word, t_envp *env, t_tmp *temp);
@@ -381,12 +381,13 @@ int			main(int argc, char **argv, char **envs);
 
 /* [ ENVIRONMENT ] */
 // [setup_env.c]
-void	setup_env(t_cmd *tree, t_envp *env);
-int	count_procs(t_cmd *tree);
-char	**save_all_env_paths(char **envp, t_envp *env);
+void		setup_env(t_cmd *tree, t_envp *env);
+int			count_procs(t_cmd *tree);
+char		**save_all_env_paths(char **envp, t_envp *env);
 
 // [reset_env.c]
-void	free_things(t_cmd **tree, t_envp *env, char **envp, char *user_input);
+void		free_things(t_cmd **tree, t_envp *env,
+				char **envp, char *user_input);
 
 // [create_env_list.c]
 int			store_envp(t_envp *env, char **envs);
@@ -408,7 +409,8 @@ void		search_tree(t_cmd *node, t_envp *env);
 void		execute_simple_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env);
 
 // [execute_one_builtin.c]
-void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i);
+void		exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios,
+				t_envp *env, int i);
 
 // [cmd_functions.c]
 char		*check_cmd_in_path(char **envp, char *command);
@@ -416,11 +418,13 @@ void		print_error_cmd(t_cmd *file_path, char **envp);
 void		exec(char **cmd, char **env, t_envp *envo, int i);
 
 // [configure_pipes.c]
-void	write_pipefd(int pipefd[2], int *initial_input, int flag_pipe_exist);
-void	setup_pipe_for_child(int *pipefd, int pipe_exist, int initial_input);
+void		write_pipefd(int pipefd[2],
+				int *initial_input, int flag_pipe_exist);
+void		setup_pipe_for_child(int *pipefd,
+				int pipe_exist, int initial_input);
 
 // [execute_simple_cmd.c]
-void	clean_stdios_list(t_redirec **stdios);
+void		clean_stdios_list(t_redirec **stdios);
 
 // [ REDIRECTIONS ]
 // [setup_redirections.c]
@@ -429,11 +433,11 @@ void		dup_and_redirect(int oldfd, int newfd);
 
 // [setup_right_redirections.c]
 int			setup_rr(t_redirec *stdios);
-int 		setup_r(t_redirec *stdios);
+int			setup_r(t_redirec *stdios);
 
 // [setup_left_redirections.c]
 int			setup_ll(t_redirec *stdios);
-int 		setup_l(t_redirec *stdios);
+int			setup_l(t_redirec *stdios);
 
 // [ETC ]
 //t_redirec	*find_last(t_redirec *stdios, char c, t_redirec *last);
@@ -491,8 +495,7 @@ void		print_export_error(char *var, char *val, char *message);
 int			is_valid_var_start(unsigned char c);
 int			is_valid_var_char(char *var);
 void		print_variables_list(char **arr);
-//void		export_one_var(char **arr, t_envp *my_data);
-void	export_one_var(char *str,char *var, t_envp *my_data, int c);
+void		export_one_var(char *str, char *var, t_envp *my_data, int c);
 
 // [builtin_utils.c]
 char		**strip_empty_strings(char **cmdstr);
@@ -526,6 +529,6 @@ void		builtin_router(t_cmd *cmd, t_envp *env, pid_t pid, int i);
 
 /* readline */
 void		rl_replace_line(const char *text, int clear_undo);
-void		rl_clear_history (void);
+void		rl_clear_history(void);
 
 #endif
