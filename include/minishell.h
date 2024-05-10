@@ -333,8 +333,12 @@ int			error_parsing_exit_2(int *tokens, int numTokens, char **input);
 int			check_token_order(const int *tokens, int numTokens);
 t_cmd		*parse_user_input(char *user_input, t_envp *env);
 
-//[]
-int		setup_and_run_heredoc(int *token, char  **arr, t_envp *env);
+//[ setup_and_run_heredoc.c]
+int			setup_and_run_heredoc(int *token, char  **arr, t_envp *env);
+
+//[ stage_run_heredoc.c]
+int			open_run_here(char *word, t_envp *env, t_tmp *temp);
+int			stage_heredoc(int fd, char *word, t_envp *env, t_tmp *temp);
 
 /* [ UTILS ] */
 // [ util_skip.c ]

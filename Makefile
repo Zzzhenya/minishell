@@ -53,6 +53,7 @@ SRCS = src/parsing/change_exit_status.c\
  src/builtins/builtin_utils.c\
  src/executing/here_doc_functions.c\
  src/parsing/setup_and_run_heredoc.c\
+ src/parsing/stage_run_heredoc.c\
  src/environment/create_env_list.c\
  src/environment/extract_env_arr.c\
  src/environment/init_env.c\
