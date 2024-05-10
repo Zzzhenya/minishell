@@ -70,12 +70,22 @@ static void	print_here_text(int fd, t_envp *env, char *line)
 	free_arr(arr, count);
 }*/
 
+static void free_line(char *line)
+{
+	if (line)
+	{
+		free (line);
+		line = NULL;
+	}
+}
+
 void	heredoc_input(int fd, char *word, t_envp *env, char *line)
 {
 	int		k;
 
 	k = 1;
 	(void)env;
+	g_exit_status = 0;
 	while (1)
 	{
 		install_signals_here();
@@ -85,17 +95,18 @@ void	heredoc_input(int fd, char *word, t_envp *env, char *line)
 			print_here_error(k, word);
 			break ;
 		}
+		else if (g_exit_status != 0)
+		{
+			free_line(line);
+			break ;
+		}
 		if (ft_strcmp(line, word) == 0)
 		{
-			free (line);
-			line = NULL;
+			free_line(line);
 			break ;
 		}
 		if (ft_strcmp(line, word) != 0)
-		{
 			ft_putendl_fd(line, fd);
-			//print_here_text(fd, env, line);
-		}
 		k ++;
 		free (line);
 		line = NULL;

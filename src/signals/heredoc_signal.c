@@ -15,9 +15,14 @@
 void	handle_here(int sig)
 {
 	(void)sig;
-	write (1, "\n", 1);
 	g_exit_status = 130;
-	exit (g_exit_status);
+	ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	// rl_on_new_line();
+	//write (1, "\n", 1);
+	// rl_replace_line ("", 0);
+	// rl_redisplay();
+	//return;
+	//exit (g_exit_status);
 }
 
 /*

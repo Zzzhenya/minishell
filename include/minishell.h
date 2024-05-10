@@ -220,6 +220,13 @@ typedef struct s_cmd
 	number of env variables stored in the envlist
 */
 
+typedef struct s_tmp
+{
+	int *token;
+	char **arr;
+	char *name;
+}	t_tmp;
+
 typedef struct s_ps
 {
 	pid_t	pid;
