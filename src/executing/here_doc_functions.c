@@ -49,7 +49,7 @@ static void	print_here_error(int k, char *word)
 	ft_putstr_fd(word, 2);
 	ft_putstr_fd("\')\n", 2);
 }
-
+/*
 static void	print_here_text(int fd, t_envp *env, char *line)
 {
 	int		count;
@@ -68,13 +68,14 @@ static void	print_here_text(int fd, t_envp *env, char *line)
 	}
 	write(fd, "\n", 1);
 	free_arr(arr, count);
-}
+}*/
 
 void	heredoc_input(int fd, char *word, t_envp *env, char *line)
 {
 	int		k;
 
 	k = 1;
+	(void)env;
 	while (1)
 	{
 		install_signals_here();
@@ -91,7 +92,10 @@ void	heredoc_input(int fd, char *word, t_envp *env, char *line)
 			break ;
 		}
 		if (ft_strcmp(line, word) != 0)
-			print_here_text(fd, env, line);
+		{
+			ft_putendl_fd(line, fd);
+			//print_here_text(fd, env, line);
+		}
 		k ++;
 		free (line);
 		line = NULL;

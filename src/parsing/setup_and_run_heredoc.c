@@ -31,6 +31,7 @@ int	stage_heredoc(int fd, char *word, t_envp *env)
 
 	pid = 0;
 	status = 0;
+	(void)env;
 	pid = fork();
 	if (pid == 0)
 	{
