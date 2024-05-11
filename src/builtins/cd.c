@@ -68,20 +68,25 @@ char	*change_to_home(t_envp	*my_data)
 	}
 	if (!temp)
 		temp = getenv("HOME");
-	while (*temp)
+	if (temp)
 	{
-		if (*temp == '/')
+		while (*temp)
 		{
-			path = ft_strdup(temp);
-			break ;
+			if (*temp == '/')
+			{
+				path = ft_strdup(temp);
+				break ;
+			}
+			temp ++;
 		}
-		temp ++;
 	}
 	return (path);
 }
 
 void	execute_path(char	*path, int c, t_envp *my_data)
 {
+	if (!path)
+		return ;
 	if (not_a_dir(path))
 	{
 		my_data->arr[c].status = 1;
@@ -110,6 +115,8 @@ static char	*get_home_join(t_envp *my_data, char **argv, char *path)
 
 	temp = NULL;
 	temp = change_to_home(my_data);
+	if (!temp)
+		return (NULL);
 	path = ft_strjoin(temp, ft_strdup(&argv[1][1]));
 	free (temp);
 	return (path);
@@ -148,5 +155,6 @@ void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
 		path = ft_strdup(argv[1]);
 	update_cd_hist(my_data, c);
 	execute_path(path, c, my_data);
-	free (path);
+	if (path)
+		free (path);
 }
