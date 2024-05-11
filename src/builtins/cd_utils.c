@@ -38,7 +38,7 @@ void	update_oldpwd(t_envp *my_data, char *pwd)
 	char	*join;
 
 	loc = NULL;
-	joint = NULL;
+	join = NULL;
 	if (pwd == NULL)
 		return ;
 	join = ft_strjoin("OLDPWD=", pwd);
@@ -46,8 +46,8 @@ void	update_oldpwd(t_envp *my_data, char *pwd)
 	loc = get_oldpwd_loc(my_data);
 	if (loc != NULL)
 	{
-		free (curr->content);
-		curr->content = join;
+		free (loc->content);
+		loc->content = join;
 	}
 	else
 		ft_lstadd_back(&my_data->envlist, ft_lstnew(join));
