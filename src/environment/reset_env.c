@@ -18,6 +18,11 @@ void	free_things(t_cmd **tree, t_envp *env, char **envp, char *user_input)
 		free (env->arr);
 		env->arr = NULL;
 	}
+	if (env->cd_hist != NULL)
+	{
+		free (env->cd_hist);
+		env->cd_hist = NULL;
+	}
 	env->procs = 0;
 	env->c = 0;
 	env->cmds = 0;

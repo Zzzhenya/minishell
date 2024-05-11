@@ -123,8 +123,6 @@ void	update_cd_hist(t_envp *my_data, int c)
 		my_data->cd_hist = NULL;
 	}
 	update_oldpwd(my_data, get_pwd(my_data, c));
-	//add to the linked list
-	//my_data->cd_hist = get_pwd(my_data, c);
 }
 
 void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
@@ -138,9 +136,9 @@ void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
 	else if (my_data->cd_hist == NULL && argv[1]
 		&& !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
 	{
-		// add oldpwd to linked list ?
-		path = get_pwd(my_data, c);
-		ft_putendl_fd(path, 1);
+		print_cd_error(NULL, ": OLDPWD not set\n");
+		my_data->arr[c].status = 1;
+		return ;
 	}
 	else if (argv[1] == NULL || !ft_strncmp(argv[1], "~", ft_strlen(argv[1])))
 		path = change_to_home(my_data);
@@ -149,8 +147,6 @@ void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
 	else
 		path = ft_strdup(argv[1]);
 	update_cd_hist(my_data, c);
-	// if (my_data->cd_hist == NULL)
-	// 	print_cd_error(path, ": error retrieving current directory\n");
 	execute_path(path, c, my_data);
 	free (path);
 }
