@@ -41,7 +41,10 @@ void	update_oldpwd(t_envp *my_data, char *pwd)
 		free (pwd);
 	}
 	else
-		print_cd_error(NULL, "OLDPWD not set\n");
+	{
+		ft_lstadd_back(&my_data->envlist, ft_lstnew(ft_strjoin("OLDPWD=", pwd)));
+		free (pwd);
+	}
 }
 
 int	not_a_dir(char	*path)
