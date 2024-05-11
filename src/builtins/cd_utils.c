@@ -12,18 +12,13 @@
 
 #include "../../include/minishell.h"
 
-void	update_oldpwd(t_envp *my_data, char *pwd)
+t_list	*get_oldpwd_loc(t_envp *my_data);
 {
-	t_list *loc;
-	t_list *curr;
+	t_list	*loc;
+	t_list	*curr
 
 	loc = NULL;
 	curr = NULL;
-	if (pwd == NULL)
-	{
-		(void)my_data;
-		return ;
-	}
 	curr = my_data->envlist;
 	while (curr != NULL)
 	{
@@ -34,14 +29,28 @@ void	update_oldpwd(t_envp *my_data, char *pwd)
 		}
 		curr = curr->next;
 	}
+	return (loc);
+}
+
+void	update_oldpwd(t_envp *my_data, char *pwd)
+{
+	t_list	*loc;
+	char	*join;
+
+	loc = NULL;
+	joint = NULL;
+	if (pwd == NULL)
+		return ;
+	join = ft_strjoin("OLDPWD=", pwd);
+	free (pwd);
+	loc = get_oldpwd_loc(my_data);
 	if (loc != NULL)
 	{
 		free (curr->content);
-		curr->content = ft_strjoin("OLDPWD=", pwd);
+		curr->content = join;
 	}
 	else
-		ft_lstadd_back(&my_data->envlist, ft_lstnew(ft_strjoin("OLDPWD=", pwd)));
-	free (pwd);
+		ft_lstadd_back(&my_data->envlist, ft_lstnew(join));
 }
 
 int	not_a_dir(char	*path)
