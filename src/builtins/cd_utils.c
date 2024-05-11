@@ -6,16 +6,16 @@
 /*   By: sde-silv <sde-silv@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 18:50:12 by sde-silv          #+#    #+#             */
-/*   Updated: 2024/05/07 18:50:14 by sde-silv         ###   ########.fr       */
+/*   Updated: 2024/05/11 22:20:35 by sde-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_list	*get_oldpwd_loc(t_envp *my_data);
+t_list	*get_oldpwd_loc(t_envp *my_data)
 {
 	t_list	*loc;
-	t_list	*curr
+	t_list	*curr;
 
 	loc = NULL;
 	curr = NULL;
