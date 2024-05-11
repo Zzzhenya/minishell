@@ -38,13 +38,10 @@ void	update_oldpwd(t_envp *my_data, char *pwd)
 	{
 		free (curr->content);
 		curr->content = ft_strjoin("OLDPWD=", pwd);
-		free (pwd);
 	}
 	else
-	{
 		ft_lstadd_back(&my_data->envlist, ft_lstnew(ft_strjoin("OLDPWD=", pwd)));
-		free (pwd);
-	}
+	free (pwd);
 }
 
 int	not_a_dir(char	*path)
