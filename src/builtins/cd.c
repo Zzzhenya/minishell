@@ -12,6 +12,8 @@
 
 #include "../../include/minishell.h"
 
+void	update_oldpwd(t_envp *my_data, char *pwd);
+
 /*
 int 	chdir(const char *path);
 
@@ -120,7 +122,9 @@ void	update_cd_hist(t_envp *my_data, int c)
 		free(my_data->cd_hist);
 		my_data->cd_hist = NULL;
 	}
-	my_data->cd_hist = get_pwd(my_data, c);
+	update_oldpwd(my_data, get_pwd(my_data, c));
+	//add to the linked list
+	//my_data->cd_hist = get_pwd(my_data, c);
 }
 
 void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
@@ -134,6 +138,7 @@ void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
 	else if (my_data->cd_hist == NULL && argv[1]
 		&& !ft_strncmp(argv[1], "-", ft_strlen(argv[1])))
 	{
+		// add oldpwd to linked list ?
 		path = get_pwd(my_data, c);
 		ft_putendl_fd(path, 1);
 	}
@@ -144,8 +149,8 @@ void	exec_cd(char **argv, t_envp *my_data, char *path, int c)
 	else
 		path = ft_strdup(argv[1]);
 	update_cd_hist(my_data, c);
-	if (my_data->cd_hist == NULL)
-		print_cd_error(path, ": error retrieving current directory\n");
+	// if (my_data->cd_hist == NULL)
+	// 	print_cd_error(path, ": error retrieving current directory\n");
 	execute_path(path, c, my_data);
 	free (path);
 }
