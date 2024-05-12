@@ -40,7 +40,10 @@ void	update_oldpwd(t_envp *my_data, char *pwd)
 	loc = NULL;
 	join = NULL;
 	if (pwd == NULL)
+	{
+		ft_putstr_fd("cd: error retrieving current directory\n", 2);
 		return ;
+	}
 	join = ft_strjoin("OLDPWD=", pwd);
 	free (pwd);
 	loc = get_oldpwd_loc(my_data);
