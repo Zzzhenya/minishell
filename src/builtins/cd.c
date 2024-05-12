@@ -80,13 +80,18 @@ char	*change_to_home(t_envp	*my_data)
 			temp ++;
 		}
 	}
+	if (!path)
+		print_cd_error(NULL, ": HOME not set\n");
 	return (path);
 }
 
 void	execute_path(char	*path, int c, t_envp *my_data)
 {
 	if (!path)
+	{
+		my_data->arr[c].status = 1;
 		return ;
+	}
 	if (not_a_dir(path))
 	{
 		my_data->arr[c].status = 1;
@@ -116,7 +121,9 @@ static char	*get_home_join(t_envp *my_data, char **argv, char *path)
 	temp = NULL;
 	temp = change_to_home(my_data);
 	if (!temp)
+	{
 		return (NULL);
+	}
 	path = ft_strjoin(temp, (&argv[1][1]));
 	free (temp);
 	return (path);
