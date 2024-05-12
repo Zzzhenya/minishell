@@ -74,7 +74,7 @@ void	interactive_mode(t_cmd **tree, t_envp *env,
 				wait_each_command(*tree, env);
 			}
 		}
-		free_things(tree, env, env->paths, user_input);
+		free_things(*tree, env, env->paths, user_input);
 	}
 }
 
