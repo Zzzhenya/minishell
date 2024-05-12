@@ -16,13 +16,9 @@ void	handle_here(int sig)
 {
 	(void)sig;
 	g_exit_status = 130;
-	ioctl(STDIN_FILENO, TIOCSTI, "\n");
-	// rl_on_new_line();
-	//write (1, "\n", 1);
-	// rl_replace_line ("", 0);
-	// rl_redisplay();
-	//return;
-	//exit (g_exit_status);
+	write (1, "\n", 1);
+	//ioctl(STDIN_FILENO, TIOCSTI, "\n");
+	exit (g_exit_status);
 }
 
 /*

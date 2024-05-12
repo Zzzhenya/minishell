@@ -86,29 +86,33 @@ void	heredoc_input(int fd, char *word, t_envp *env, char *line)
 	k = 1;
 	(void)env;
 	g_exit_status = 0;
+	install_signals_here();
 	while (1)
 	{
-		install_signals_here();
 		line = readline("> ");
-		if (!line && g_exit_status == 0)
+		if (!line)
 		{
 			print_here_error(k, word);
 			break ;
 		}
-		else if (g_exit_status != 0)
+		if (g_exit_status != 0 && line[0] == '\n')
 		{
-			free_line(line);
-			break ;
+			if (line)
+				free (line);
+			break;
 		}
-		if (ft_strcmp(line, word) == 0)
+		if (line)
 		{
-			free_line(line);
-			break ;
+			if (ft_strcmp(line, word) == 0)
+			{
+				free_line(line);
+				break ;
+			}
+			if (ft_strcmp(line, word) != 0)
+				ft_putendl_fd(line, fd);
+			k ++;
+			free (line);
+			line = NULL;
 		}
-		if (ft_strcmp(line, word) != 0)
-			ft_putendl_fd(line, fd);
-		k ++;
-		free (line);
-		line = NULL;
 	}
 }

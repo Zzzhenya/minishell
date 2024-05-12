@@ -21,13 +21,14 @@ int	stage_heredoc(int fd, char *word, t_envp *env, t_tmp *temp)
 
 	pid = 0;
 	status = 0;
+	(void)env;
 	pid = fork();
 	if (pid == 0)
 	{
-		heredoc_input(fd, word, env, NULL);
 		clear_envlist(env);
-		free_things((t_cmd **) NULL, env, env->paths, env->user_input);
+		free_things(NULL, env, env->paths, env->user_input);
 		free (temp->name);
+		heredoc_input(fd, word, NULL, NULL);
 		free_for_norminette(temp->arr, temp->token);
 		exit (g_exit_status);
 	}
@@ -37,6 +38,8 @@ int	stage_heredoc(int fd, char *word, t_envp *env, t_tmp *temp)
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			g_exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			g_exit_status = WTERMSIG(status);
 		return (g_exit_status);
 	}
 }
