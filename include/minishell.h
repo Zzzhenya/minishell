@@ -386,7 +386,7 @@ int			count_procs(t_cmd *tree);
 char		**save_all_env_paths(char **envp, t_envp *env);
 
 // [reset_env.c]
-void		free_things(t_cmd **tree, t_envp *env,
+void		free_things(t_cmd *tree, t_envp *env,
 				char **envp, char *user_input);
 
 // [create_env_list.c]
