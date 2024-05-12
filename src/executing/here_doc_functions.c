@@ -90,29 +90,22 @@ void	heredoc_input(int fd, char *word, t_envp *env, char *line)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line)
+		if (!line || g_exit_status != 0)
 		{
-			print_here_error(k, word);
+			if (!line)
+				print_here_error(k, word);
+			else
+				free_line(line);
 			break ;
 		}
-		if (g_exit_status != 0 && line[0] == '\n')
+		if (ft_strcmp(line, word) == 0)
 		{
-			if (line)
-				free (line);
-			break;
+			free_line(line);
+			break ;
 		}
-		if (line)
-		{
-			if (ft_strcmp(line, word) == 0)
-			{
-				free_line(line);
-				break ;
-			}
-			if (ft_strcmp(line, word) != 0)
-				ft_putendl_fd(line, fd);
-			k ++;
-			free (line);
-			line = NULL;
-		}
+		if (ft_strcmp(line, word) != 0)
+			ft_putendl_fd(line, fd);
+		k ++;
+		free_line(line);
 	}
 }

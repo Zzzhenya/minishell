@@ -12,12 +12,17 @@
 
 #include "../../include/minishell.h"
 
+/*
+	rl_getc_function = getc;
+	rl_on_new_line();
+	ioctl(STDIN_FILENO, TIOCSTI, "\n");
+*/
+
 void	handle_here(int sig)
 {
 	(void)sig;
 	g_exit_status = 130;
 	write (1, "\n", 1);
-	//ioctl(STDIN_FILENO, TIOCSTI, "\n");
 	exit (g_exit_status);
 }
 
