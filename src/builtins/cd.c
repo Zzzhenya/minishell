@@ -117,7 +117,7 @@ static char	*get_home_join(t_envp *my_data, char **argv, char *path)
 	temp = change_to_home(my_data);
 	if (!temp)
 		return (NULL);
-	path = ft_strjoin(temp, ft_strdup(&argv[1][1]));
+	path = ft_strjoin(temp, (&argv[1][1]));
 	free (temp);
 	return (path);
 }
