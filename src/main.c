@@ -56,8 +56,6 @@ void	interactive_mode(t_cmd **tree, t_envp *env,
 			if (extract_envarr(env) != 0)
 				break ;
 			env->paths = save_all_env_paths(env->envarr, env);
-			if (!env->paths)
-				break;
 			*tree = parse_user_input(user_input, env);
 			// /* memo */
 			// printf(C"[3] Executing starts\n\n"RS);
