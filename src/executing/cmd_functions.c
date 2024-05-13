@@ -88,6 +88,8 @@ char	*check_cmd_in_path(char **envp, char *command)
 
 	path_array = envp;
 	i = 0;
+	if (!path_array)
+		return (NULL);
 	while (path_array[i] != NULL)
 	{
 		if (command[0] != '/')
