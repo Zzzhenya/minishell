@@ -50,7 +50,6 @@ void	print_cd_error(char *path, char *message)
 	ft_putstr_fd(path, 2);
 	ft_putstr_fd(message, 2);
 }*/
-
 char	*change_to_home(t_envp	*my_data)
 {
 	char	*temp;
@@ -69,17 +68,7 @@ char	*change_to_home(t_envp	*my_data)
 	if (!temp)
 		temp = getenv("HOME");
 	if (temp)
-	{
-		while (*temp)
-		{
-			if (*temp == '/')
-			{
-				path = ft_strdup(temp);
-				break ;
-			}
-			temp ++;
-		}
-	}
+		path = cd_get_home_path(temp);
 	if (!path)
 		print_cd_error(NULL, ": HOME not set\n");
 	return (path);

@@ -467,6 +467,7 @@ char		*change_to_home(t_envp	*my_data);
 // [cd_utils.c]
 void		print_cd_error(char *path, char *message);
 int			not_a_dir(char	*path);
+char		*cd_get_home_path(char *temp);
 
 // [env.c]
 void		exec_env(char **argv, t_envp *my_data, int c);

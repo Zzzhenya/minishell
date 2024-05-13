@@ -12,6 +12,23 @@
 
 #include "../../include/minishell.h"
 
+char	*cd_get_home_path(char *temp)
+{
+	char	*path;
+
+	path = NULL;
+	while (*temp)
+	{
+		if (*temp == '/')
+		{
+			path = ft_strdup(temp);
+			break ;
+		}
+		temp ++;
+	}
+	return (path);
+}
+
 t_list	*get_oldpwd_loc(t_envp *my_data)
 {
 	t_list	*loc;
