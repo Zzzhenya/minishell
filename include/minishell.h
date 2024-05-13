@@ -19,6 +19,7 @@
 */
 //#ifndef PATH_MAX
 # define PATH_MAX 2048
+# define PATH "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
 /*
 	[F]

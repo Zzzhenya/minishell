@@ -37,7 +37,7 @@ static char	*increment_shlvl(char *str)
 	return (val);
 }
 
-t_list *find_variable(t_envp *env, char *search, int len)
+t_list	*find_variable(t_envp *env, char *search, int len)
 {
 	t_list	*current;
 	t_list	*var;
@@ -67,20 +67,23 @@ t_list *find_variable(t_envp *env, char *search, int len)
 void	set_basic_vals(t_envp *env)
 {
 	t_list	*var;
-	char	*path;
+	char	*str;
 
 	var = NULL;
-	path = NULL;
+	str = NULL;
 	var = find_variable(env, "SHLVL=", 6);
 	if (var)
 		var->content = increment_shlvl(var->content);
 	else
-		ft_lstadd_back(&env->envlist, ft_lstnew(increment_shlvl(ft_strdup("SHLVL="))));
+	{
+		str = increment_shlvl(ft_strdup("SHLVL="));
+		ft_lstadd_back(&env->envlist, ft_lstnew(str));
+	}
 	var = find_variable(env, "PATH=", 5);
 	if (!var)
 	{
-		path = ft_strjoin("PATH=", "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin");
-		ft_lstadd_back(&env->envlist, ft_lstnew(path));
+		str = ft_strjoin("PATH=", PATH);
+		ft_lstadd_back(&env->envlist, ft_lstnew(str));
 	}
 }
 
