@@ -14,9 +14,10 @@
 
 char	*get_oldpwd(char **envp)
 {
-	char *oldpwd;
-	int i = 0;
+	char	*oldpwd;
+	int		i;
 
+	i = 0;
 	oldpwd = NULL;
 	while (envp[i] != NULL)
 	{
@@ -43,7 +44,9 @@ int	count_procs(t_cmd *tree)
 
 void	setup_env(t_cmd *tree, t_envp *env)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	env->cmds = count_commands(tree);
 	env->procs = count_procs(tree);
 	env->cd_hist = get_oldpwd(env->envarr);
