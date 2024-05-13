@@ -73,13 +73,13 @@ void	set_basic_vals(t_envp *env)
 	path = NULL;
 	var = find_variable(env, "SHLVL=", 6);
 	if (var)
-		var = increment_shlvl(var->content);
+		var->content = increment_shlvl(var->content);
 	else
 		ft_lstadd_back(&env->envlist, ft_lstnew(increment_shlvl(ft_strdup("SHLVL="))));
 	var = find_variable(env, "PATH=", 5);
 	if (!var)
 	{
-		path = ft_strjoin("PATH=", "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:");
+		path = ft_strjoin("PATH=", "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin");
 		ft_lstadd_back(&env->envlist, ft_lstnew(path));
 	}
 }
