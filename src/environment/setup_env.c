@@ -56,9 +56,5 @@ char	**save_all_env_paths(char **envp, t_envp *env)
 			return (ft_split(&envp[i][ft_strlen("PATH=")], ':'));
 		i++;
 	}
-	ft_putstr_fd("No PATH variable in env: Aborting...\n", 2);
-	g_exit_status = EXIT_FAILURE;
-	//free_things((t_cmd **)NULL, env, NULL, env->user_input);
-	// free_stuff_and_exit(env, 1, -1);
 	return (NULL);
 }
