@@ -140,6 +140,7 @@ static void	handle_execve_failure(int status, int i, char **cmd, t_envp *envo)
 	status = errno;
 	if (status > 0)
 	{
+		ft_putstr_fd("bash: ", 2);
 		ft_putstr_fd(cmd[0], 2);
 		ft_putstr_fd(": command not found\n", 2);
 		status = EX_CMD_NOT_FOUND;
