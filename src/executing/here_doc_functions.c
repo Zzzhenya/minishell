@@ -70,7 +70,7 @@ static void	print_here_text(int fd, t_envp *env, char *line)
 	free_arr(arr, count);
 }*/
 
-static void free_line(char *line)
+static void	free_line(char *line)
 {
 	if (line)
 	{
@@ -94,18 +94,14 @@ void	heredoc_input(int fd, char *word, t_envp *env, char *line)
 		{
 			if (!line)
 				print_here_error(k, word);
-			else
-				free_line(line);
 			break ;
 		}
 		if (ft_strcmp(line, word) == 0)
-		{
-			free_line(line);
 			break ;
-		}
 		if (ft_strcmp(line, word) != 0)
 			ft_putendl_fd(line, fd);
 		k ++;
 		free_line(line);
 	}
+	free_line(line);
 }
