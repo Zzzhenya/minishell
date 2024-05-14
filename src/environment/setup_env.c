@@ -42,7 +42,7 @@ int	count_procs(t_cmd *tree)
 	return (count);
 }
 
-void	setup_env(t_cmd *tree, t_envp *env)
+int	setup_env(t_cmd *tree, t_envp *env)
 {
 	int	i;
 
@@ -50,12 +50,18 @@ void	setup_env(t_cmd *tree, t_envp *env)
 	env->procs = count_procs(tree);
 	env->cd_hist = get_oldpwd(env->envarr);
 	env->arr = (t_ps *)malloc(sizeof(t_ps) * env->procs);
+	if (!env->arr)
+	{
+		free_things(tree, env, env->paths, env->user_input);
+		return (-1);
+	}
 	while (i < env->procs)
 	{
 		env->arr[i].pid = 0;
 		env->arr[i].status = 0;
 		i ++;
 	}
+	return (0);
 }
 
 char	**save_all_env_paths(char **envp, t_envp *env)

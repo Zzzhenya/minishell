@@ -403,7 +403,7 @@ int			main(int argc, char **argv, char **envs);
 
 /* [ ENVIRONMENT ] */
 // [setup_env.c]
-void		setup_env(t_cmd *tree, t_envp *env);
+int			setup_env(t_cmd *tree, t_envp *env);
 int			count_procs(t_cmd *tree);
 char		**save_all_env_paths(char **envp, t_envp *env);
 

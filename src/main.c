@@ -43,10 +43,10 @@ void	interactive_mode(t_cmd **tree, t_envp *env,
 	while (1)
 	{
 		install_signals_main(10);
-		user_input = readline ("Minishell > ");
+		user_input = readline ("minishell$ ");
 		if (!user_input)
 		{
-			ft_putstr_fd("exit\n", 1);
+			ft_putstr_fd("exit\n", 2);
 			break ;
 		}
 		if (user_input[0] != '\n')
@@ -67,7 +67,8 @@ void	interactive_mode(t_cmd **tree, t_envp *env,
 				// print_tree(*tree);
 				// printf("\n-------------------------------------------------------\n\n");
 				// /* memo */
-				setup_env(*tree, env);
+				if (setup_env(*tree, env)!= 0)
+					break;
 				search_tree(*tree, env);
 				wait_each_command(*tree, env);
 			}
