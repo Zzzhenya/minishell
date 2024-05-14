@@ -59,7 +59,7 @@ static char	*increment_shlvl(char *str)
 	ret = NULL;
 	num = 0;
 	val = ft_strchr(str, '=');
-	if (val[1] != '\0' && ft_isunsignedint(val))
+	if (val[1] != '\0' && ft_isinshlvlrange(val + 1))
 		num = ft_atoi(val + 1);
 	else
 		num = ft_atoi("0");
