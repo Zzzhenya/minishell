@@ -13,6 +13,38 @@
 #include "../../include/minishell.h"
 
 /*
+	Check whether all chars in val are digits
+	If val is NULL or val is empty string -> return 0
+	If val has non-digits -> return 0
+	If val has digits but val is outof int range -> return 0
+
+*/
+int	ft_isinshlvlrange(char *val)
+{
+	long long	i;
+
+	i = 0;
+	if (!val || val[i] == '\0')
+		return (0);
+	while (val[i] != '\0')
+	{
+		if (!ft_isdigit(val[i]))
+			break ;
+		i ++;
+	}
+	if (val[i] == '\0')
+	{
+		i = ft_atoi(val);
+		if (i > 998 || i < 1)
+			return (0);
+		else
+			return (1);
+	}
+	else
+		return (0);
+}
+
+/*
     Increment the SHLVL value for each nested terminal
 	if SHLVL is not available or SHLVL value is empty, set the value to 1
 	if SHLVL is available, increse value by 1
@@ -27,7 +59,7 @@ static char	*increment_shlvl(char *str)
 	ret = NULL;
 	num = 0;
 	val = ft_strchr(str, '=');
-	if (val[1] != '\0')
+	if (val[1] != '\0' && ft_isunsignedint(val))
 		num = ft_atoi(val + 1);
 	else
 		num = ft_atoi("0");
