@@ -206,19 +206,11 @@ typedef struct s_cmd
 // [STRUCT]
 /* [F]
 	[Description]
-	structure to store envp related data 
+	structure to temporarily store data until heredoc
 
-	envlist:
-	environmental variables stored in a linked list.
-
-	envarr:
-	a pointer array of environmental variables. Created before calling execve
-
-	cd_hist:
-	last directory visited with cd. Required for cd -
-
-	count:
-	number of env variables stored in the envlist
+	token:	token type array
+	arr:	token content array
+	name:	name of the heredoc instance
 */
 
 typedef struct s_tmp
@@ -228,11 +220,41 @@ typedef struct s_tmp
 	char	*name;
 }	t_tmp;
 
+
+// [STRUCT]
+/* [F]
+	[Description]
+	structure to store pipestatus array
+
+	pid:		process id
+	status:		exit status of the process
+*/
+
 typedef struct s_ps
 {
 	pid_t	pid;
 	int		status;
 }	t_ps;
+
+// [STRUCT]
+/* [F]
+	[Description]
+	structure to store environment related data 
+
+	envlist:	environmental variables stored in a linked list.
+	envarr:		a pointer array of environmental variables. 
+				Created before calling execve
+	cd_hist:	last directory visited with cd. stored using OLDPWD. Required for cd -
+	count:		number of env variables stored in the envlist
+	cmds:		number of cmds in the pipeline including redirections
+	builtin:	check for when procs == 1 whether the proc is a builtin
+	paths:		pointer array to PATH variable split at ':'
+	tree:		pointer to the cmd tree
+	user_input:	string from readline
+	procs:		number of processes in the pipeline
+	c:			current process number. used as the index of pipestatus array
+	arr:		pipestatus array
+*/
 
 typedef struct s_envp
 {
