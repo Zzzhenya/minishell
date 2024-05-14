@@ -87,7 +87,7 @@ int	main(int argc, char **argv, char **envs)
 	(void)argv;
 	if (argc == 1)
 	{
-		if (isatty(STDIN_FILENO) == 1)
+		if (isatty(STDIN_FILENO) && isatty(STDOUT_FILENO))
 		{
 			interactive_mode(&(env.tree), &env, env.user_input);
 			rl_clear_history();
