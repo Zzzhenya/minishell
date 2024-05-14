@@ -262,7 +262,6 @@ typedef struct s_envp
 	char	**envarr;
 	char	*cd_hist;
 	int		count;
-	int		cmds;
 	int		builtin;
 	char	**paths;
 	t_cmd	*tree;

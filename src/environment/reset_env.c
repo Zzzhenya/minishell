@@ -37,6 +37,5 @@ void	free_things(t_cmd *tree, t_envp *env, char **envp, char *user_input)
 	}
 	env->procs = 0;
 	env->c = 0;
-	env->cmds = 0;
 	env->builtin = 0;
 }

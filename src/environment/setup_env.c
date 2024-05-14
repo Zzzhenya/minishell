@@ -47,7 +47,6 @@ void	setup_env(t_cmd *tree, t_envp *env)
 	int	i;
 
 	i = 0;
-	env->cmds = count_commands(tree);
 	env->procs = count_procs(tree);
 	env->cd_hist = get_oldpwd(env->envarr);
 	env->arr = (t_ps *)malloc(sizeof(t_ps) * env->procs);

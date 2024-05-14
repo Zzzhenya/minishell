@@ -13,30 +13,6 @@
 #include "../../include/minishell.h"
 
 /*
-	initiate count to 0;
-	if the tree is empty 
-		return 0 - no children is 0
-	if the node_type is N_SIMPLE_CMD
-		count
-	recursively count & add commands in left sub trees
-	recursively count & add commands in right sub trees
-	return the total count
-*/
-int	count_commands(t_cmd *tree)
-{
-	int	count;
-
-	count = 0;
-	if (tree == NULL)
-		return (0);
-	if (tree->node_type == N_SIMPLE_CMD || tree->node_type == N_REDIREC)
-		count ++;
-	count = count + count_commands(tree->l_child);
-	count = count + count_commands(tree->r_child);
-	return (count);
-}
-
-/*
 	wait for any blocking child processes
 	-1 - any childs
 	WUNTRACED - 
