@@ -13,9 +13,10 @@
 #include "../../include/minishell.h"
 
 /*
-    increment the SHLVL value for each nested terminal
+    Increment the SHLVL value for each nested terminal
+	if SHLVL is not available or SHLVL value is empty, set the value to 1
+	if SHLVL is available, increse value by 1
 */
-
 static char	*increment_shlvl(char *str)
 {
 	char	*val;
@@ -37,6 +38,12 @@ static char	*increment_shlvl(char *str)
 	return (val);
 }
 
+/*
+	Go through the envlist and find the first string
+	that compares with search unpto len letters
+	return the found linked list node
+	if not found return NULL
+*/
 t_list	*find_variable(t_envp *env, char *search, int len)
 {
 	t_list	*current;
@@ -59,10 +66,10 @@ t_list	*find_variable(t_envp *env, char *search, int len)
 
 /*
 	set SHLVL value
-		if SHLVL with value increment it
-		if SHLVL without value set it to 1
+		if SHLVL with value increment it and replace
 		if not SHLVL add SHLVL=1 to end of list
 	set PATH value
+		if not PATH add default PATH sting to end of list
 */
 void	set_basic_vals(t_envp *env)
 {
