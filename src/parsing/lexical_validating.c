@@ -339,7 +339,6 @@ char	*delete_sq(char *str)
 	return (res);
 }
 
-
 char	**split_str_by_dq(char *str)
 {
 	int 	i;
@@ -389,14 +388,14 @@ char	*delete_dq(char *str, t_data *data, int index_token, char **env)
 
 
 	/* memo */
+	printf("\n");
 	int j = 0;
 	while (split_array[j] != NULL)
 	{
-		printf(G"\n\t\tsplit_array[%d]: %s\n"RS, j, split_array[j]);
+		printf(G"\t\tsplit_array[%d]: %s\n"RS, j, split_array[j]);
 		j++;
 	}
 	/* memo */
-
 
 	/* memo */
 	j = 0;
@@ -424,7 +423,6 @@ char	*delete_dq(char *str, t_data *data, int index_token, char **env)
 		}
 		j++;
 	}
-	return (NULL);
 	// [ Original ]
 	// int j = 0;
 	// while (split_array[j] != NULL)
