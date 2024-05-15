@@ -6,7 +6,7 @@
 /*   By: tkwak <tkwak@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 20:03:01 by tkwak             #+#    #+#             */
-/*   Updated: 2024/02/27 20:03:09 by tkwak            ###   ########.fr       */
+/*   Updated: 2024/05/15 15:41:31 by sde-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,13 @@ int	ft_isspace(char c)
 
 void	skip_normal_char(char *str, int *i)
 {
-	while (str[*i] != '\0' && str[*i] != ' ' && str[*i] != '\"' && str[*i] != '\''
+	while (str[*i] != '\0' && str[*i] != ' '
+		&& str[*i] != '\"' && str[*i] != '\''
 		&& str[*i] != '<' && str[*i] != '>' && str[*i] != '|'
 		&& str[*i] != '\n' && str[*i] != '\v' && str[*i] != '\t'
 		&& str[*i] != '\f' && str[*i] != '\r')
 		*i += 1;
-	// printf("\t\t[CHOP] 5. Skip normal char\n");
 }
-/*
-	[ Delete ]
-	&& str[*i] != '\"' && str[*i] != '\''
-	= Now ' and " are dealing with the normal_char.
-*/
 
 void	skip_space_in_str(char *str, int *i)
 {
