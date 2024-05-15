@@ -27,27 +27,27 @@ int	ft_isspace(char c)
 /* [F]
     cpy (str) to data.token
 */
-int	ft_strcpy(t_data *data, char *str, int len, int j)
-{
-	int	i;
-	int	index;
+// int	ft_strcpy(t_data *data, char *str, int len, int j)
+// {
+// 	int	i;
+// 	int	index;
 
-	i = 0;
-	while (ft_isspace(str[i]))
-		i++;
-	data->token[j] = malloc((len + 1) * sizeof(char));
-	if (!data->token[j])
-		return (-1);
-	index = 0;
-	while (i < len)
-	{
-		data->token[j][index] = str[i];
-		i++;
-		index++;
-	}
-	data->token[j][index] = '\0';
-	return (len);
-}
+// 	i = 0;
+// 	while (ft_isspace(str[i]))
+// 		i++;
+// 	data->token[j] = malloc((len + 1) * sizeof(char));
+// 	if (!data->token[j])
+// 		return (-1);
+// 	index = 0;
+// 	while (i < len)
+// 	{
+// 		data->token[j][index] = str[i];
+// 		i++;
+// 		index++;
+// 	}
+// 	data->token[j][index] = '\0';
+// 	return (len);
+// }
 
 /* [F]
     Same with ft_strcpy.
@@ -156,13 +156,13 @@ char	*case_d_quote(t_data *data, char *str, int i, int j)
 /* [F]
 	skip normal character on the string.
 */
-void	skip_normal_char(char *str, int *i)
-{
-	while (str[*i] != '\0' && str[*i] != ' ' && str[*i] != '='
-		&& str[*i] != '\"' && str[*i] != '\''
-		&& str[*i] != '<' && str[*i] != '>' && str[*i] != '|')
-		*i += 1;
-}
+// void	skip_normal_char(char *str, int *i)
+// {
+// 	while (str[*i] != '\0' && str[*i] != ' ' && str[*i] != '='
+// 		&& str[*i] != '\"' && str[*i] != '\''
+// 		&& str[*i] != '<' && str[*i] != '>' && str[*i] != '|')
+// 		*i += 1;
+// }
 
 /* [F]
 	skip ' 'space in str
@@ -327,35 +327,35 @@ char	**validate_input(char *user_input, char **env)
 }
 */
 
-int	main(void)
-{
-	char	*input;
-	int		result;
-	t_data	data;
+// int	main(void)
+// {
+// 	char	*input;
+// 	int		result;
+// 	t_data	data;
 
-	input = "  ls -l $$ | cat -e 'a  b'bc";
-	data.n_word = count_word(input, 0, 0, 0);
-	data.n_sq = 0;
-	data.n_dq = 0;
-	data.str = input;
-	data.token = malloc(((data.n_word) + 1) * sizeof(char *));
-	printf("\n\t 1. n_word: %d\n\n", data.n_word);
-	if (!data.token)
-	{
-		printf("Fail to allocate memory\n");
-		return (1);
-	}
-	result = ft_chopper(&data, input, 0);
-	if (result != -1)
-	{
-		printf("\n\t 3. input: %s\n\n", input);
-		for (int i = 0; data.token[i] != NULL; i++)
-			printf("\t 4. data.token[%d]:%s\n", i, data.token[i]);
-	}
-	else
-		printf("Error.\n");
-	for (int i = 0; data.token[i] != NULL; i++)
-		free(data.token[i]);
-	free(data.token);
-	return (0);
-}
+// 	input = "  ls -l $$ | cat -e 'a  b'bc";
+// 	data.n_word = count_word(input, 0, 0, 0);
+// 	data.n_sq = 0;
+// 	data.n_dq = 0;
+// 	data.str = input;
+// 	data.token = malloc(((data.n_word) + 1) * sizeof(char *));
+// 	printf("\n\t 1. n_word: %d\n\n", data.n_word);
+// 	if (!data.token)
+// 	{
+// 		printf("Fail to allocate memory\n");
+// 		return (1);
+// 	}
+// 	result = ft_chopper(&data, input, 0);
+// 	if (result != -1)
+// 	{
+// 		printf("\n\t 3. input: %s\n\n", input);
+// 		for (int i = 0; data.token[i] != NULL; i++)
+// 			printf("\t 4. data.token[%d]:%s\n", i, data.token[i]);
+// 	}
+// 	else
+// 		printf("Error.\n");
+// 	for (int i = 0; data.token[i] != NULL; i++)
+// 		free(data.token[i]);
+// 	free(data.token);
+// 	return (0);
+// }

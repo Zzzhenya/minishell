@@ -61,31 +61,31 @@ int	find_matching_env_row(char *str, char **env)
 	return (-1);
 }
 
-char	*trim_single_quotes(char *str)
-{
-	int		i;
-	int		len;
-	char	*res;
+// char	*trim_single_quotes(char *str)
+// {
+// 	int		i;
+// 	int		len;
+// 	char	*res;
 
-	i = 0;
-	len = ft_strlen(str);
-	res = (char *)malloc((len - 1) * sizeof(char));
-	if (res == NULL)
-		return (NULL);
-	str[len - 1] = '\0';
-	while (str[i] != '\0')
-	{
-		res[i] = str[i + 1];
-		i++;
-	}
-	free(str);
-	return (res);
-}
+// 	i = 0;
+// 	len = ft_strlen(str);
+// 	res = (char *)malloc((len - 1) * sizeof(char));
+// 	if (res == NULL)
+// 		return (NULL);
+// 	str[len - 1] = '\0';
+// 	while (str[i] != '\0')
+// 	{
+// 		res[i] = str[i + 1];
+// 		i++;
+// 	}
+// 	free(str);
+// 	return (res);
+// }
 
-int	remove_single_quotes_from_token(t_data *data, int i)
-{
-	data->token[i] = trim_single_quotes(data->token[i]);
-	if (data->token[i] == NULL)
-		return (-1);
-	return (0);
-}
+// int	remove_single_quotes_from_token(t_data *data, int i)
+// {
+// 	data->token[i] = trim_single_quotes(data->token[i]);
+// 	if (data->token[i] == NULL)
+// 		return (-1);
+// 	return (0);
+// }

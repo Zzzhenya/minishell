@@ -872,35 +872,35 @@ void	search_tree(t_cmd *node, char **envp, t_envp *env)
 	2. Input is divided based on the pipe(|).
 	3. returned in the form of a tree for token.
 */
-t_cmd	*parse_user_input(char *user_input, t_envp *env)
-{
-	t_cmd	*cmd_tree;
-	char	**validated_input;
-	int		*token;
-	int		token_sequence[2];
-	int		tmp;
+// t_cmd	*parse_user_input(char *user_input, t_envp *env)
+// {
+// 	t_cmd	*cmd_tree;
+// 	char	**validated_input;
+// 	int		*token;
+// 	int		token_sequence[2];
+// 	int		tmp;
 
-	if (user_input == NULL || user_input[0] == 0)
-		return (NULL);
-	cmd_tree = NULL;
-	validated_input = validate_input(user_input, env->envp);
-	if (!validated_input)
-		return (NULL);
-	replace_exit_status(&validated_input, 0, 0, 0);
-	token = token_malloc(validated_input);
-	if (!token)
-		return (NULL);
-	token_sequence[0] = 0;
-	token_sequence[1] = check_token_length(token);
-	tmp = syntax_pipe(validated_input, token, token_sequence, &cmd_tree);
-	if (tmp == -1)
-		free_tree(cmd_tree);
-	if (tmp == -1)
-		return (NULL);
-	free_2d(validated_input);
-	free(token);
-	return (cmd_tree);
-}
+// 	if (user_input == NULL || user_input[0] == 0)
+// 		return (NULL);
+// 	cmd_tree = NULL;
+// 	validated_input = validate_input(user_input, env->envp);
+// 	if (!validated_input)
+// 		return (NULL);
+// 	replace_exit_status(&validated_input, 0, 0, 0);
+// 	token = token_malloc(validated_input);
+// 	if (!token)
+// 		return (NULL);
+// 	token_sequence[0] = 0;
+// 	token_sequence[1] = check_token_length(token);
+// 	tmp = syntax_pipe(validated_input, token, token_sequence, &cmd_tree);
+// 	if (tmp == -1)
+// 		free_tree(cmd_tree);
+// 	if (tmp == -1)
+// 		return (NULL);
+// 	free_2d(validated_input);
+// 	free(token);
+// 	return (cmd_tree);
+// }
 
 /*	[F]
 	[Example]
@@ -920,20 +920,20 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 		-> free_tree(tree)
 		-> free_2d(user_input)
 */
-void	non_interactive_mode(t_cmd **tree,
-								char *input, char **envp, t_envp *env)
-{
-	char	**user_inputs;
-	int		i;
+// void	non_interactive_mode(t_cmd **tree,
+// 								char *input, char **envp, t_envp *env)
+// {
+// 	char	**user_inputs;
+// 	int		i;
 
-	user_inputs = ft_split(input, ';');
-	i = 0;
-	while (user_inputs[i])
-	{
-		*tree = parse_user_input(user_inputs[i], env);
-		search_tree(*tree, envp, env);
-		i++;
-		free_tree(*tree);
-	}
-	free_2d(user_inputs);
-}
+// 	user_inputs = ft_split(input, ';');
+// 	i = 0;
+// 	while (user_inputs[i])
+// 	{
+// 		*tree = parse_user_input(user_inputs[i], env);
+// 		search_tree(*tree, envp, env);
+// 		i++;
+// 		free_tree(*tree);
+// 	}
+// 	free_2d(user_inputs);
+// }

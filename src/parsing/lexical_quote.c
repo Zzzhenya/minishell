@@ -15,83 +15,49 @@
 int	count_quote(char *str, t_data *data)
 {
 	int	i;
-	int	dq;
-	int	sq;
+	int	double_quote;
+	int	single_quote;
 
 	i = 0;
-	dq = 0;
-	sq = 0;
+	double_quote = 0;
+	single_quote = 0;
 	while (str[i])
 	{
-		if (str[i] == '\'' && dq % 2 == 0)
-			sq++;
-		if (str[i] == '\"' && sq % 2 == 0)
-			dq++;
-		i ++;
+		if (str[i] == '\'' && double_quote % 2 == 0)
+			single_quote++;
+		if (str[i] == '\"' && single_quote % 2 == 0)
+			double_quote++;
+		i++;
 	}
-	if (sq % 2 == 0 && dq % 2 == 0)
+	if (single_quote % 2 == 0 && double_quote % 2 == 0)
 	{
-		data->n_sq = sq;
-		data->n_dq = dq;
-		return (sq);
+		data->n_sq = single_quote;
+		data->n_dq = double_quote;
+		return (0);
 	}
 	return (-1);
 }
 
-/*
-int	count_quote(char *str, t_data *data)
-{
-	int	i;
-	int	n_sq;
-	int	n_dq;
-
-	i = 0;
-	n_sq = 0;
-	n_dq = 0;
-	while (str[i])
-	{
-		// if char is ' -> increment n_sq
-		if (str[i] == '\'')
-			n_sq++;
-		// if char is " -> increment n_dq
-		if (str[i] == '\"')
-			n_dq++;
-		// go to next char
-		i++;
-	}
-	// if sq count is even AND dq count is even
-	if (n_sq % 2 == 0 && n_dq % 2 == 0)
-	{
-		// store values in the data struct
-		data->n_sq = n_sq;
-		data->n_dq = n_dq;
-		// return sq count
-		return (n_sq);
-	}
-	// for any other case return  -1
-	return (-1);
-}*/
-
 char	*extract_quoted_string(char *str, int i)
 {
 	int		j;
-	char	*m_str;
+	char	*res;
 
 	j = 0;
-	m_str = malloc((ft_strlen(str) + 1) * sizeof(char));
-	if (m_str == NULL)
+	res = (char *)malloc((ft_strlen(str) + 1) * sizeof(char));
+	if (res == NULL)
 		return (NULL);
 	while (str[i])
 	{
 		if (str[i] == '\'' && str[i + 1] != '\'')
-			m_str[j++] = str[i++];
+			res[j++] = str[i++];
 		else if (str[i] == '\"' && str[i + 1] != '\"')
-			m_str[j++] = str[i++];
+			res[j++] = str[i++];
 		else
 			i += 2;
 	}
-	m_str[j] = '\0';
-	return (m_str);
+	res[j] = '\0';
+	return (res);
 }
 
 int	check_quote_arrangement(char *str, int i)
@@ -160,7 +126,7 @@ int	check_quote_arrangement(char *str, int i)
 	return (0);
 }
 */
-
+/*	[ Final ]
 int	check_quote_order(char *user_input, t_data *data, int i, int k)
 {
 	char	*tmp_allocated_quote;
@@ -180,12 +146,14 @@ int	check_quote_order(char *user_input, t_data *data, int i, int k)
 	tmp_allocated_quote[k] = '\0';
 	if (check_quote_arrangement(tmp_allocated_quote, 0) == -1)
 	{
+		printf("Fail: quote order\n");
 		free(tmp_allocated_quote);
 		return (-1);
 	}
 	free(tmp_allocated_quote);
 	return (0);
 }
+*/
 /*
 [ Original but the line is over 25, so i fixed it ]
 
