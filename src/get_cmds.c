@@ -36,7 +36,6 @@ int	if_token_order_weird(int *tokens, int numTokens, char **input)
 {
 	if (check_token_order(tokens, numTokens) == -1)
 	{
-
 		g_exit_status = 2;
 		free_for_norminette(input, tokens);
 		printf("Syntax error\n");
@@ -73,7 +72,6 @@ int check_token_order(const int *tokens, int numTokens)
             if ((nextToken != -1 && (nextToken == T_REDIREC || nextToken == T_PIPE)) || nextToken == -1 || (currentToken == T_PIPE && i == 0))
                 return (-1);
         }
-
 		i++;
     }
     return (0);
@@ -112,18 +110,30 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	if (user_input == NULL || user_input[0] == 0)
 		return (NULL);
 	cmd_tree = NULL;
+
+
+	/* memo */
+	printf(C"\n[1] Validate 'USER_INPUT'\n"RS);
+	/* memo */
+
+
 	validated_input = validate_input(user_input, env->envarr);
 	if (!validated_input)
-	{
 		return (NULL);
-	}
-	replace_exit_status(&validated_input, 0, 0, 0);
+
+
+	/* memo */
 	// int i = 0;
-	// while (validated_input[i])
+	// printf("\n");
+	// while (validated_input[i] != NULL)
 	// {
-	// 	printf("%d: %s\n", i + 1, validated_input[i]);
-	// 	i ++;
+	// 	printf("\tvalidated_input[%d]: %s\n", i, validated_input[i]);
+	// 	i++;
 	// }
+	/* memo */
+
+
+	replace_exit_status(&validated_input, 0, 0, 0);
 	token = token_malloc(validated_input);
 	if (!token)
 		return (NULL);
@@ -132,24 +142,19 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	if (if_token_order_weird(token, token_sequence[1], validated_input) == -1)
 		return (NULL);
 
-	// /* memo */
-	// int i = 0;
-	// while (validated_input[i] != NULL)
-	// {
-	// 	printf("\tword[%d]: %s\n", i, validated_input[i]);
-	// 	i++;
-	// }
-	// printf("\n-------------------------------------------------------\n");
-	// printf(C"\n[2] How is 'USER_INPUT' saved in struct?\n\n"RS);
-	// /* memo */
-	// return (0);
+
+	/* memo */
+	printf(C"\n[2] How is 'USER_INPUT' saved in struct?\n\n"RS);
+	return(0);
+	/* memo */
+
+
 	if (setup_and_run_heredoc(token, validated_input, env) != 0)
 	{
 		free_for_norminette(validated_input, token);
 		return (NULL);
 	}
 	tmp = syntax_pipe(validated_input, token, token_sequence, &cmd_tree);
-	// printf("-------------------------------------------------------\n\n");
 	free_for_norminette(validated_input, token);
 	if (tmp == -1)
 		free_tree(cmd_tree);
@@ -157,9 +162,8 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 		return (NULL);
 	return (cmd_tree);
 }
-
 /*
-	[ For testing ]
+	[ FOR TESTING ]
 
 	[1]
 	int i = 0;
@@ -188,45 +192,12 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 		else
 			printf("token[%d]: %s\n", i, "NULL");
 	}
-*/
-/*
-[ Original codes, changed cause it's over 25 lines ]
 
-// validated_input = validate_input(user_input, env->envp);
-t_cmd	*parse_user_input(char *user_input, t_envp *env)
-{
-	t_cmd	*cmd_tree;
-	char	**validated_input;
-	int		*token;
-	int		token_sequence[2];
-	int		tmp;
-
-	if (user_input == NULL || user_input[0] == 0)
-		return (NULL);
-	cmd_tree = NULL;
-	validated_input = validate_input(user_input, env->envarr);
-	if (!validated_input)
-		return (NULL);
-	replace_exit_status(&validated_input, 0, 0, 0);
-	token = token_malloc(validated_input);
-	if (!token)
-		return (NULL);
-	token_sequence[0] = 0;
-	token_sequence[1] = check_token_length(token);
-	if (check_token_order(token, token_sequence[1]) == -1)
+	[3]
+	int j = 0;
+	while (token[j] != '\0')
 	{
-		g_exit_status = 2;
-		free_for_norminette(validated_input, token);
-		printf("syntax error near unexpected token_order\n");
-		return (NULL);
+		printf("token[%d]: %d\n", j, token[j]);
+		j++;
 	}
-	tmp = syntax_pipe(validated_input, token, token_sequence, &cmd_tree);
-	if (tmp == -1)
-		free_tree(cmd_tree);
-	if (tmp == -1)
-		return (NULL);
-	free_2d(validated_input);
-	free(token);
-	return (cmd_tree);
-}
 */

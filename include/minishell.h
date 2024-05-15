@@ -292,7 +292,9 @@ typedef struct s_redirec
 int			count_quote(char *str, t_data *data);
 int			check_quote_arrangement(char *str, int i);
 int			check_unescaped_quote(char *str);
-int			check_quote_order(char *user_input, t_data *data, int i, int k);
+// int			check_quote_order(char *user_input, t_data *data, int i, int k);
+char		*remove_quote_pairs(char *str, t_data *data);
+int			remove_quotes_from_token(t_data *data, int i);
 
 // [ lexical_chopping.c ]
 char		*case_s_quote(t_data *data, char *str, int i, int j);
@@ -300,12 +302,14 @@ char		*case_d_quote(t_data *data, char *str, int i, int j);
 int			check_str_null(t_data *data, char *str, int i, int j);
 int			ft_chopper(t_data *data, char *str, int j);
 char		*get_pid_string(void);
+char		*delete_sq(char *str);
+char		*delete_dq(char *str, t_data *data, int index_token, char **env);
 
 // [ lexical_expanding.c ]
 char		*replace_substring(char *token,
 				char *row_matched_env, int column_index_dollar);
-int			expand_token_env_1(t_data *data, int i);
-int			expand_token_env_2(t_data *data, char **env, int i);
+int			expand_token_env_1(t_data *data, int i, char **array_split);
+int			expand_token_env_2(t_data *data, char **env, int i, char **array_split);
 int			expand_env(t_data *data, char **env, int i);
 
 // [ lexical_validating.c ]
