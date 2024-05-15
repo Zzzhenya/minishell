@@ -307,6 +307,8 @@ char		*delete_dq(char *str, t_data *data, int index_token, char **env);
 
 // [ lexical_expanding.c ]
 char		*replace_substring(char *token,
+				char *row_matched_env, int column_index_dollar, int after_space, int index_space);
+char		*replace_substring_1(char *token,
 				char *row_matched_env, int column_index_dollar);
 int			expand_token_env_1(t_data *data, int i, char **array_split);
 int			expand_token_env_2(t_data *data, char **env, int i, char **array_split);
