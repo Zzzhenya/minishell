@@ -397,13 +397,10 @@ int	expand_token_env_4(t_data *data, char **env, int i)
 	return (0);
 }
 
-
-
-
 /*	[ TEST ]
 
 	   STR			P/F			RESULT
-	--------------------------------
+	----------------------------------------------------
 	  $HOME				[O]			/home/tkwak
 
 	 '$HOME'			[O]			 $HOME
@@ -415,8 +412,8 @@ int	expand_token_env_4(t_data *data, char **env, int i)
 	""$HOME""			[O]			/home/tkwak
 	" $HOME "a			[O]		 	| /home/tkwak a|
 
-	"a' '$HOME' 'a"		[X]			PROBLEM: EXPANDING X
-	"'$HOME'"			[X]			PROBLEM: EXPANDING X
+	"a' '$HOME' 'a"		[X]			a' '/home/tkwak' 'a
+	"'$HOME'"			[X]			'/home/tkwak'
 */
 
 /*	[ Original ]
