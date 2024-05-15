@@ -144,26 +144,26 @@ char	*str_modifier(char *str, char *var, int d)
 	
 	Success to trim quotes which was located in both sides of string.
 */
-char	*trim_single_quotes(char *str)
-{
-	int		i;
-	int		len;
-	char	*res;
+// char	*trim_single_quotes(char *str)
+// {
+// 	int		i;
+// 	int		len;
+// 	char	*res;
 
-	i = 0;
-	len = ft_strlen(str);
-	res = (char *)malloc((len - 1) * sizeof(char));
-	if (res == NULL)
-		return (NULL);
-	str[len - 1] = '\0';	// replace ' with \0
-	while (str[i] != '\0')
-	{
-		res[i] = str[i + 1];
-		i++;
-	}
-	free(str);
-	return (res);
-}
+// 	i = 0;
+// 	len = ft_strlen(str);
+// 	res = (char *)malloc((len - 1) * sizeof(char));
+// 	if (res == NULL)
+// 		return (NULL);
+// 	str[len - 1] = '\0';	// replace ' with \0
+// 	while (str[i] != '\0')
+// 	{
+// 		res[i] = str[i + 1];
+// 		i++;
+// 	}
+// 	free(str);
+// 	return (res);
+// }
 // [Q][A]
 //	Why free(str) here?
 //	= In the trim_single_quotes function,
@@ -176,13 +176,13 @@ char	*trim_single_quotes(char *str)
 		param(2): i		// Which order of token does is coreespond to?
 						// token[0]? token[1]? token[2]? token[3]?
 */
-int	remove_single_quotes_from_token(t_data *data, int i)
-{
-	data->token[i] = trim_single_quotes(data->token[i]);
-	if (data->token[i] == NULL)
-		return (-1);
-	return (0);
-}
+// int	remove_single_quotes_from_token(t_data *data, int i)
+// {
+// 	data->token[i] = trim_single_quotes(data->token[i]);
+// 	if (data->token[i] == NULL)
+// 		return (-1);
+// 	return (0);
+// }
 
 /* [ ]
 	[Goal]
@@ -211,44 +211,44 @@ int	remove_single_quotes_from_token(t_data *data, int i)
 	(2) echo $?			// EXIT STATUS
 	(3) echo $$			// CURR SHELL'S	PID
 */
-int	expand_env(t_data *data, char **env, int i)
-{
-	int	index_dollar;
-	int	index_matching_env;
+// int	expand_env(t_data *data, char **env, int i)
+// {
+// 	int	index_dollar;
+// 	int	index_matching_env;
 
-	while (data->token[i] != NULL) // Check all tokens(token[0], token[1], token[2], ...)
-	{
-		index_dollar = ft_strchr_m(data->token[i], '$');	// Check $ sign in token. No '$' -> d: -1
-		if (index_dollar != -1
-			&& (ft_strchr_m(data->token[i], '\'') == -1)		// Exceptional case(1): echo '$'
-			&& data->token[i][index_dollar + 1] != '?'		// Exceptional case(2): echo $?
-			&& ft_strchr_m(data->token[i] + 1, '$') == NULL)	// Exceptional case(3): echo $$
-		{
-			index_matching_env = find_matching_env(data->token[i] + index_dollar + 1, env);
+// 	while (data->token[i] != NULL) // Check all tokens(token[0], token[1], token[2], ...)
+// 	{
+// 		index_dollar = ft_strchr_m(data->token[i], '$');	// Check $ sign in token. No '$' -> d: -1
+// 		if (index_dollar != -1
+// 			&& (ft_strchr_m(data->token[i], '\'') == -1)		// Exceptional case(1): echo '$'
+// 			&& data->token[i][index_dollar + 1] != '?'		// Exceptional case(2): echo $?
+// 			&& ft_strchr_m(data->token[i] + 1, '$') == NULL)	// Exceptional case(3): echo $$
+// 		{
+// 			index_matching_env = find_matching_env(data->token[i] + index_dollar + 1, env);
 
---------------------------------over here------ finish---------------------------------------
+// --------------------------------over here------ finish---------------------------------------
 
-			if (index_matching_env == -1)
-			{
-				data->token[i] = str_modifier(data->token[i], "\n", index_dollar);
-				return (0);
-			}
-			data->token[i] = str_modifier(data->token[i], env[index_matching_env], index_dollar);
-			if (data->token[i] == NULL)
-				return (-1);
-		}
+// 			if (index_matching_env == -1)
+// 			{
+// 				data->token[i] = str_modifier(data->token[i], "\n", index_dollar);
+// 				return (0);
+// 			}
+// 			data->token[i] = str_modifier(data->token[i], env[index_matching_env], index_dollar);
+// 			if (data->token[i] == NULL)
+// 				return (-1);
+// 		}
 
---------------------------------under here------ finish---------------------------------------
+// --------------------------------under here------ finish---------------------------------------
 
-		else if (data->token[i][0] == '\'') // Case: str starts from single_quote(')
-		{
-			if (remove_single_quotes_from_token(data, i) == -1);
-				return (-1);
-		}
-		i++;
-	}
-	return (0);
-}
+// 		else if (data->token[i][0] == '\'') // Case: str starts from single_quote(')
+// 		{
+// 			if (remove_single_quotes_from_token(data, i) == -1);
+// 				return (-1);
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }
 
 /*
 int	expand_env(t_data *data, char **env, int i)
