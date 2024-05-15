@@ -14,29 +14,6 @@
 
 int	g_exit_status = 0;
 
-/*
-void	non_interactive_mode(t_cmd **tree,
-								char *input, char **envp, t_envp *env)
-{
-	char	**user_inputs;
-	int		i;
-
-	user_inputs = ft_split(input, ';');
-	i = 0;
-	extract_envarr(env);
-	envp = save_all_env_paths(env->envarr, env);
-	while (user_inputs[i])
-	{
-		*tree = parse_user_input(user_inputs[i], env);
-		search_tree(*tree, envp, env);
-		i++;
-		free_tree(*tree);
-	}
-	free_2d(user_inputs);
-	free_arr(env->envarr, env->count);
-	free_2d(envp);
-}*/
-
 void	interactive_mode(t_cmd **tree, t_envp *env,
 					char *user_input)
 {
@@ -57,9 +34,13 @@ void	interactive_mode(t_cmd **tree, t_envp *env,
 				break ;
 			env->paths = save_all_env_paths(env->envarr, env);
 			*tree = parse_user_input(user_input, env);
+
+
 			// /* memo */
 			// printf(C"[3] Executing starts\n\n"RS);
 			// /* memo */
+
+
 			if (*tree != NULL)
 			{
 				// /* memo */
