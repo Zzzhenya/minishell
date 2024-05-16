@@ -14,6 +14,15 @@
 
 void	heredoc_input(int fd, char *word, t_envp *env, char *line);
 
+static void	handle_exit_status(pid_t pid, int *status)
+{
+	waitpid(pid, status, 0);
+	if (WIFEXITED(*status))
+		g_exit_status = WEXITSTATUS(*status);
+	else if (WIFSIGNALED(*status))
+		g_exit_status = WTERMSIG(*status);
+}
+
 int	stage_heredoc(int fd, char *word, t_envp *env, t_tmp *temp)
 {
 	pid_t		pid;
@@ -35,11 +44,7 @@ int	stage_heredoc(int fd, char *word, t_envp *env, t_tmp *temp)
 	else
 	{
 		install_signals_child();
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			g_exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			g_exit_status = WTERMSIG(status);
+		handle_exit_status(pid, &status);
 		return (g_exit_status);
 	}
 }

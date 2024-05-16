@@ -87,9 +87,14 @@ int	check_token_order(const int *tokens, int numTokens)
 		Parses the pipe based on it and constructs a command tree.
 	6. Free memory and return for no more useful things.
 */
-t_cmd	*parse_user_input(char *user_input, t_envp *env)
+static void	setup_token_arr(int *token_sequence, int *token)
 {
-	t_cmd	*cmd_tree;
+	token_sequence[0] = 0;
+	token_sequence[1] = check_token_length(token);
+}
+
+t_cmd	*parse_user_input(char *user_input, t_envp *env, t_cmd *cmd_tree)
+{
 	char	**validated_input;
 	int		*token;
 	int		token_sequence[2];
@@ -97,7 +102,6 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 
 	if (user_input == NULL || user_input[0] == 0)
 		return (NULL);
-	cmd_tree = NULL;
 	validated_input = validate_input(user_input, env->envarr);
 	if (!validated_input)
 		return (NULL);
@@ -105,16 +109,11 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env)
 	token = token_malloc(validated_input);
 	if (!token)
 		return (NULL);
-	token_sequence[0] = 0;
-	token_sequence[1] = check_token_length(token);
+	setup_token_arr(token_sequence, token);
 	if (if_token_order_weird(token, token_sequence[1], validated_input) == -1)
 		return (NULL);
-	if (setup_and_run_heredoc(token, validated_input, env) != 0)
-	{
-		free_for_norminette(validated_input, token);
-		return (NULL);
-	}
-	tmp = syntax_pipe(validated_input, token, token_sequence, &cmd_tree);
+	if (setup_and_run_heredoc(token, validated_input, env) == 0)
+		tmp = syntax_pipe(validated_input, token, token_sequence, &cmd_tree);
 	free_for_norminette(validated_input, token);
 	if (tmp == -1)
 		free_tree(cmd_tree);

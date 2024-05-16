@@ -30,14 +30,12 @@ void	interactive_mode(t_cmd **tree, t_envp *env,
 		{
 			if (user_input[0] != '\0')
 				add_history(user_input);
-			if (extract_envarr(env) != 0)
-				break ;
+			extract_envarr(env);
 			env->paths = save_all_env_paths(env->envarr, env);
-			*tree = parse_user_input(user_input, env);
+			*tree = parse_user_input(user_input, env, NULL);
 			if (*tree != NULL)
 			{
-				if (setup_env(*tree, env) != 0)
-					break ;
+				setup_env(*tree, env);
 				search_tree(*tree, env);
 				wait_each_command(*tree, env);
 			}

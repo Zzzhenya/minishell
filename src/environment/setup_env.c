@@ -51,10 +51,7 @@ int	setup_env(t_cmd *tree, t_envp *env)
 	env->cd_hist = get_oldpwd(env->envarr);
 	env->arr = (t_ps *)malloc(sizeof(t_ps) * env->procs);
 	if (!env->arr)
-	{
-		free_things(tree, env, env->paths, env->user_input);
 		return (-1);
-	}
 	while (i < env->procs)
 	{
 		env->arr[i].pid = 0;
