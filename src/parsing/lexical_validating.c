@@ -289,6 +289,27 @@ char	**split_str_by_dq(char *str, int i, int j)
 	return (tmp);
 }
 
+void	free_temp_array(char **split_array)
+{
+	int	j;
+
+	j = 0;
+	while (split_array[j] != NULL)
+	{
+		free(split_array[j]);
+		j++;
+	}
+	free(split_array);
+}
+
+void	delete_dq_ext(char *tmp, char *res, char **split_array, int j)
+{
+	tmp = ft_strdup(res);
+	free(res);
+	res = ft_strjoin(tmp, split_array[j]);
+	free(tmp);
+}
+
 char	*delete_dq(char *str, t_data *data, int index_token, char **env)
 {
 	int		j;
@@ -308,23 +329,12 @@ char	*delete_dq(char *str, t_data *data, int index_token, char **env)
 		else if (expand_token_env_2(data, env, index_token, split_array) == -1)
 			return (NULL);
 		if (res == NULL)
-			res = strdup(split_array[j]);
+			res = ft_strdup(split_array[j]);
 		else
-		{
-			tmp = strdup(res);
-			free(res);
-			res = ft_strjoin(tmp, split_array[j]);
-			free(tmp);
-		}
+			delete_dq_ext(tmp, res, split_array, j);
 		j++;
 	}
-	j = 0;
-	while (split_array[j] != NULL)
-	{
-		free(split_array[j]);
-		j++;
-	}
-	free(split_array);
+	free_temp_array(split_array);
 	return (res);
 }
 
