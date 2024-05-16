@@ -196,15 +196,11 @@ char	*ft_cpy_str(char *dest, char *src, int len)
 	return (dest);
 }
 
-char	**split_str_by_sq(char *str)
+char	**split_str_by_sq(char *str, int i, int j)
 {
-	int		i;
-	int		j;
 	int		start;
 	char	**tmp;
 
-	i = 0;
-	j = 0;
 	start = 0;
 	tmp = (char **)malloc(sizeof(char *) * (100));
 	if (tmp == NULL)
@@ -238,7 +234,7 @@ char	*delete_sq(char *str)
 
 	i = 0;
 	res = NULL;
-	split_array = split_str_by_sq(str);
+	split_array = split_str_by_sq(str, 0, 0);
 	if (split_array == NULL)
 		return (NULL);
 	while (split_array[i] != NULL)
@@ -264,15 +260,11 @@ char	*delete_sq(char *str)
 	return (res);
 }
 
-char	**split_str_by_dq(char *str)
+char	**split_str_by_dq(char *str, int i, int j)
 {
-	int		i;
-	int		j;
 	int		start;
 	char	**tmp;
 
-	i = 0;
-	j = 0;
 	start = 0;
 	tmp = (char **)malloc(sizeof(char *) * (100));
 	if (tmp == NULL)
@@ -305,7 +297,7 @@ char	*delete_dq(char *str, t_data *data, int index_token, char **env)
 	char	**split_array;
 
 	res = NULL;
-	split_array = split_str_by_dq(str);
+	split_array = split_str_by_dq(str, 0, 0);
 	if (split_array == NULL)
 		return (NULL);
 	j = 0;
