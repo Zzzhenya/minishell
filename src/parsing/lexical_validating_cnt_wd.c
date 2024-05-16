@@ -101,7 +101,7 @@ int ct_wd_inquote(t_parse *checks, const char *str)
 	return (0);
 }
 
-int ct_wd_else(t_parse *checks, const char *str)
+int ct_wd_else(t_parse *checks)
 {
 	if (checks->inword == 0)
 	{

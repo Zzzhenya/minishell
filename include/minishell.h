@@ -220,6 +220,19 @@ typedef struct s_tmp
 	char	*name;
 }	t_tmp;
 
+// [STRUCT]
+/* [F]
+	[Description]
+*/
+typedef struct s_parse
+{
+	int			n_word;
+	int			inword;
+	int			inquote;
+	int			cpy_n_sq;
+	int			cpy_n_dq;
+	char		prev;
+}	t_parse;
 
 // [STRUCT]
 /* [F]
@@ -317,9 +330,31 @@ int			expand_env(t_data *data, char **env, int i);
 // [ lexical_validating.c ]
 // void		toggle_inword_inquote(int *flag_inword,
 //				int *n_word, int *flag_inquote);
-int			count_word(const char *str,
-				int n_word, int flag_inword, int flag_inquote, t_data data);
 char		**validate_input(char *user_input, char **env);
+void		free_temp_array(char **split_array);
+char		*ft_cpy_str(char *dest, char *src, int len);
+int			count_word(const char *str, t_data data);
+
+// [ lexical_validating_cnt_wd.c]
+int 		ct_wd_dq(t_parse *checks, const char *str);
+int 		ct_wd_sq(t_parse *checks, const char *str);
+int 		ct_wd_outquote(t_parse *checks, const char *str);
+int 		ct_wd_inquote(t_parse *checks, const char *str);
+int 		ct_wd_else(t_parse *checks);
+
+// [ lexical_validating_cnt_wd1.c]
+int			ct_wd_rdr_pipe(t_parse *checks, const char *str);
+int 		ct_wd_right_rdr(t_parse *checks, const char *str);
+int 		ct_wd_left_rdr(t_parse *checks, const char *str);
+
+// [ lexical_expanding_dq.c ]
+char		*delete_dq(char *str, t_data *data, int index_token, char **env);
+void		delete_dq_ext(char *tmp, char *res, char **split_array, int j);
+char		**split_str_by_dq(char *str, int i, int j);
+
+// [ lexical_expanding_sq.c ]
+char		**split_str_by_sq(char *str, int i, int j);
+char		*delete_sq(char *str);
 
 // [ lexical_analysis.c ]
 int			check_token_length(int *token);
@@ -359,7 +394,7 @@ void		update_pipe_index(int *i, int pipe_index, int tmp);
 void		free_for_norminette(char **validated_input, int *token);
 int			error_parsing_exit_2(int *tokens, int numTokens, char **input);
 int			check_token_order(const int *tokens, int numTokens);
-t_cmd		*parse_user_input(char *user_input, t_envp *env);
+t_cmd		*parse_user_input(char *user_input, t_envp *env, t_cmd *cmd_tree, int tmp);
 
 //[ setup_and_run_heredoc.c]
 int			setup_and_run_heredoc(int *token, char **arr, t_envp *env);

@@ -45,6 +45,7 @@ char	*delete_dq(char *str, t_data *data, int index_token, char **env)
 	char	**split_array;
 
 	res = NULL;
+	tmp = NULL;
 	split_array = split_str_by_dq(str, 0, 0);
 	if (split_array == NULL)
 		return (NULL);

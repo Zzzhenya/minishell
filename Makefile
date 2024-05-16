@@ -15,6 +15,10 @@ SRCS = src/parsing/change_exit_status.c\
  src/parsing/lexical_expanding.c\
  src/parsing/lexical_quote.c\
  src/parsing/lexical_validating.c\
+ src/parsing/lexical_validating_cnt_wd.c\
+ src/parsing/lexical_validating_cnt_wd1.c\
+ src/parsing/lexical_expanding_sq.c\
+ src/parsing/lexical_expanding_dq.c\
  src/parsing/syntax_analysis.c\
  src/parsing/syntax_create_node.c\
  src/parsing/syntax_find_target.c\

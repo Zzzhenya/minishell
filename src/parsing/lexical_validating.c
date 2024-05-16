@@ -12,7 +12,7 @@
 
 #include "../../include/minishell.h"
 
-void	setup_checks(t_parse *checks, t_data data)
+static void	setup_checks(t_parse *checks, t_data data)
 {
 	checks->n_word = 0;
 	checks->inword = 0;
@@ -45,7 +45,7 @@ int	count_word(const char *str, t_data data)
 				ct_wd_outquote(&checks, str);
 		}
 		else
-			ct_wd_else(&checks, str);
+			ct_wd_else(&checks);
 		str++;
 	}
 	return (checks.n_word);
@@ -88,7 +88,7 @@ char	**validate_input(char *user_input, char **env)
 		printf("Syntax error\n");
 		return (NULL);
 	}
-	data.n_word = count_word(data.str, 0, 0, 0, data);
+	data.n_word = count_word(data.str, data);
 	if (data.n_word == 0)
 		return (NULL);
 	data.token = malloc((data.n_word + 1) * sizeof(char *));
