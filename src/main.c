@@ -32,7 +32,7 @@ void	interactive_mode(t_cmd **tree, t_envp *env,
 				add_history(user_input);
 			extract_envarr(env);
 			env->paths = save_all_env_paths(env->envarr, env);
-			*tree = parse_user_input(user_input, env, NULL);
+			*tree = parse_user_input(user_input, env, NULL, 0);
 			if (*tree != NULL)
 			{
 				setup_env(*tree, env);

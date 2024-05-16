@@ -93,12 +93,12 @@ static void	setup_token_arr(int *token_sequence, int *token)
 	token_sequence[1] = check_token_length(token);
 }
 
-t_cmd	*parse_user_input(char *user_input, t_envp *env, t_cmd *cmd_tree)
+t_cmd	*parse_user_input(char *user_input, t_envp *env,
+			t_cmd *cmd_tree, int tmp)
 {
 	char	**validated_input;
 	int		*token;
 	int		token_sequence[2];
-	int		tmp;
 
 	if (user_input == NULL || user_input[0] == 0)
 		return (NULL);
