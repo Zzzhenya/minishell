@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexical_validating_cnt_wd.c                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sde-silv <sde-silv@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/16 20:39:10 by sde-silv          #+#    #+#             */
+/*   Updated: 2024/05/16 20:39:12 by sde-silv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/minishell.h"
 
-int ct_wd_dq(t_parse *checks, const char *str)
+int	ct_wd_dq(t_parse *checks, const char *str)
 {
 	if (*(str + 1) == ' ' && (checks->cpy_n_dq % 2 != 0))
 	{
@@ -26,7 +38,7 @@ int ct_wd_dq(t_parse *checks, const char *str)
 	return (0);
 }
 
-int ct_wd_sq(t_parse *checks, const char *str)
+int	ct_wd_sq(t_parse *checks, const char *str)
 {
 	if (*(str + 1) == ' ' && (checks->cpy_n_sq % 2 != 0))
 	{
@@ -52,7 +64,7 @@ int ct_wd_sq(t_parse *checks, const char *str)
 	return (0);
 }
 
-int ct_wd_outquote(t_parse *checks, const char *str)
+int	ct_wd_outquote(t_parse *checks, const char *str)
 {
 	checks->prev = *str;
 	if (*str == '\'')
@@ -72,7 +84,7 @@ int ct_wd_outquote(t_parse *checks, const char *str)
 	return (0);
 }
 
-int ct_wd_inquote(t_parse *checks, const char *str)
+int	ct_wd_inquote(t_parse *checks, const char *str)
 {
 	if (checks->prev != *str)
 	{
@@ -101,7 +113,7 @@ int ct_wd_inquote(t_parse *checks, const char *str)
 	return (0);
 }
 
-int ct_wd_else(t_parse *checks)
+int	ct_wd_else(t_parse *checks)
 {
 	if (checks->inword == 0)
 	{

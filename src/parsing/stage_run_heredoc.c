@@ -59,7 +59,7 @@ int	open_run_here(char *word, t_envp *env, t_tmp *temp)
 	fd = open(temp->name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		ft_putendl_fd("Open error\n",2);
+		ft_putendl_fd("Open error\n", 2);
 		g_exit_status = 1;
 		return (1);
 	}
