@@ -12,6 +12,7 @@ CC = cc
 SRCS = src/parsing/change_exit_status.c\
  src/parsing/lexical_analysis.c\
  src/parsing/lexical_chopping.c\
+  src/parsing/lexical_chopping_tool.c\
  src/parsing/lexical_expanding.c\
  src/parsing/lexical_quote.c\
  src/parsing/lexical_validating.c\
