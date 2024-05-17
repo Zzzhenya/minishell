@@ -14,13 +14,10 @@
 
 void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 {
-	int	saved_stdout;
-	int	saved_stdin;
-
-	saved_stdout = 0;
-	saved_stdin = 0;
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
+	env->saved_stdin = dup(STDIN_FILENO);
+	close(STDIN_FILENO);
+	env->saved_stdout = dup(STDOUT_FILENO);
+	close(STDOUT_FILENO);
 	env->builtin = 1;
 	if (setup_redirections(*stdios) == 0)
 	{
@@ -30,7 +27,9 @@ void	exec_one_builtin_cmd(t_cmd *cmd, t_redirec **stdios, t_envp *env, int i)
 	}
 	else
 		clean_stdios_list(stdios);
-	dup2(saved_stdout, STDOUT_FILENO);
-	dup2(saved_stdin, STDIN_FILENO);
+	dup2(env->saved_stdout, STDOUT_FILENO);
+	close(env->saved_stdout);
+	dup2(env->saved_stdin, STDIN_FILENO);
+	close(env->saved_stdin);
 	return ;
 }

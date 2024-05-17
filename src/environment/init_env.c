@@ -26,4 +26,6 @@ void	init_env(t_envp *env)
 	env->procs = 0;
 	env->c = 0;
 	env->arr = NULL;
+	env->saved_stdin = 0;
+	env->saved_stdout = 0;
 }

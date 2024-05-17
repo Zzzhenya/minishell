@@ -288,6 +288,8 @@ typedef struct s_envp
 	int		procs;
 	int		c;
 	t_ps	*arr;
+	int		saved_stdin;
+	int		saved_stdout;
 }	t_envp;
 
 /*	[F]
