@@ -124,7 +124,7 @@ char	*delete_dq(char *str, t_data *data, int index_token, char **env)
 	{
 		if (expand_token_env_1(data, index_token, split_array) == -1)
 			return (NULL);
-		else if (expand_token_env_2(data, env, index_token, split_array) == -1)
+		else if (expand_token_env_2(env, index_token, split_array) == -1)
 			return (NULL);
 		if (res == NULL)
 			res = ft_strdup(split_array[j]);

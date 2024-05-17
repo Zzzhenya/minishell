@@ -88,7 +88,7 @@ $(NAME): $(OBJS) $(LIBFT)
 leaks: 
 	make re
 	#valgrind -s --show-leak-kinds=all --leak-check=full ./$(NAME)
-	valgrind -s --suppressions=./readline.supp --show-leak-kinds=all --leak-check=full ./$(NAME)
+	valgrind -s --suppressions=./readline.supp --show-leak-kinds=all --leak-check=full --track-fds=yes ./$(NAME)
 
 leak_log:
 	make re
