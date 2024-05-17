@@ -13,22 +13,20 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-/*
-	[F]
+/*	[DEFINE MACRO]	*/
+/*	[F]
 	macro for PATH_MAX for cwd/pwd in case its not defined 
 */
 //#ifndef PATH_MAX
 # define PATH_MAX 2048
 # define PATH "/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
 
-/*
-	[F]
+/*	[F]
 	macro for exit status when command not found
 */
 # define EX_CMD_NOT_FOUND 127
 # define HEREDOCNAME  ".___tmp__4heredoc"
 
-//	[DEFINE MACRO]
 /*	[F]
 	1. macro for "token"
 */
@@ -81,10 +79,14 @@
 # define REDIREC_L 3	// '<'
 # define REDIREC_LL 4	// '<<'
 
-// 4. ????
+/*	[F]
+	4. FOR OPEN SOURCE
+*/
 # define _XOPEN_SOURCE 700
 
-// 5. Color way
+/*	[F]
+	5. Color way
+*/
 # define RS		"\033[0m"		// RESET
 # define C      "\033[1;36m"	// CYAN
 # define G      "\033[1;32m"	// GREEN
@@ -95,76 +97,85 @@
 # define Y      "\033[1;33m"	// YELLOW
 # define EMP	"\033[30;47;20m"
 
-// [HEADER FILE]
-// 1. [f] close, read, write, access, dup, dup2, execve, fork, pipe, unlink
-// 	  STDIO_FILENO, STDOUT_FILENO, getcwd, chdir, isatty, ttyname, ttyslot
+/*	[HEADER FILE]	*/
+
+/*	[F]
+	1. close, read, write, access, dup, dup2, execve, fork, pipe, unlink
+	STDIO_FILENO, STDOUT_FILENO, getcwd, chdir, isatty, ttyname, ttyslot
+*/
 # include <unistd.h>
 
-// 2. [f] malloc, free, exit, getenv
+/*	[F]
+	2. malloc, free, exit, getenv
+*/
 # include <stdlib.h>
 
-// 3. [f] printf, perror
+/*	[F]
+	3. [f] printf, perror
+*/
 # include <stdio.h>
 
-// 4. [f] open, O_RDONLY, O_WRONLY, O_RDWR, O_CREAT, O_TRUNC
+/*	[F]
+	4. [f] open, O_RDONLY, O_WRONLY, O_RDWR, O_CREAT, O_TRUNC
+*/
 # include <fcntl.h>
 
-// 5. [f] INT_MAX, INT_MIN, UNIT_MAX
+/*	[F]
+	5. [f] INT_MAX, INT_MIN, UNIT_MAX
+*/
 # include <limits.h>
 
-// 6. [f] errno, EACCES, ENOENT
+/*	[F]
+	6. [f] errno, EACCES, ENOENT
+*/
 # include <errno.h>
 
-// 7. [f] readline
+/*	[F]
+	7. [f] readline
+*/
 # include <readline/readline.h>
 
-// 8. [f] add_history, clear_history
+/*	[F]
+	8. [f] add_history, clear_history
+*/
 # include <readline/history.h>
 
-// 9. [f] wait, waitpid, wait3, wait4
+/*	[F]
+	9. [f] wait, waitpid, wait3, wait4
+*/
 # include <sys/wait.h>
 
-// 10. [f] signal, kill, SIGINT, SIGQUIT, sigaction, sigemptyset, sigaddset
+/*	[F]
+	10. [f] signal, kill, SIGINT, SIGQUIT, sigaction, sigemptyset, sigaddset
+*/
 # include <signal.h>
 
-// 11. [f] tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
+/*	[F]
+	11. [f] tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs
+*/
 # include <curses.h>
 
-// 12. [f] All the functions from LIBFT
+/*	[F]
+	12. [f] All the functions from LIBFT
+*/
 # include "../libft/libft.h"
 
-/* 13. [f] used for cd - stat
-	stat, lstat, fstat
+/*	[F]
+	13. [f] used for cd - stat, lstat, fstat
 */
 # include <sys/stat.h>
-/* 14. [f] used in signals to inject a linebreak to the stream
+
+/*	[F]
+	14. [f] used in signals to inject a linebreak to the stream
 		allows to avoid switching to readline SIGINT definition
-	ioctl
 */
 # include <sys/ioctl.h>
 
-/* NOT USED
-// opendir, readdir, closedir
-# include <dirent.h>
-
-// strerror
-# include <string.h>
-
-// lstat, fstat
-# include <sys/stat.h>
-
-// tcsetattr, tcgetattr
-# include <termios.h>
-
-// ???
-# include <term.h>
-*/
-
-// [GLOBAL VARIABLE]
+/*	[GLOBAL VARIABLE]	*/
 extern int	g_exit_status;
 
-// [STRUCT]
-/* [F]
+/*	[STRUCT]  */
+/*	[F]
 	[Description]
 	Structure for the validated input & tokenization.
 
@@ -203,8 +214,7 @@ typedef struct s_cmd
 	int					pre_flag;
 }	t_cmd;
 
-// [STRUCT]
-/* [F]
+/*	[F]
 	[Description]
 	structure to temporarily store data until heredoc
 
@@ -220,9 +230,9 @@ typedef struct s_tmp
 	char	*name;
 }	t_tmp;
 
-// [STRUCT]
 /* [F]
 	[Description]
+	For norminette (over 25 lines)
 */
 typedef struct s_parse
 {
@@ -234,7 +244,6 @@ typedef struct s_parse
 	char		prev;
 }	t_parse;
 
-// [STRUCT]
 /* [F]
 	[Description]
 	structure to store pipestatus array
@@ -242,14 +251,12 @@ typedef struct s_parse
 	pid:		process id
 	status:		exit status of the process
 */
-
 typedef struct s_ps
 {
 	pid_t	pid;
 	int		status;
 }	t_ps;
 
-// [STRUCT]
 /* [F]
 	[Description]
 	structure to store environment related data 
@@ -268,7 +275,6 @@ typedef struct s_ps
 	c:			current process number. used as the index of pipestatus array
 	arr:		pipestatus array
 */
-
 typedef struct s_envp
 {
 	t_list	*envlist;
@@ -299,13 +305,12 @@ typedef struct s_redirec
 	struct s_redirec	*next_redirec;
 }	t_redirec;
 
-// [FUNCTIONS]
+/*	[FUNCTIONS]	 */
 /* [ LEXER ] INPUT_VALIDATE  & TOKENIZATION */
 // [ lexical_qoute.c ]
 int			count_quote(char *str, t_data *data);
 int			check_quote_arrangement(char *str, int i);
 int			check_unescaped_quote(char *str);
-// int			check_quote_order(char *user_input, t_data *data, int i, int k);
 char		*remove_quote_pairs(char *str, t_data *data);
 int			remove_quotes_from_token(t_data *data, int i);
 
@@ -320,37 +325,36 @@ char		*delete_dq(char *str, t_data *data, int index_token, char **env);
 
 // [ lexical_expanding.c ]
 char		*replace_substring(char *token,
-				char *row_matched_env, int column_index_dollar, int after_space, int index_space);
+				char *row_matched_env, int column_index_dollar,
+				int after_space, int index_space);
 char		*replace_substring_1(char *token,
 				char *row_matched_env, int column_index_dollar);
 int			expand_token_env_1(t_data *data, int i, char **array_split);
-int			expand_token_env_2(t_data *data, char **env, int i, char **array_split);
+int			expand_token_env_2(t_data *data, char **env,
+				int i, char **array_split);
 int			expand_env(t_data *data, char **env, int i);
 
 // [ lexical_validating.c ]
-// void		toggle_inword_inquote(int *flag_inword,
-//				int *n_word, int *flag_inquote);
 char		**validate_input(char *user_input, char **env);
 void		free_temp_array(char **split_array);
 char		*ft_cpy_str(char *dest, char *src, int len);
 int			count_word(const char *str, t_data data);
 
 // [ lexical_validating_cnt_wd.c]
-int 		ct_wd_dq(t_parse *checks, const char *str);
-int 		ct_wd_sq(t_parse *checks, const char *str);
-int 		ct_wd_outquote(t_parse *checks, const char *str);
-int 		ct_wd_inquote(t_parse *checks, const char *str);
-int 		ct_wd_else(t_parse *checks);
+int			ct_wd_dq(t_parse *checks, const char *str);
+int			ct_wd_sq(t_parse *checks, const char *str);
+int			ct_wd_outquote(t_parse *checks, const char *str);
+int			ct_wd_inquote(t_parse *checks, const char *str);
+int			ct_wd_else(t_parse *checks);
 
 // [ lexical_validating_cnt_wd1.c]
 int			ct_wd_rdr_pipe(t_parse *checks, const char *str);
-int 		ct_wd_right_rdr(t_parse *checks, const char *str);
-int 		ct_wd_left_rdr(t_parse *checks, const char *str);
+int			ct_wd_right_rdr(t_parse *checks, const char *str);
+int			ct_wd_left_rdr(t_parse *checks, const char *str);
 
 // [ lexical_expanding_dq.c ]
-char		*delete_dq(char *str, t_data *data, int index_token, char **env);
-void		delete_dq_ext(char *tmp, char *res, char **split_array, int j);
 char		**split_str_by_dq(char *str, int i, int j);
+void		delete_dq_ext(char *tmp, char *res, char **split_array, int j);
 
 // [ lexical_expanding_sq.c ]
 char		**split_str_by_sq(char *str, int i, int j);
@@ -394,7 +398,8 @@ void		update_pipe_index(int *i, int pipe_index, int tmp);
 void		free_for_norminette(char **validated_input, int *token);
 int			error_parsing_exit_2(int *tokens, int numTokens, char **input);
 int			check_token_order(const int *tokens, int numTokens);
-t_cmd		*parse_user_input(char *user_input, t_envp *env, t_cmd *cmd_tree, int tmp);
+t_cmd		*parse_user_input(char *user_input,
+				t_envp *env, t_cmd *cmd_tree, int tmp);
 
 //[ setup_and_run_heredoc.c]
 int			setup_and_run_heredoc(int *token, char **arr, t_envp *env);
