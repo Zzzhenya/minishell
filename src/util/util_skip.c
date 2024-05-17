@@ -27,11 +27,17 @@ void	skip_normal_char(char *str, int *i)
 {
 	while (str[*i] != '\0' && str[*i] != ' '
 		&& str[*i] != '\"' && str[*i] != '\''
-		&& str[*i] != '<' && str[*i] != '>' && str[*i] != '|'
-		&& str[*i] != '\n' && str[*i] != '\v' && str[*i] != '\t'
-		&& str[*i] != '\f' && str[*i] != '\r')
+		&& str[*i] != '<' && str[*i] != '>' && str[*i] != '|')
+	{
+		printf("2. curr 'i': %d\n", *i);
 		*i += 1;
+	}
 }
+/*
+	[ Delete ]
+	&& str[*i] != '\n' && str[*i] != '\v' && str[*i] != '\t'
+	&& str[*i] != '\f' && str[*i] != '\r')
+*/
 
 void	skip_space_in_str(char *str, int *i)
 {
