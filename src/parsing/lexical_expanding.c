@@ -293,20 +293,24 @@ int	expand_env(t_data *data, char **env, int i)
 	while (data->token[i] != NULL)
 	{
 		j = 0;
-		if (data->token[i][j] == '\'')
-			data->token[i] = delete_sq(data->token[i]);
-		else if (data->token[i][j] == '\"')
+		while (data->token[i][j] != '\0')
 		{
-			data->token[i] = delete_dq(data->token[i], data, i, env);
-			if (data->token[i] == NULL)
-				return (-1);
-		}
-		else
-		{
-			if (expand_token_env_3(data, i) == -1)
-				return (-1);
-			else if (expand_token_env_4(data, env, i) == -1)
-				return (-1);
+			if (data->token[i][j] == '\'')
+				data->token[i] = delete_sq(data->token[i]);
+			else if (data->token[i][j] == '\"')
+			{
+				data->token[i] = delete_dq(data->token[i], data, i, env);
+				if (data->token[i] == NULL)
+					return (-1);
+			}
+			else
+			{
+				if (expand_token_env_3(data, i) == -1)
+					return (-1);
+				else if (expand_token_env_4(data, env, i) == -1)
+					return (-1);
+			}
+			j++;
 		}
 		i++;
 	}

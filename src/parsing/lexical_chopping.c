@@ -137,6 +137,38 @@ char	*case_s_quote(t_data *data, char *str, int i, int j)
 	return (str);
 }
 
+/*
+char	*case_s_quote(t_data *data, char *str, int i, int j)
+{
+	int	k;
+
+	k = i;
+	while (str[i] != '\0')
+	{
+		if (str[i] == '\'')
+		{
+			data->n_sq--;
+			if (data->n_sq % 2 == 0 && str[i + 1] != '\0' && str[i + 1] == ' ')
+			{
+					ft_strcpy(data, str + k, i + 1, j);
+					i++;
+					return (str + i + 1);
+			}
+		}
+		else if (str[i + 1] == ' ' && data->n_sq % 2 == 0 && str[i + 1] != '\0')
+		{
+			ft_strcpy(data, str, i + 1, j);
+			i++;
+			return (str + i + 1);
+		}
+		i++;
+	}
+	ft_strcpy(data, str, i, j);
+	i++;
+	return (str + i);
+}
+*/
+
 char	*case_d_quote(t_data *data, char *str, int i, int j)
 {
 	int	k;
@@ -185,15 +217,34 @@ char	*case_d_quote(t_data *data, char *str, int i, int j)
 	2. Not Inside		-> Skip the space
 
 	[ TEST ]
-	P/F		string						n_word
-	[O]		' ' abc'a b'aa 'abc'			3
-	[O]		abc's'a 'a'						2
-	[O]		'' aa ''						3
-	[O]		abc'ab' ddd'd'd					2
-	[O] 	a a'a' a' a' a'a ' a' a '		5
-	[O] 	''aaa'    aa'aa''				1
-	[O]		'abc' ababab'b'b				2
+	P/F		string						n_word		Memory leaks
+	[O]		' ' abc'a b'aa 'abc'			3			O
+	[O] 	''aaa'    aa'aa''				1			O
+	[O]		'abc' ababab'b'b				2			O
+
+	[X]		'' aa ''						3		zsh: segmentation fault (core dumped)
+
+	[X]		abc's'a 'a'						2		여러번 반복하면 마지막 토큰에 쓰레기값이 들어가 있다.
+	[X]		abc'ab' ddd'd'd					2		여러번 반복하면 마지막 토큰에 쓰레기값이 들어가 있다.
+
+	[X] 	a a'a' a' a' a'a ' a' a '		5		free(): invalid (core dumped)
 */
+
+//	[Third]
+
+char	*ft_norm(t_data *data, char *str, int i, int j)
+{
+	char	*res;
+
+	if (i != 0)
+		i = 0;
+	if (str[i] == '\'')
+		res = case_s_quote(data, str, i, j);
+	else
+		res = case_d_quote(data, str, i, j);
+	return (res);
+}
+
 int	ft_chopper(t_data *data, char *str, int j)
 {
 	int	i;
@@ -201,7 +252,78 @@ int	ft_chopper(t_data *data, char *str, int j)
 	i = 0;
 	if (str[0] == '\0')
 		return (-1);
-	while (*str == ' ')
+	while (str[i] == ' ')
+		str++;
+	if (check_str_null(data, str, i, j) == -1)
+		return (0);
+	skip_normal_char(str, &i);
+	if (str[i] == '\'' || str[i] == '\"')
+	{
+		str = ft_norm(data, str, i, j);
+		// i = 0;
+	}
+	else if (str[0] != '\0' && str[0] != '<' && str[0] != '>' && str[0] != '|')
+		i = ft_strcpy(data, str, i, j);
+	else if ((str[0] == '>' && str[1] == '>')
+		|| (str[0] == '<' && str[1] == '<'))
+		i = ft_strcpy(data, str, 2, j);
+	else if (str[0] == '<' || str[0] == '>' || str[0] == '|')
+		i = ft_strcpy(data, str, 1, j);
+	if (ft_chopper(data, str + i, ++j) == -1 || str[i] == '\0')
+		data->token[j] = NULL;
+	return (0);
+}
+
+/*
+// [ Second ]
+int	ft_chopper(t_data *data, char *str, int j)
+{
+	int	i;
+
+	i = 0;
+	if (str[0] == '\0')
+		return (-1);
+	while (str[i] == ' ')
+		str++;
+	if (check_str_null(data, str, i, j) == -1)
+		return (0);
+	skip_normal_char(str, &i);
+	printf("1. curr 'i': %d\n", i);
+	if (str[i] == '\'')
+	{
+		if (i != 0)
+			i = 0;
+		str = case_s_quote(data, str, i, j);
+		printf("1. str: %s\n", str);
+	}
+	else if (str[i] == '\"')
+	{
+		if (i != 0)
+			i = 0;
+		str = case_d_quote(data, str, i, j);
+	}
+	else if (str[0] != '\0' && str[0] != '<' && str[0] != '>' && str[0] != '|')
+		i = ft_strcpy(data, str, i, j);
+	else if ((str[0] == '>' && str[1] == '>') || (str[0] == '<' && str[1] == '<'))
+		i = ft_strcpy(data, str, 2, j);
+	else if (str[0] == '<' || str[0] == '>' || str[0] == '|')
+		i = ft_strcpy(data, str, 1, j);
+	if (ft_chopper(data, str + i, ++j) == -1 || str[i] == '\0')
+		data->token[j] = NULL;
+	return (0);
+}
+*/
+
+/*
+// [ Original ]
+int	ft_chopper(t_data *data, char *str, int j)
+{
+	int	i;
+
+	i = 0;
+	if (str[0] == '\0')
+		return (-1);
+	while (str[i] == ' ') // Original: while (*str == ' ')
 		str++;
 	if (check_str_null(data, str, i, j) == -1)
 		return (0);
@@ -232,3 +354,4 @@ int	ft_chopper(t_data *data, char *str, int j)
 		data->token[j] = NULL;
 	return (0);
 }
+*/
