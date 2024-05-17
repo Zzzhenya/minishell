@@ -6,11 +6,228 @@
 /*   By: tkwak <tkwak@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 20:12:50 by tkwak             #+#    #+#             */
-/*   Updated: 2024/03/19 16:15:09 by tkwak            ###   ########.fr       */
+/*   Updated: 2024/05/17 16:58:14 by sde-silv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	init_expand_data_struct(t_expand *data)
+{
+	data->i_dollar = 0;
+	data->row_env = 0;
+	data->x = 0;
+	data->z = 0;
+	data->y = 0;
+	data->length = 0;
+	data->res1 = NULL;
+	data->res = NULL;
+	data->tmp = NULL;
+}
+
+/* data->tmp = replace_substring_special(data->res, env[data->row_env],
+		// 	       data->i_dollar, data->z, data->y);
+
+// char	*replace_substring_special(char *token,
+// 	char *row_env, int i_dollar, int after_space, int index_space)*/
+char	*replace_substring_special(t_expand *data, char **env, int len)
+{
+	int		i;
+	int		i_new;
+	char	*res;
+
+	i = 0;
+	i_new = ft_strchr_m(env[data->row_env], '=') + 1;
+	len = (ft_strlen(env[data->row_env] + i_new));
+	res = malloc((len + data->i_dollar + 1 + data->z) * sizeof(char));
+	if (res == NULL)
+		return (NULL);
+	while (env[data->row_env][i_new] != '\0')
+	{
+		res[i] = env[data->row_env][i_new];
+		i++;
+		i_new++;
+	}
+	while (data->res[data->y] != '\0')
+	{
+		res[i] = data->res[data->y];
+		data->y++;
+		i++;
+	}
+	res[i] = '\0';
+	free(data->res);
+	return (res);
+}
+
+char	*get_pid_string(void)
+{
+	pid_t	pid;
+
+	pid = getpid();
+	return (ft_itoa((int)pid));
+}
+
+int	expand_token_env_1(t_data *data, int i, char **array_split)
+{
+	int	i_dollar;
+
+	i_dollar = ft_strchr_m(array_split[i], '$');
+	if (i_dollar != -1 && array_split[i][i_dollar + 1] == '$')
+	{
+		data->token[i] = get_pid_string();
+		if (data->token[i] == NULL)
+			return (-1);
+	}
+	return (0);
+}
+
+int	expand_token_env_3(t_data *data, int i)
+{
+	int	i_dollar;
+
+	i_dollar = ft_strchr_m(data->token[i], '$');
+	if (i_dollar != -1 && data->token[i][i_dollar + 1] == '$')
+	{
+		data->token[i] = get_pid_string();
+		if (data->token[i] == NULL)
+			return (-1);
+	}
+	return (0);
+}
+
+/*
+char	*replace_substring(char **array_split, int *i, char **env,
+		t_expand *data)
+*/
+void	expand_replace_substr_if1(t_expand *data, char **array_split,
+			char **env, int *i)
+{
+	data->x = *i;
+	data->z = 0;
+	data->y = 0;
+	while (array_split[data->x][data->z])
+	{
+		if (array_split[data->x][data->z] == ' ')
+			data->y = data->z;
+		data->z++;
+	}
+	data->x = data->z - data->y;
+	if (data->y != 0)
+		array_split[*i] = replace_substring(array_split, i, env, data);
+	else
+		array_split[*i]
+			= replace_substring_1(array_split[*i],
+				env[data->row_env], data->i_dollar);
+}
+
+void	skip_non_dollar(t_expand *data, char **array_split)
+{
+	while (array_split[data->x][data->y]
+			&& array_split[data->x][data->y] != '$')
+	{
+		data->res1[data->y] = array_split[data->x][data->y];
+		data->y++;
+	}
+	data->res1[data->y] = '\0';
+	data->y++;
+}
+
+void	skip_non_space_sq(t_expand *data,
+		char **array_split, char **env, int *i)
+{
+	while (array_split[data->x][data->y] != ' '
+			&& array_split[data->x][data->y] != '\'')
+	{
+		data->res[data->z] = array_split[data->x][data->y];
+		data->y++;
+		data->z++;
+	}
+	data->res[data->z] = '\0';
+	data->row_env = find_matching_env_row(&data->res[data->x], env);
+	if (data->row_env == -1)
+	{
+		array_split[*i]
+			= replace_substring_1(array_split[*i], "", data->i_dollar);
+	}
+	else
+	{
+		data->tmp = replace_substring_special(data, env, 0);
+		data->tmp = ft_strjoin(data->res1, data->tmp);
+		free(data->res1);
+	}
+}
+
+void	expand_replace_substr_else(t_expand *data,
+			char **array_split, char **env, int *i)
+{
+	data->length = ft_strlen(array_split[*i]);
+	data->x = *i;
+	data->y = 0;
+	data->z = 0;
+	data->res1 = (char *)malloc(sizeof(char *) * (data->length + 1));
+	data->res = (char *)malloc(sizeof(char *) * (data->length + 1));
+	skip_non_dollar(data, array_split);
+	skip_non_space_sq(data, array_split, env, i);
+	data->z = 0;
+	while (array_split[data->x][data->y])
+	{
+		data->res[data->z] = array_split[data->x][data->y];
+		data->y++;
+		data->z++;
+	}
+	data->res[data->z] = '\0';
+	data->tmp = ft_strjoin(data->tmp, data->res);
+	free(data->res);
+	array_split[*i] = data->tmp;
+}
+
+/*
+		data.row_env = find_matching_env_row(array_split[i]
+				+ data.i_dollar + 1, env);
+		if (data.row_env == -1)
+			array_split[i]
+				= replace_substring_1(array_split[i], "", data.i_dollar);
+		else
+			expand_replace_substr_if1(&data, array_split, env, &i);
+*/
+
+void	expand_replace_substr_if(t_expand *data, char **array_split,
+			int *i, char **env)
+{
+	data->row_env = find_matching_env_row(array_split[*i]
+			+ data->i_dollar + 1, env);
+	if (data->row_env == -1)
+		array_split[*i]
+			= replace_substring_1(array_split[*i], "", data->i_dollar);
+	else
+		expand_replace_substr_if1(data, array_split, env, i);
+}
+
+int	expand_token_env_2(char **env, int i, char **array_split)
+{
+	t_expand	data;
+
+	init_expand_data_struct(&data);
+	data.i_dollar = ft_strchr_m(array_split[i], '$');
+	if (data.i_dollar != -1 && array_split[i][data.i_dollar + 1] == '\0')
+		return (0);
+	else if (data.i_dollar != -1
+		&& (ft_strchr_m(array_split[i], '\'') == -1)
+		&& array_split[i][data.i_dollar + 1] != '?'
+		&& array_split[i][data.i_dollar + 1] != '$')
+	{
+		expand_replace_substr_if(&data, array_split, &i, env);
+		if (array_split[i] == NULL)
+			return (-1);
+	}
+	else
+	{
+		expand_replace_substr_else(&data, array_split, env, &i);
+		if (array_split[i] == NULL)
+			return (-1);
+	}
+	return (0);
+}
 
 char	*replace_substring_1(char *token, char *row_env, int i_dollar)
 {
@@ -39,207 +256,59 @@ char	*replace_substring_1(char *token, char *row_env, int i_dollar)
 	return (res);
 }
 
-char	*replace_substring_special(char *token,
-	char *row_env, int i_dollar, int after_space, int index_space)
+/*
+	while (env[data->row_env][i_new] != '\0')
+	{
+		res[j] = env[data->row_env][i_new];
+		j++;
+		i_new++;
+	}
+*/
+void	replace_substring_cpy_iter(char *src, int *cpy, int *i, char *dest)
 {
-	int		i;
+	while (src[*i] != '\0')
+	{
+		dest[*cpy] = src[*i];
+		(*cpy)++;
+		(*i)++;
+	}
+}
+/*
+		array_split[*i] = replace_substring(array_split, i, env, data);
+			= replace_substring(array_split[*i],
+				env[data->row_env], data->i_dollar, data->x, data->y);
+		// char	*replace_substring(char *token,
+// 	char *row_env, int i_dollar, int after_space, int index_space)
+*/
+
+char	*replace_substring(char **array_split, int *i, char **env,
+		t_expand *data)
+{
+	int		j;
 	int		i_new;
 	char	*res;
 
-	i = 0;
-	i_new = ft_strchr_m(row_env, '=') + 1;
-	res = malloc((ft_strlen(row_env + i_new) + i_dollar + 1 + after_space)
-			* sizeof(char));
+	j = 0;
+	i_new = ft_strchr_m(env[data->row_env], '=') + 1;
+	res = malloc((ft_strlen(env[data->row_env] + i_new)
+				+ data->i_dollar + 1 + data->x) * sizeof(char));
 	if (res == NULL)
 		return (NULL);
-	while (row_env[i_new] != '\0')
+	while (j < data->i_dollar)
 	{
-		res[i] = row_env[i_new];
-		i++;
-		i_new++;
+		res[j] = array_split[*i][j];
+		j++;
 	}
-	while (token[index_space] != '\0')
+	replace_substring_cpy_iter(env[data->row_env], &j, &i_new, res);
+	while (array_split[*i][data->y] != '\0')
 	{
-		res[i] = token[index_space];
-		index_space++;
-		i++;
+		res[j] = array_split[*i][data->y];
+		data->y++;
+		j++;
 	}
-	res[i] = '\0';
-	free(token);
+	res[j] = '\0';
+	free(array_split[*i]);
 	return (res);
-}
-
-char	*replace_substring(char *token,
-	char *row_env, int i_dollar, int after_space, int index_space)
-{
-	int		i;
-	int		i_new;
-	char	*res;
-
-	i = 0;
-	i_new = ft_strchr_m(row_env, '=') + 1;
-	res = malloc((ft_strlen(row_env + i_new) + i_dollar + 1 + after_space)
-			* sizeof(char));
-	if (res == NULL)
-		return (NULL);
-	while (i < i_dollar)
-	{
-		res[i] = token[i];
-		i++;
-	}
-	while (row_env[i_new] != '\0')
-	{
-		res[i] = row_env[i_new];
-		i++;
-		i_new++;
-	}
-	while (token[index_space] != '\0')
-	{
-		res[i] = token[index_space];
-		index_space++;
-		i++;
-	}
-	res[i] = '\0';
-	free(token);
-	return (res);
-}
-
-char	*get_pid_string(void)
-{
-	pid_t	pid;
-
-	pid = getpid();
-	return (ft_itoa((int)pid));
-}
-
-int	expand_token_env_1(t_data *data, int i, char **array_split)
-{
-	int	i_dollar;
-
-	i_dollar = ft_strchr_m(array_split[i], '$');
-	if (i_dollar != -1 && array_split[i][i_dollar + 1] == '$')
-	{
-		data->token[i] = get_pid_string();
-		if (data->token[i] == NULL)
-			return (-1);
-	}
-	return (0);
-}
-
-int	expand_token_env_2(t_data *data, char **env, int i, char **array_split)
-{
-	int		i_dollar;
-	int		row_env;
-	int		x;
-	int		z;
-	int		y;
-	int		length;
-	char	*res1;
-	char	*res;
-	char	*tmp;
-
-	(void)data;
-	i_dollar = ft_strchr_m(array_split[i], '$');
-	if (i_dollar != -1 && array_split[i][i_dollar + 1] == '\0')
-		return (0);
-	else if (i_dollar != -1
-		&& (ft_strchr_m(array_split[i], '\'') == -1)
-		&& array_split[i][i_dollar + 1] != '?'
-		&& array_split[i][i_dollar + 1] != '$')
-	{
-		row_env = find_matching_env_row(array_split[i] + i_dollar + 1, env);
-		if (row_env == -1)
-		{
-			array_split[i]
-				= replace_substring_1(array_split[i], "", i_dollar);
-		}
-		else
-		{
-			x = i;
-			z = 0;
-			y = 0;
-			while (array_split[x][z])
-			{
-				if (array_split[x][z] == ' ')
-					y = z;
-				z++;
-			}
-			x = z - y;
-			if (y != 0)
-				array_split[i]
-					= replace_substring(array_split[i],
-						env[row_env], i_dollar, x, y);
-			else
-				array_split[i]
-					= replace_substring_1(array_split[i],
-						env[row_env], i_dollar);
-		}
-		if (array_split[i] == NULL)
-			return (-1);
-	}
-	else
-	{
-		length = ft_strlen(array_split[i]);
-		x = i;
-		y = 0;
-		z = 0;
-		res1 = (char *)malloc(sizeof(char *) * (length + 1));
-		res = (char *)malloc(sizeof(char *) * (length + 1));
-		while (array_split[x][y] && array_split[x][y] != '$')
-		{
-			res1[y] = array_split[x][y];
-			y++;
-		}
-		res1[y] = '\0';
-		y++;
-		while (array_split[x][y] != ' ' && array_split[x][y] != '\'')
-		{
-			res[z] = array_split[x][y];
-			y++;
-			z++;
-		}
-		res[z] = '\0';
-		row_env = find_matching_env_row(&res[x], env);
-		if (row_env == -1)
-		{
-			array_split[i]
-				= replace_substring_1(array_split[i], "", i_dollar);
-		}
-		else
-		{
-			tmp = replace_substring_special(res, env[row_env], i_dollar, z, y);
-			tmp = ft_strjoin(res1, tmp);
-			free(res1);
-		}
-		z = 0;
-		while (array_split[x][y])
-		{
-			res[z] = array_split[x][y];
-			y++;
-			z++;
-		}
-		res[z] = '\0';
-		tmp = ft_strjoin(tmp, res);
-		free(res);
-		array_split[i] = tmp;
-		if (array_split[i] == NULL)
-			return (-1);
-	}
-	return (0);
-}
-
-int	expand_token_env_3(t_data *data, int i)
-{
-	int	i_dollar;
-
-	i_dollar = ft_strchr_m(data->token[i], '$');
-	if (i_dollar != -1 && data->token[i][i_dollar + 1] == '$')
-	{
-		data->token[i] = get_pid_string();
-		if (data->token[i] == NULL)
-			return (-1);
-	}
-	return (0);
 }
 
 int	expand_token_env_4(t_data *data, char **env, int i)
@@ -286,10 +355,9 @@ int	expand_token_env_4(t_data *data, char **env, int i)
 	"a' '$HOME' 'a"		[X]			a' '/home/tkwak' 'a
 	"'$HOME'"			[X]			'/home/tkwak'
 */
-int	expand_env(t_data *data, char **env, int i)
-{
-	int	j;
 
+int	expand_env(t_data *data, char **env, int i, int j)
+{
 	while (data->token[i] != NULL)
 	{
 		j = 0;
