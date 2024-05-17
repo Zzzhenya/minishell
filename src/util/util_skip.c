@@ -28,10 +28,7 @@ void	skip_normal_char(char *str, int *i)
 	while (str[*i] != '\0' && str[*i] != ' '
 		&& str[*i] != '\"' && str[*i] != '\''
 		&& str[*i] != '<' && str[*i] != '>' && str[*i] != '|')
-	{
-		printf("2. curr 'i': %d\n", *i);
 		*i += 1;
-	}
 }
 /*
 	[ Delete ]
