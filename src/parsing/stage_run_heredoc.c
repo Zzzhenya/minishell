@@ -39,6 +39,7 @@ int	stage_heredoc(int fd, char *word, t_envp *env, t_tmp *temp)
 		free (temp->name);
 		heredoc_input(fd, word, NULL, NULL);
 		free_for_norminette(temp->arr, temp->token);
+		close(fd);
 		exit (g_exit_status);
 	}
 	else
