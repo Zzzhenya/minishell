@@ -222,7 +222,6 @@ typedef struct s_cmd
 	arr:	token content array
 	name:	name of the heredoc instance
 */
-
 typedef struct s_tmp
 {
 	int		*token;
@@ -307,7 +306,6 @@ typedef struct s_redirec
 	struct s_redirec	*next_redirec;
 }	t_redirec;
 
-
 typedef struct s_expand
 {
 	int		i_dollar;
@@ -322,7 +320,6 @@ typedef struct s_expand
 }	t_expand;
 
 /*	[FUNCTIONS]	 */
-
 // [ lexical_analysis.c ]
 int			check_token_length(int *token);
 int			check_redirections(char *str);
@@ -345,36 +342,44 @@ char		*case_s_quote(t_data *data, char *str, int i, int j);
 char		*case_d_quote(t_data *data, char *str, int i, int j);
 
 // [ lexical_chopping.c ]
-char		*case_s_quote(t_data *data, char *str, int i, int j);
-char		*case_d_quote(t_data *data, char *str, int i, int j);
 void		check_sq(t_data *data, char **str, int *i, int *j);
 void		check_dq(t_data *data, char **str, int *i, int *j);
 int			ft_chopper(t_data *data, char *str, int j, int i);
 
-// [ lexical_expanding_tool.c ]
+// [ lexical_expanding_tool.c ] 5
 char		**split_str_by_sq(char *str, int i, int j);
 char		*delete_sq(char *str);
 char		**split_str_by_dq(char *str, int i, int j);
 void		delete_dq_ext(char *tmp, char *res, char **split_array, int j);
 char		*delete_dq(char *str, t_data *data, int index_token, char **env);
 
-// [ lexical_expanding.c ]
-// char		*replace_substring(char *token,
-// 				char *row_matched_env, int column_index_dollar,
-// 				int after_space, int index_space);
-char		*replace_substring(char **array_split, int *i, char **env, t_expand *data);
-char		*replace_substring_1(char *token,
-				char *row_matched_env, int column_index_dollar);
-// char		*replace_substring_special(char *token,
-// 				char *row_env, int i_dollar, int after_space, int index_space);
-// char		*replace_substring(char *token,
-// 				char *row_env, int i_dollar, int after_space, int index_space);
+// [ lexical_expanding_tool2.c ] 3
 char		*get_pid_string(void);
+void		skip_non_dollar(t_expand *data, char **array_split);
+void		skip_non_space_sq(t_expand *data,
+				char **array_split, char **env, int *i);
+
+// [ lexical_expanding_tool3.c ] 4
+void		init_expand_data_struct(t_expand *data);
+void		expand_replace_substr_if1(t_expand *data, char **array_split,
+				char **env, int *i);
+void		expand_replace_substr_else(t_expand *data,
+				char **array_split, char **env, int *i);
+void		expand_replace_substr_if(t_expand *data, char **array_split,
+				int *i, char **env);
+
+// [ lexical_expanding_tool4.c ] 4
+char		*replace_substring_special(t_expand *data, char **env, int len);
+char		*replace_substring_1(char *token, char *row_env, int i_dollar);
+void		replace_substring_cpy_iter(char *src, int *cpy, int *i, char *dest);
+char		*replace_substring(char **array_split, int *i, char **env,
+				t_expand *data);
+
+// [ lexical_expanding.c ]
 int			expand_token_env_1(t_data *data, int i, char **array_split);
 int			expand_token_env_2(char **env, int i, char **array_split);
-// int			expand_token_env_2(t_data *data, char **env,
-// 				int i, char **array_split);
-// int			expand_env(t_data *data, char **env, int i);
+int			expand_token_env_3(t_data *data, int i);
+int			expand_token_env_4(t_data *data, char **env, int i);
 int			expand_env(t_data *data, char **env, int i, int j);
 
 // [ lexical_qoute.c ]
@@ -532,12 +537,8 @@ int			setup_r(t_redirec *stdios);
 int			setup_ll(t_redirec *stdios);
 int			setup_l(t_redirec *stdios);
 
-// [ ETC ]
-//t_redirec	*find_last(t_redirec *stdios, char c, t_redirec *last);
-//int error_parsing_exit_2(int *tokens, int numTokens, char **input);
-
+/* [ ETC ] */
 // [here_doc_functions.c]
-//void		heredoc_input(int fd, char *word);
 void		heredoc_input(int fd, char *word, t_envp *env, char *line);
 
 // [ SIGNAL ]
@@ -604,21 +605,36 @@ void		wait_each_command(t_cmd *tree, t_envp *env);
 int			count_commands(t_cmd *tree);
 
 // [route_builtins.c]
-//void		builtin_action(t_cmd *builtin, char **cmdline, t_envp *env);
 int			check_builtin(t_cmd *file_path, t_cmd *cmd);
-//void		pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env, pid_t pid);
 void		builtin_router(t_cmd *cmd, t_envp *env, pid_t pid, int i);
 
 /* readline */
 void		rl_replace_line(const char *text, int clear_undo);
 void		rl_clear_history(void);
 
-// [MEMO]
 /*
+[MEMO]
 STDIN_FILENO:
 File descriptor of STDIN, relating with input source like Key-board.
 
 STDOUT_FILENO:
 File descriptor of STDOUT, relating with output source like Monitor.
+
+[NOT USED]
+t_redirec	*find_last(t_redirec *stdios, char c, t_redirec *last);
+int error_parsing_exit_2(int *tokens, int numTokens, char **input);
+char		*replace_substring(char *token,
+				char *row_matched_env, int column_index_dollar,
+				int after_space, int index_space);
+char		*replace_substring_special(char *token,
+				char *row_env, int i_dollar, int after_space, int index_space);
+char		*replace_substring(char *token,
+				char *row_env, int i_dollar, int after_space, int index_space);
+int			expand_token_env_2(t_data *data, char **env,
+				int i, char **array_split);
+int			expand_env(t_data *data, char **env, int i);
+void		builtin_action(t_cmd *builtin, char **cmdline, t_envp *env);
+void		pid_pid_builtin_n_set(t_cmd *cmd, t_envp *env, pid_t pid);
+void		heredoc_input(int fd, char *word);
 */
 #endif

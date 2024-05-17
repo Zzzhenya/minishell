@@ -12,65 +12,11 @@
 
 #include "../../include/minishell.h"
 
-void	init_expand_data_struct(t_expand *data)
-{
-	data->i_dollar = 0;
-	data->row_env = 0;
-	data->x = 0;
-	data->z = 0;
-	data->y = 0;
-	data->length = 0;
-	data->res1 = NULL;
-	data->res = NULL;
-	data->tmp = NULL;
-}
-
-/* data->tmp = replace_substring_special(data->res, env[data->row_env],
-		// 	       data->i_dollar, data->z, data->y);
-
-// char	*replace_substring_special(char *token,
-// 	char *row_env, int i_dollar, int after_space, int index_space)*/
-char	*replace_substring_special(t_expand *data, char **env, int len)
-{
-	int		i;
-	int		i_new;
-	char	*res;
-
-	i = 0;
-	i_new = ft_strchr_m(env[data->row_env], '=') + 1;
-	len = (ft_strlen(env[data->row_env] + i_new));
-	res = malloc((len + data->i_dollar + 1 + data->z) * sizeof(char));
-	if (res == NULL)
-		return (NULL);
-	while (env[data->row_env][i_new] != '\0')
-	{
-		res[i] = env[data->row_env][i_new];
-		i++;
-		i_new++;
-	}
-	while (data->res[data->y] != '\0')
-	{
-		res[i] = data->res[data->y];
-		data->y++;
-		i++;
-	}
-	res[i] = '\0';
-	free(data->res);
-	return (res);
-}
-
-char	*get_pid_string(void)
-{
-	pid_t	pid;
-
-	pid = getpid();
-	return (ft_itoa((int)pid));
-}
-
 int	expand_token_env_1(t_data *data, int i, char **array_split)
 {
 	int	i_dollar;
 
+	printf(P"1.\n"RS);
 	i_dollar = ft_strchr_m(array_split[i], '$');
 	if (i_dollar != -1 && array_split[i][i_dollar + 1] == '$')
 	{
@@ -79,128 +25,6 @@ int	expand_token_env_1(t_data *data, int i, char **array_split)
 			return (-1);
 	}
 	return (0);
-}
-
-int	expand_token_env_3(t_data *data, int i)
-{
-	int	i_dollar;
-
-	i_dollar = ft_strchr_m(data->token[i], '$');
-	if (i_dollar != -1 && data->token[i][i_dollar + 1] == '$')
-	{
-		data->token[i] = get_pid_string();
-		if (data->token[i] == NULL)
-			return (-1);
-	}
-	return (0);
-}
-
-/*
-char	*replace_substring(char **array_split, int *i, char **env,
-		t_expand *data)
-*/
-void	expand_replace_substr_if1(t_expand *data, char **array_split,
-			char **env, int *i)
-{
-	data->x = *i;
-	data->z = 0;
-	data->y = 0;
-	while (array_split[data->x][data->z])
-	{
-		if (array_split[data->x][data->z] == ' ')
-			data->y = data->z;
-		data->z++;
-	}
-	data->x = data->z - data->y;
-	if (data->y != 0)
-		array_split[*i] = replace_substring(array_split, i, env, data);
-	else
-		array_split[*i]
-			= replace_substring_1(array_split[*i],
-				env[data->row_env], data->i_dollar);
-}
-
-void	skip_non_dollar(t_expand *data, char **array_split)
-{
-	while (array_split[data->x][data->y]
-			&& array_split[data->x][data->y] != '$')
-	{
-		data->res1[data->y] = array_split[data->x][data->y];
-		data->y++;
-	}
-	data->res1[data->y] = '\0';
-	data->y++;
-}
-
-void	skip_non_space_sq(t_expand *data,
-		char **array_split, char **env, int *i)
-{
-	while (array_split[data->x][data->y] != ' '
-			&& array_split[data->x][data->y] != '\'')
-	{
-		data->res[data->z] = array_split[data->x][data->y];
-		data->y++;
-		data->z++;
-	}
-	data->res[data->z] = '\0';
-	data->row_env = find_matching_env_row(&data->res[data->x], env);
-	if (data->row_env == -1)
-	{
-		array_split[*i]
-			= replace_substring_1(array_split[*i], "", data->i_dollar);
-	}
-	else
-	{
-		data->tmp = replace_substring_special(data, env, 0);
-		data->tmp = ft_strjoin(data->res1, data->tmp);
-		free(data->res1);
-	}
-}
-
-void	expand_replace_substr_else(t_expand *data,
-			char **array_split, char **env, int *i)
-{
-	data->length = ft_strlen(array_split[*i]);
-	data->x = *i;
-	data->y = 0;
-	data->z = 0;
-	data->res1 = (char *)malloc(sizeof(char *) * (data->length + 1));
-	data->res = (char *)malloc(sizeof(char *) * (data->length + 1));
-	skip_non_dollar(data, array_split);
-	skip_non_space_sq(data, array_split, env, i);
-	data->z = 0;
-	while (array_split[data->x][data->y])
-	{
-		data->res[data->z] = array_split[data->x][data->y];
-		data->y++;
-		data->z++;
-	}
-	data->res[data->z] = '\0';
-	data->tmp = ft_strjoin(data->tmp, data->res);
-	free(data->res);
-	array_split[*i] = data->tmp;
-}
-
-/*
-		data.row_env = find_matching_env_row(array_split[i]
-				+ data.i_dollar + 1, env);
-		if (data.row_env == -1)
-			array_split[i]
-				= replace_substring_1(array_split[i], "", data.i_dollar);
-		else
-			expand_replace_substr_if1(&data, array_split, env, &i);
-*/
-
-void	expand_replace_substr_if(t_expand *data, char **array_split,
-			int *i, char **env)
-{
-	data->row_env = find_matching_env_row(array_split[*i]
-			+ data->i_dollar + 1, env);
-	if (data->row_env == -1)
-		array_split[*i]
-			= replace_substring_1(array_split[*i], "", data->i_dollar);
-	else
-		expand_replace_substr_if1(data, array_split, env, i);
 }
 
 int	expand_token_env_2(char **env, int i, char **array_split)
@@ -229,86 +53,18 @@ int	expand_token_env_2(char **env, int i, char **array_split)
 	return (0);
 }
 
-char	*replace_substring_1(char *token, char *row_env, int i_dollar)
+int	expand_token_env_3(t_data *data, int i)
 {
-	int		i;
-	int		i_new;
-	char	*res;
+	int	i_dollar;
 
-	i = 0;
-	i_new = ft_strchr_m(row_env, '=') + 1;
-	res = malloc((ft_strlen(row_env + i_new) + i_dollar + 1) * sizeof(char));
-	if (res == NULL)
-		return (NULL);
-	while (i < i_dollar)
+	i_dollar = ft_strchr_m(data->token[i], '$');
+	if (i_dollar != -1 && data->token[i][i_dollar + 1] == '$')
 	{
-		res[i] = token[i];
-		i++;
+		data->token[i] = get_pid_string();
+		if (data->token[i] == NULL)
+			return (-1);
 	}
-	while (row_env[i_new] != '\0')
-	{
-		res[i] = row_env[i_new];
-		i++;
-		i_new++;
-	}
-	res[i] = '\0';
-	free(token);
-	return (res);
-}
-
-/*
-	while (env[data->row_env][i_new] != '\0')
-	{
-		res[j] = env[data->row_env][i_new];
-		j++;
-		i_new++;
-	}
-*/
-void	replace_substring_cpy_iter(char *src, int *cpy, int *i, char *dest)
-{
-	while (src[*i] != '\0')
-	{
-		dest[*cpy] = src[*i];
-		(*cpy)++;
-		(*i)++;
-	}
-}
-/*
-		array_split[*i] = replace_substring(array_split, i, env, data);
-			= replace_substring(array_split[*i],
-				env[data->row_env], data->i_dollar, data->x, data->y);
-		// char	*replace_substring(char *token,
-// 	char *row_env, int i_dollar, int after_space, int index_space)
-*/
-
-char	*replace_substring(char **array_split, int *i, char **env,
-		t_expand *data)
-{
-	int		j;
-	int		i_new;
-	char	*res;
-
-	j = 0;
-	i_new = ft_strchr_m(env[data->row_env], '=') + 1;
-	res = malloc((ft_strlen(env[data->row_env] + i_new)
-				+ data->i_dollar + 1 + data->x) * sizeof(char));
-	if (res == NULL)
-		return (NULL);
-	while (j < data->i_dollar)
-	{
-		res[j] = array_split[*i][j];
-		j++;
-	}
-	replace_substring_cpy_iter(env[data->row_env], &j, &i_new, res);
-	while (array_split[*i][data->y] != '\0')
-	{
-		res[j] = array_split[*i][data->y];
-		data->y++;
-		j++;
-	}
-	res[j] = '\0';
-	free(array_split[*i]);
-	return (res);
+	return (0);
 }
 
 int	expand_token_env_4(t_data *data, char **env, int i)
@@ -345,34 +101,60 @@ int	expand_token_env_4(t_data *data, char **env, int i)
 
 	 '$HOME'			[O]			 $HOME
 	''$HOME''			[O]			 $HOME
+
 	' $HOME 'a			[O]		   | $HOME |a
 	'"$HOME"'			[O]			"$HOME"
-	  
-	 "$HOME"			[O]			/home/tkwak
-	""$HOME""			[O]			/home/tkwak
-	" $HOME "a			[O]		 	| /home/tkwak a|
 
+	 "$HOME"			[O]			/home/tkwak				
+	""$HOME""			[O]			/home/tkwak
+
+
+
+
+
+
+	!! remove [OK], expanding [OK] 	one more space print[X]
+	" $HOME "a			[X]		 	| /home/tkwak a|
+
+	!! remove [OK], expanding [X]
 	"a' '$HOME' 'a"		[X]			a' '/home/tkwak' 'a
 	"'$HOME'"			[X]			'/home/tkwak'
-*/
 
+	!! NO TOKEN !!
+	'' $HOME ''a		[X]			|  /home/tkwak a|
+*/
 int	expand_env(t_data *data, char **env, int i, int j)
 {
 	while (data->token[i] != NULL)
 	{
 		j = 0;
+		printf(C"\t[Original] data->token[%d]: %s\n"RS, i, data->token[i]);
 		while (data->token[i][j] != '\0')
 		{
+			printf(Y"\t\t1. data->token[%d][%d]: %c\n"RS, i, j, data->token[i][j]);
 			if (data->token[i][j] == '\'')
-				data->token[i] = delete_sq(data->token[i]);
-			else if (data->token[i][j] == '\"')
 			{
+				printf(P"\t\t\t2-1. Token starts "RED"sq\n"RS);
+				data->token[i] = delete_sq(data->token[i]);
+				printf(P"\t\t\t2-1. After (sq) delete: %s\n"RS, data->token[i]);
+				break ;
+			}
+			else if (data->token[i][j] == '\"') // i: 1, j: 0
+			{
+				printf(P"\t\t\t2-2. Token starts "RED"dq\n"RS);
 				data->token[i] = delete_dq(data->token[i], data, i, env);
 				if (data->token[i] == NULL)
 					return (-1);
+				printf(P"\t\t\t2-2. After (dq) delete: %s\n"RS, data->token[i]);
+				// if (expand_token_env_3(data, i) == -1)
+				// 	return (-1);
+				// else if (expand_token_env_4(data, env, i) == -1)
+				// 	return (-1);
+				break ;
 			}
 			else
 			{
+				printf(P"\t\t\t2-3. Token starts not quote\n"RS);
 				if (expand_token_env_3(data, i) == -1)
 					return (-1);
 				else if (expand_token_env_4(data, env, i) == -1)
@@ -380,10 +162,17 @@ int	expand_env(t_data *data, char **env, int i, int j)
 			}
 			j++;
 		}
+		printf(RED"\n\tToken up\n\n"RS);
 		i++;
 	}
 	return (0);
 }
+
+				// if (expand_token_env_1(data, index_token, split_array) == -1)
+				// 	return (NULL);
+				// else if (expand_token_env_2(env, index_token, split_array) == -1)
+				// 	return (NULL);
+
 
 /*
 int	expand_env(t_data *data, char **env, int i)

@@ -51,6 +51,7 @@ char	*delete_sq(char *str)
 	i = 0;
 	res = NULL;
 	split_array = split_str_by_sq(str, 0, 0);
+	printf("\t\t\t\t3. Delete sq: data->token: %s\n", split_array[i]);
 	if (split_array == NULL)
 		return (NULL);
 	while (split_array[i] != NULL)
@@ -107,6 +108,48 @@ void	delete_dq_ext(char *tmp, char *res, char **split_array, int j)
 	free(tmp);
 }
 
+int	expand_token_env_5(char **split, int i)
+{
+	int	i_dollar;
+
+	i_dollar = ft_strchr_m(split[i], '$');
+	if (i_dollar != -1 && split[i] != NULL && split[i][i_dollar + 1] != '\0' && split[i][i_dollar + 1] == '$')
+	{
+		split[i] = get_pid_string();
+		if (split[i] == NULL)
+			return (-1);
+	}
+	printf(RED"haha\n"RS);
+	return (0);
+}
+
+int	expand_token_env_6(char **split, char **env, int i)
+{
+	int	i_dollar;
+	int	row_env;
+
+	i_dollar = ft_strchr_m(split[i], '$');
+	if (i_dollar != -1 && split[i] != NULL && split[i][i_dollar + 1] == '\0')
+		return (0);
+	else if (i_dollar != -1
+		&& split[i] != NULL
+		&& (ft_strchr_m(split[i], '\'') == -1)
+		&& split[i][i_dollar + 1] != '?'
+		&& split[i][i_dollar + 1] != '$')
+	{
+		row_env = find_matching_env_row((split[i]) + i_dollar + 1, env);
+		if (row_env == -1)
+			split[i]
+				= replace_substring_1(split[i], "", i_dollar);
+		else
+			split[i]
+				= replace_substring_1(split[i], env[row_env], i_dollar);
+		if (split[i] == NULL)
+			return (-1);
+	}
+	return (0);
+}
+
 char	*delete_dq(char *str, t_data *data, int index_token, char **env)
 {
 	int		j;
@@ -114,23 +157,43 @@ char	*delete_dq(char *str, t_data *data, int index_token, char **env)
 	char	*tmp;
 	char	**split_array;
 
+	(void)data;
+	(void)index_token;
+	(void)env;
+	j = 0;
 	res = NULL;
 	tmp = NULL;
 	split_array = split_str_by_dq(str, 0, 0);
+	for (int k = 0; split_array[k] != NULL; k++)
+		printf("\t\t\t\t3. Delete dq: split_array[%d]: %s\n", k, split_array[k]);
 	if (split_array == NULL)
 		return (NULL);
-	j = 0;
 	while (split_array[j] != NULL)
 	{
-		if (expand_token_env_1(data, index_token, split_array) == -1)
+		if (expand_token_env_5(&split_array[j], j) == -1)
 			return (NULL);
-		else if (expand_token_env_2(env, index_token, split_array) == -1)
+		else if (expand_token_env_6(&split_array[j], env, j) == -1)
 			return (NULL);
+		// if (expand_token_env_1(data, index_token, split_array) == -1)
+		// 	return (NULL);
+		// else if (expand_token_env_2(env, index_token, split_array) == -1)
+		// 	return (NULL);
 		if (res == NULL)
 			res = ft_strdup(split_array[j]);
 		else
 			delete_dq_ext(tmp, res, split_array, j);
+		printf("\t\t1. %s\n", split_array[j]);
+		if (split_array[j+1] != NULL)
+		{
+			split_array[j] = ft_strjoin(split_array[j], " ");
+			printf("\t\t2. %s\n", split_array[j]);
+			res = ft_strdup(split_array[j]);
+		}
 		j++;
+		// printf("\t\t1. %s\n", split_array[j - 1]);
+		// if (split_array[j] != NULL)
+		// 	split_array[j-1] = ft_strjoin(split_array[j - 1], " ");
+		// printf("\t\t2. %s\n", split_array[j - 1]);
 	}
 	free_temp_array(split_array);
 	return (res);
