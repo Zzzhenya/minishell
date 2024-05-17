@@ -357,34 +357,23 @@ void		delete_dq_ext(char *tmp, char *res, char **split_array, int j);
 char		*delete_dq(char *str, t_data *data, int index_token, char **env);
 
 // [ lexical_expanding.c ]
-<<<<<<< Updated upstream
-=======
 // char		*replace_substring(char *token,
 // 				char *row_matched_env, int column_index_dollar,
 // 				int after_space, int index_space);
 char		*replace_substring(char **array_split, int *i, char **env, t_expand *data);
->>>>>>> Stashed changes
 char		*replace_substring_1(char *token,
 				char *row_matched_env, int column_index_dollar);
-char		*replace_substring_special(char *token,
-				char *row_env, int i_dollar, int after_space, int index_space);
-char		*replace_substring(char *token,
-				char *row_env, int i_dollar, int after_space, int index_space);
+// char		*replace_substring_special(char *token,
+// 				char *row_env, int i_dollar, int after_space, int index_space);
+// char		*replace_substring(char *token,
+// 				char *row_env, int i_dollar, int after_space, int index_space);
 char		*get_pid_string(void);
 int			expand_token_env_1(t_data *data, int i, char **array_split);
-<<<<<<< Updated upstream
-int			expand_token_env_2(t_data *data, char **env,
-				int i, char **array_split);
-int			expand_token_env_3(t_data *data, int i);
-int			expand_token_env_4(t_data *data, char **env, int i);
-int			expand_env(t_data *data, char **env, int i);
-=======
 int			expand_token_env_2(char **env, int i, char **array_split);
 // int			expand_token_env_2(t_data *data, char **env,
 // 				int i, char **array_split);
 // int			expand_env(t_data *data, char **env, int i);
 int			expand_env(t_data *data, char **env, int i, int j);
->>>>>>> Stashed changes
 
 // [ lexical_qoute.c ]
 int			count_quote(char *str, t_data *data);

@@ -109,7 +109,7 @@ char	**validate_input(char *user_input, char **env)
 		return (NULL);
 	if (ft_chopper(&data, data.str, 0, 0) == -1)
 		return (NULL);
-	if (expand_env(&data, env, 0) == -1)
+	if (expand_env(&data, env, 0, 0) == -1)
 		return (NULL);
 	return (data.token);
 }
