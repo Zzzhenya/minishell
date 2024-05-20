@@ -14,9 +14,12 @@
 
 int	g_exit_status = 0;
 
+/*
+	[ CHECK ]
+	print_tree(*tree);
+*/
 void	for_norm_make_short(t_cmd **tree, t_envp *env)
 {
-	print_tree(*tree);
 	setup_env(*tree, env);
 	search_tree(*tree, env);
 	wait_each_command(*tree, env);

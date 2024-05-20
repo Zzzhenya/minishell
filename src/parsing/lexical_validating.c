@@ -80,15 +80,9 @@ void	free_temp_array(char **split_array)
 
 /*
 	[ For checking ]
-	1.
 	printf(RED"\tn_word: %d\n"RS, data.n_word);
-
-	2.
 	for (int k = 0; k < data.n_word; k++)
 		printf(P"\t\tdata.token[%d]: %s\n"RS, k, data.token[k]);
-	return (NULL);
-
-
 */
 char	**validate_input(char *user_input, char **env)
 {

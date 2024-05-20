@@ -228,3 +228,26 @@ int	ft_chopper(t_data *data, char *str, int j)
 	return (0);
 }
 */
+
+char	*dup_array(char **str, char *res)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	tmp = NULL;
+	while (str[i] != NULL)
+	{
+		if (res == NULL)
+			res = strdup(str[i]);
+		else
+		{
+			tmp = strdup(res);
+			free(res);
+			res = ft_strjoin(tmp, str[i]);
+			free(tmp);
+		}
+		i++;
+	}
+	return (res);
+}
