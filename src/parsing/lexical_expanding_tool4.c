@@ -59,13 +59,13 @@ int	cpy_until_dollar(char *res, int *i_dollar, char *token)
 	return (i);
 }
 
-int	cpy_env_val(char *res, char *row_env, int *i_new, int i)
+int	cpy_env_val(char *res, char *row_env, int i_new, int i)
 {
-	while (row_env[*i_new] != '\0')
+	while (row_env[i_new] != '\0')
 	{
-		res[i] = row_env[*i_new];
+		res[i] = row_env[i_new];
 		i++;
-		*i_new++;
+		i_new++;
 	}
 	return (i);
 }
@@ -105,7 +105,7 @@ char	*replace_substring_1(char *token, char *row_env, int i_dollar)
 	if (res == NULL)
 		return (NULL);
 	i = cpy_until_dollar(res, &i_dollar, token);
-	i = cpy_env_val(res, row_env, &i_new, i);
+	i = cpy_env_val(res, row_env, i_new, i);
 	i = cpy_after_env_var(token, res, (i_dollar + tmp + 1), i);
 	res[i] = '\0';
 	free(token);
