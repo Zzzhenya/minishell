@@ -117,10 +117,8 @@ int	expand_token_env_6(char **split, char **env, int i)
 	echo ""''"" | cat -e	[O]			$
 	echo ''""'' | cat -e	[O]			$
 
-
 	[ Problem ]
 	echo "a' "$HOME" 'a"
-
 */
 
 int	delete_sq_norm(t_data *data, char **env, int i, int j)
@@ -150,11 +148,16 @@ int	expand_env(t_data *data, char **env, int i, int j)
 		while (data->token[i][j] != '\0')
 		{
 			if (data->token[i][j] == '\'' || data->token[i][j] == '\"')
+			{
 				if (delete_sq_norm(data, env, i, j) == 0)
 					break ;
-			if (expand_token_env_3(data, i) == -1
-				|| expand_token_env_4(data, env, i) == -1)
-				return (-1);
+			}
+			else
+			{
+				if (expand_token_env_3(data, i) == -1
+					|| expand_token_env_4(data, env, i) == -1)
+					return (-1);
+			}
 			j++;
 		}
 		i++;
