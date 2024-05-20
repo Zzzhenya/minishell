@@ -17,6 +17,7 @@
 
 // char	*replace_substring_special(char *token,
 // 	char *row_env, int i_dollar, int after_space, int index_space)*/
+/*
 char	*replace_substring_special(t_expand *data, char **env, int len)
 {
 	int		i;
@@ -68,7 +69,7 @@ int	cpy_env_val(char *res, char *row_env, int i_new, int i)
 		i_new++;
 	}
 	return (i);
-}
+}*/
 /*
 	while (token[i_dollar + tmp + 1] != '\0')
 	{
@@ -78,7 +79,7 @@ int	cpy_env_val(char *res, char *row_env, int i_new, int i)
 	}
 
 */
-
+/*
 int	cpy_after_env_var(char *token, char *res, int j, int i)
 {
 	while (token[j] != '\0')
@@ -110,7 +111,7 @@ char	*replace_substring_1(char *token, char *row_env, int i_dollar)
 	res[i] = '\0';
 	free(token);
 	return (res);
-}
+}*/
 
 /*
 	[ TEST ]

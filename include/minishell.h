@@ -370,13 +370,16 @@ void		expand_replace_substr_if(t_expand *data, char **array_split,
 				int *i, char **env);
 
 // [ lexical_expanding_tool4.c ] 4
-char		*replace_substring_special(t_expand *data, char **env, int len);
-char		*replace_substring_1(char *token, char *row_env, int i_dollar);
+//char		*replace_substring_special(t_expand *data, char **env, int len);
+//char		*replace_substring_1(char *token, char *row_env, int i_dollar);
 void		replace_substring_cpy_iter(char *src, int *cpy, int *i, char *dest);
 char		*replace_substring(char **array_split, int *i, char **env,
 				t_expand *data);
 char		*delete_dq_only(char *str);
 
+// [ lex_expand_replace_substring.c ]
+char		*replace_substring_special(t_expand *data, char **env, int len);
+char		*replace_substring_1(char *token, char *row_env, int i_dollar);
 // [ lexical_expanding.c ]
 int			expand_token_env_3(t_data *data, int i);
 int			expand_token_env_4(t_data *data, char **env, int i);
