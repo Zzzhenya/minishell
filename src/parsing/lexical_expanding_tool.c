@@ -41,29 +41,6 @@ char	**split_str_by_sq(char *str, int i, int j)
 	return (tmp);
 }
 
-char	*dup_array(char **str, char *res)
-{
-	int		i;
-	char	*tmp;
-
-	i = 0;
-	tmp = NULL;
-	while (str[i] != NULL)
-	{
-		if (res == NULL)
-			res = strdup(str[i]);
-		else
-		{
-			tmp = strdup(res);
-			free(res);
-			res = ft_strjoin(tmp, str[i]);
-			free(tmp);
-		}
-		i++;
-	}
-	return (res);
-}
-
 char	*delete_sq(char *str)
 {
 	char	*res;
@@ -171,7 +148,7 @@ char	*delete_dq(char *str, char **env)
 	if (split_array == NULL)
 		return (NULL);
 	else if (split_array[j] == NULL)
-		res=ft_strdup("");
+		res = ft_strdup("");
 	while (split_array[j] != NULL)
 	{
 		if (expand_token_env_5(&split_array[j], j) == -1)

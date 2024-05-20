@@ -345,6 +345,7 @@ char		*case_d_quote(t_data *data, char *str, int i, int j);
 void		check_sq(t_data *data, char **str, int *i, int *j);
 void		check_dq(t_data *data, char **str, int *i, int *j);
 int			ft_chopper(t_data *data, char *str, int j, int i);
+char		*dup_array(char **str, char *res);
 
 // [ lexical_expanding_tool.c ] 5
 char		**split_str_by_sq(char *str, int i, int j);
@@ -374,6 +375,7 @@ char		*replace_substring_1(char *token, char *row_env, int i_dollar);
 void		replace_substring_cpy_iter(char *src, int *cpy, int *i, char *dest);
 char		*replace_substring(char **array_split, int *i, char **env,
 				t_expand *data);
+char		*delete_dq_only(char *str);
 
 // [ lexical_expanding.c ]
 int			expand_token_env_3(t_data *data, int i);

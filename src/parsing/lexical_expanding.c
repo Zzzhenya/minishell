@@ -44,11 +44,8 @@ int	expand_token_env_4(t_data *data, char **env, int i)
 			data->token[i]
 				= replace_substring_1(data->token[i], "", i_dollar);
 		else
-		{
-			printf("2\n");
 			data->token[i]
 				= replace_substring_1(data->token[i], env[row_env], i_dollar);
-		}
 		if (data->token[i] == NULL)
 			return (-1);
 	}
@@ -98,25 +95,75 @@ int	expand_token_env_6(char **split, char **env, int i)
 
 /*	[ TEST ]
 
-	   STR			P/F			RESULT
+	   STR					P/F			RESULT
 	----------------------------------------------------
-	  $HOME				[O]			/home/tkwak
+	  $HOME					[O]			/home/tkwak
 
-	 '$HOME'			[O]			 $HOME
-	''$HOME''			[O]			 $HOME
+	 '$HOME'				[O]			 $HOME
+	''$HOME''				[O]			 $HOME
 
-	' $HOME 'a			[O]		   | $HOME |a
-	'"$HOME"'			[O]			"$HOME"
+	' $HOME 'a				[O]		   | $HOME |a
+	'"$HOME"'				[O]			"$HOME"
 
-	 "$HOME"			[O]			/home/tkwak				
-	""$HOME""			[O]			/home/tkwak
+	 "$HOME"				[O]			/home/tkwak				
+	""$HOME""				[O]			/home/tkwak
 
-	" $HOME "a			[O]		 	| /home/tkwak a|
+	" $HOME "a				[O]		 	| /home/tkwak a|
 
-	"a' '$HOME' 'a"		[O]			a' '/home/tkwak' 'a
-	"'$HOME'"			[O]			'/home/tkwak'
-	'' $HOME ''a		[O]			| /home/tkwak a|
+	"a' '$HOME' 'a"			[O]			a' '/home/tkwak' 'a
+	"'$HOME'"				[O]			'/home/tkwak'
+	'' $HOME ''a			[O]			| /home/tkwak a|
+
+	echo ""''"" | cat -e	[O]			$
+	echo ''""'' | cat -e	[O]			$
+
+
+	[ Problem ]
+	echo "a' "$HOME" 'a"
+
 */
+
+int	delete_sq_norm(t_data *data, char **env, int i, int j)
+{
+	if (data->token[i][j] == '\'')
+	{
+		data->token[i] = delete_sq(data->token[i]);
+		if (data->token[i][0] == '\"' && data->token[i][1] == '\"')
+			data->token[i] = delete_dq_only(data->token[i]);
+		return (0);
+	}
+	else if (data->token[i][j] == '\"')
+	{
+		data->token[i] = delete_dq(data->token[i], env);
+		if (data->token[i][0] == '\'' && data->token[i][1] == '\'')
+			data->token[i] = delete_sq(data->token[i]);
+		return (0);
+	}
+	return (-1);
+}
+
+int	expand_env(t_data *data, char **env, int i, int j)
+{
+	while (data->token[i] != NULL)
+	{
+		j = 0;
+		while (data->token[i][j] != '\0')
+		{
+			if (data->token[i][j] == '\'' || data->token[i][j] == '\"')
+				if (delete_sq_norm(data, env, i, j) == 0)
+					break ;
+			if (expand_token_env_3(data, i) == -1
+				|| expand_token_env_4(data, env, i) == -1)
+				return (-1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+/*
+	[ Original ]
 int	expand_env(t_data *data, char **env, int i, int j)
 {
 	while (data->token[i] != NULL)
@@ -127,19 +174,27 @@ int	expand_env(t_data *data, char **env, int i, int j)
 			if (data->token[i][j] == '\'')
 			{
 				data->token[i] = delete_sq(data->token[i]);
+				if (data->token[i][0] == '\"' && data->token[i][1] == '\"')
+					data->token[i] = delete_dq_only(data->token[i]);
 				break ;
 			}
 			else if (data->token[i][j] == '\"')
 			{
 				data->token[i] = delete_dq(data->token[i], env);
+				if (data->token[i][0] == '\'' && data->token[i][1] == '\'')
+					data->token[i] = delete_sq(data->token[i]);
 				break ;
 			}
-			if (expand_token_env_3(data, i) == -1
-				|| expand_token_env_4(data, env, i) == -1)
-				return (-1);
+			else
+			{
+				if (expand_token_env_3(data, i) == -1
+					|| expand_token_env_4(data, env, i) == -1)
+					return (-1);
+			}
 			j++;
 		}
 		i++;
 	}
 	return (0);
 }
+*/
