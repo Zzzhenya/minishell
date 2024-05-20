@@ -19,6 +19,9 @@ void	syntax_pipe_error_print(void)
 	g_exit_status = 1;
 }
 
+/*
+	Original: while (str[i] != '\0' && ft_isspace(str[i]) != -1)
+*/
 char	*delete_space_from_str(char *str)
 {
 	int		i;
@@ -28,7 +31,7 @@ char	*delete_space_from_str(char *str)
 	i = 0;
 	len = 0;
 	res = NULL;
-	while (str[i] != '\0' && ft_isspace(str[i]) != -1)
+	while (str[i] != '\0' && ft_isspace(str[i]) != -1 && str[i] != '\'')
 		i++;
 	len = i;
 	res = malloc(sizeof(char) * len + 1);
@@ -42,6 +45,7 @@ char	*delete_space_from_str(char *str)
 	return (res);
 }
 
+// row_env = find_matching_env_row((split[i]) + i_dollar + 1, env);
 int	find_matching_env_row(char *str, char **env)
 {
 	int		i;

@@ -14,6 +14,14 @@
 
 int	g_exit_status = 0;
 
+void	for_norm_make_short(t_cmd **tree, t_envp *env)
+{
+	print_tree(*tree);
+	setup_env(*tree, env);
+	search_tree(*tree, env);
+	wait_each_command(*tree, env);
+}
+
 void	interactive_mode(t_cmd **tree, t_envp *env,
 					char *user_input)
 {
@@ -34,11 +42,7 @@ void	interactive_mode(t_cmd **tree, t_envp *env,
 			env->paths = save_all_env_paths(env->envarr, env);
 			*tree = parse_user_input(user_input, env, NULL, 0);
 			if (*tree != NULL)
-			{
-				setup_env(*tree, env);
-				search_tree(*tree, env);
-				wait_each_command(*tree, env);
-			}
+				for_norm_make_short(tree, env);
 		}
 		free_things(*tree, env, env->paths, user_input);
 	}

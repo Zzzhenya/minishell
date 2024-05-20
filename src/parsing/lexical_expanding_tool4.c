@@ -50,14 +50,14 @@ char	*replace_substring_1(char *token, char *row_env, int i_dollar)
 {
 	int		i;
 	int		i_new;
+	int		tmp;
 	char	*res;
 
 	i = 0;
 	i_new = ft_strchr_m(row_env, '=') + 1;
-	/* memo */
-	int tmp = i_new - 1;
-	/* memo */
-	res = malloc((ft_strlen(row_env + i_new) + i_dollar + 1 + 100) * sizeof(char));
+	tmp = i_new - 1;
+	res = malloc((ft_strlen(row_env + i_new)
+				+ i_dollar + 1 + 100) * sizeof(char));
 	if (res == NULL)
 		return (NULL);
 	while (i < i_dollar)
@@ -71,16 +71,11 @@ char	*replace_substring_1(char *token, char *row_env, int i_dollar)
 		i++;
 		i_new++;
 	}
-	printf(RED"\tres: %sa\n"RS, res);
-	printf(B"res[%d]: %s\n"RS, i, res);
-	printf(B"token[%d]: %s\n"RS, i, token+1);
-	while(token[i_dollar + tmp + 1] != '\0')
+	while (token[i_dollar + tmp + 1] != '\0')
 	{
-		printf("res[%d]: %c\n", i, res[i]);
-		printf("token[%d]: %c\n", i, token[i]);
 		res[i] = token[i_dollar + tmp + 1];
-		i ++;
-		tmp ++;
+		i++;
+		tmp++;
 	}
 	res[i] = '\0';
 	free(token);
@@ -88,6 +83,14 @@ char	*replace_substring_1(char *token, char *row_env, int i_dollar)
 }
 
 /*
+	[ TEST ]
+	printf(RED"\tres: %s\n"RS, res);
+	printf(B"res[%d]: %s\n"RS, i, res);
+	printf(B"token[%d]: %s\n"RS, i, token+1);
+
+	printf("res[%d]: %c\n", i, res[i]);
+	printf("token[%d]: %c\n", i, token[i]);
+
 	while (env[data->row_env][i_new] != '\0')
 	{
 		res[j] = env[data->row_env][i_new];

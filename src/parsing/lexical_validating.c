@@ -109,17 +109,15 @@ char	**validate_input(char *user_input, char **env)
 		return (NULL);
 	if (ft_chopper(&data, data.str, 0, 0) == -1)
 		return (NULL);
-	/* memo */
-	// for (int k = 0; k < data.n_word; k++)
-	// 	printf(P"\t\tdata.token[%d]: %s\n"RS, k, data.token[k]);
-	// return (NULL);
-	/* memo */
 	if (expand_env(&data, env, 0, 0) == -1)
 		return (NULL);
 	return (data.token);
 }
-
 /*
+	[ Test ]
+	for (int k = 0; k < data.n_word; k++)
+		printf(P"\t\tdata.token[%d]: %s\n"RS, k, data.token[k]);
+
 	[ Original ]
 
 char	**validate_input(char *user_input, char **env)
