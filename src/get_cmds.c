@@ -121,3 +121,12 @@ t_cmd	*parse_user_input(char *user_input, t_envp *env,
 		return (NULL);
 	return (cmd_tree);
 }
+/*
+	[ TEST ]
+	int i = 0;
+	while (validated_input[i] != NULL)
+	{
+		printf(RED"\t\tvalidated_input[%d]: %s\n", i, validated_input[i]);
+		i++;
+	}
+*/
