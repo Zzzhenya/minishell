@@ -94,11 +94,17 @@ void	setup_pipe_for_child(int *pipefd, int pipe_exist, int initial_input)
 {
 	close(pipefd[0]);
 	if (initial_input != -1)
+	{
 		dup2(initial_input, STDIN_FILENO);
+		close(initial_input);
+	}
 	if (pipe_exist == -1)
 		close(pipefd[1]);
 	else
+	{
 		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
+	}
 }
 
 /*	[F]
