@@ -117,7 +117,7 @@ int find_env_var_len(t_data *data, int i, int j, char **env)
 	(void)env;
 	while (data->token[i][j] != '\0')
 	{
-		if (data->token[i][j] == ' ' || data->token[i][j] == '\"' || data->token[i][j] == '\'')
+		if (data->token[i][j] == ' ' || data->token[i][j] == '\"' || data->token[i][j] == '\'' || data->token[i][j] == '$')
 			break;
 		len ++;
 		j ++;
@@ -219,6 +219,166 @@ int trim_sq_copy(t_data *data, int i, int j)
 	return (ret);
 }
 
+int trim_dq_copy(t_data *data, int i, int j, char *dqstr)
+{
+	int ret = 0;
+	//int len = 0;
+	//char *str = NULL;
+	int k = 0;
+
+	while (data->token[i][j] != '\0')
+	{
+		if (data->token[i][j] != '\0' && data->token[i][j] == '\"')
+		{
+			ret ++;
+			j ++;
+		}
+		while (data->token[i][j] != '\0' && data->token[i][j] != '\"')
+		{
+			dqstr[k] = data->token[i][j];
+			k ++;
+			ret ++;
+			j ++;
+		}
+		if (data->token[i][j] != '\0' && data->token[i][j] == '\"')
+		{
+			ret ++;
+			j ++;
+			break;
+		}
+	}
+	dqstr[k] = '\0';
+	return (ret);
+}
+
+int dq_env_var_len(char *temp, int i)
+{
+	int len = 0;
+
+	while (temp[i] != '\0')
+	{
+		if (temp[i] == ' ' || temp[i] == '\"' || temp[i] == '\'' || temp[i] == '$')
+			break;
+		len ++;
+		i ++;
+	}
+	return (len);
+}
+
+int dq_find_replace_env(char **env, char *dqstr, char *temp, int i)
+{
+	int len = 0;
+	int k = 0;
+	char *var = NULL;
+	char **arr = NULL;
+	
+	len = dq_env_var_len(temp, i + 1);
+	printf("var len: %d\n", len);
+	var = malloc(sizeof(char) * len + 1);
+	ft_strlcpy(var, temp + i + 1, len + 1);
+	printf("var : %s\n", var);
+	while (env[k] != NULL)
+	{
+		arr = ft_split(env[k], '=');
+		if (!ft_strncmp(arr[0], var, ft_strlen(var)) && !ft_strncmp(arr[0], var, ft_strlen(arr[0])))
+		{
+			free (var);
+			var = ft_strjoin(dqstr, arr[1]);
+			free (dqstr);
+			dqstr = var;
+			printf("val : %s\n", var);
+			free_arr(arr, get_arg_count(arr));
+			return (len);
+		}
+		free_arr(arr, get_arg_count(arr));
+		k ++;
+	}
+	free (var);
+	var = ft_strjoin(dqstr, "");
+	free (dqstr);
+	dqstr = var;
+	return (len);
+}
+
+int dq_copy_char(char *dqstr, char *temp, int i)
+{
+	int len = 0;
+	char *join = NULL;
+
+	if (dqstr)
+		len = ft_strlen(dqstr);
+	else
+		len = 0;
+	join = malloc(sizeof(char) * (len + 2));
+	if (!join)
+		return (-1);
+	if (dqstr)
+		ft_strlcpy(join, dqstr, len + 1);
+	join[len] = temp[i];
+	join[len + 1] = '\0';
+	free (dqstr);
+	dqstr = join;
+	return (1);
+
+}
+
+void	dq_find_copy_env(char *dqstr, char **env)
+{
+	int i = 0;
+	int ret = 0;
+
+	char *temp = NULL;
+	temp = ft_strdup(dqstr);
+	while (temp[i] != '\0')
+	{
+		if (temp[i] == '$')
+		{
+			ret = dq_find_replace_env(env, dqstr, temp, i);
+			i += ret;
+		}
+		else
+		{
+		 	ret = dq_copy_char(dqstr, temp, i);
+		 	i += ret;
+		}
+		i ++;
+	}
+}
+
+int trim_dq_expand_copy(t_data *data, int i, int j, char **env)
+{
+	int ret;
+	char *join = NULL;
+	int len = 0;
+	char *dqstr = NULL;
+
+	len = count_letters(data->token[i] + j, '\"');
+	dqstr = malloc (sizeof(char) * len + 1);
+	ret = trim_dq_copy(data, i, j, dqstr);
+	if (!(ft_strchr(dqstr, '$')))
+	{
+		if (data->new)
+			join = ft_strjoin(data->new, dqstr);
+		else
+			join = ft_strdup(dqstr);
+		free (data->new);
+		free (dqstr);
+		data->new = join;
+		return (ret);
+	}
+	else
+	{
+		dq_find_copy_env(dqstr, env);
+		if (data->new)
+			join = ft_strjoin(data->new, dqstr);
+		else
+			join = ft_strdup(dqstr);
+		free (data->new);
+		data->new = join;
+		return (ret);
+	}
+}
+
 void	expand_and_remove_quotes(t_data *data, char **env)
 {
 	int i = 0;
@@ -234,6 +394,11 @@ void	expand_and_remove_quotes(t_data *data, char **env)
 			if (data->token[i][j] == '\'')
 			{
 				ret = trim_sq_copy(data, i, j);
+				j += ret;
+			}
+			else if (data->token[i][j] == '\"')
+			{
+				ret = trim_dq_expand_copy(data, i, j, env);
 				j += ret;
 			}
 			else if (data->token[i][j] == '$' && data->token[i][j + 1] != '\0')
