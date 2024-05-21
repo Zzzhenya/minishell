@@ -342,8 +342,8 @@ char		*case_s_quote(t_data *data, char *str, int i, int j);
 char		*case_d_quote(t_data *data, char *str, int i, int j);
 
 // [ lexical_chopping.c ]
-char		*check_sq(t_data *data, char **str, int *i, int *j);
-char		*check_dq(t_data *data, char **str, int *i, int *j);
+void		check_sq(t_data *data, char **str, int *i, int *j);
+void		check_dq(t_data *data, char **str, int *i, int *j);
 int			ft_chopper(t_data *data, char *str, int j, int i);
 char		*dup_array(char **str, char *res);
 

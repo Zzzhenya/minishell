@@ -110,6 +110,3 @@ char	**validate_input(char *user_input, char **env)
 		return (NULL);
 	return (data.token);
 }
-
-
-// printf("this many times calles %d\n", x++);

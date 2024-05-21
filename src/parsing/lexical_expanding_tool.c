@@ -54,6 +54,7 @@ char	*delete_sq(char *str)
 	free_temp_array(split_array);
 	if (res == NULL)
 		res = ft_strdup("");
+	free (str);
 	return (res);
 }
 
