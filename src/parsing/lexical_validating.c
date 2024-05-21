@@ -87,6 +87,35 @@ void	free_temp_array(char **split_array)
 	[ Delete ]
 	(void)env;
 */
+
+int	add_char_to_end(t_data *data, int i, int j)
+{
+	char *new;
+
+	new = NULL;
+	new = malloc(sizeof(char) * data->token[i][j])
+}
+
+void	expand_and_remove_quotes(t_data *data, char **env)
+{
+	int i = 0;
+	int j = 0;
+
+	while (data->token[i] != NULL)
+	{
+		j = 0;
+		while (data->token[i][j] != '\0')
+		{
+			// if (data->token[i][j] == '$')
+			// 	j += check_for_env_var(data, i, j, env);
+			// else
+				j += add_char_to_end(data, i, j);
+		}
+		add_null_to_end(data, i, j);
+		i++;
+	}
+}
+
 char	**validate_input(char *user_input, char **env)
 {
 	t_data	data;
@@ -106,7 +135,8 @@ char	**validate_input(char *user_input, char **env)
 		return (NULL);
 	if (ft_chopper(&data, data.str, 0, 0) == -1)
 		return (NULL);
-	if (expand_env(&data, env, 0, 0) == -1)
-		return (NULL);
+	expand_and_remove_quotes(&data, env);
+	// if (expand_env(&data, env, 0, 0) == -1)
+	// 	return (NULL);
 	return (data.token);
 }
