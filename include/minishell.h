@@ -320,6 +320,7 @@ typedef struct s_expand
 }	t_expand;
 
 /*	[FUNCTIONS]	 */
+/* [ LEXER ] INPUT_VALIDATE  & TOKENIZATION */
 // [ lexical_analysis.c ]
 int			check_token_length(int *token);
 int			check_redirections(char *str);
@@ -333,7 +334,6 @@ void		if_tmp(int *flag, char *tmp, char **argv);
 char		*convert_status_to_ascii(void);
 void		replace_exit_status(char ***argv, int i, int flag, int j);
 
-/* [ LEXER ] INPUT_VALIDATE  & TOKENIZATION */
 // [ lexical_chopping_tool.c ]
 int			check_str_null(t_data *data, char *str, int i, int j);
 char		*meet_space_1(t_data *data, char **str, int *i, int *j);
@@ -347,12 +347,19 @@ void		check_dq(t_data *data, char **str, int *i, int *j);
 int			ft_chopper(t_data *data, char *str, int j, int i);
 char		*dup_array(char **str, char *res);
 
+// [ lexical_expanding_replace_substring.c ]
+char		*replace_substring_special(t_expand *data, char **env, int len);
+int			cpy_until_dollar(char *res, int *i_dollar, char *token);
+int			cpy_env_val(char *res, char *row_env, int i_new, int i);
+int			cpy_after_env_var(char *token, char *res, int j, int i);
+char		*replace_substring_1(char *token, char *row_env, int i_dollar);
+
 // [ lexical_expanding_tool.c ] 5
 char		**split_str_by_sq(char *str, int i, int j);
 char		*delete_sq(char *str);
 char		**split_str_by_dq(char *str, int i, int j);
 void		delete_dq_ext(char *tmp, char *res, char **split_array, int j);
-char		*delete_dq(char *str, char **env);
+char		*delete_dq(char *str, char **env, int j);
 
 // [ lexical_expanding_tool2.c ] 3
 char		*get_pid_string(void);
@@ -360,7 +367,7 @@ void		skip_non_dollar(t_expand *data, char **array_split);
 void		skip_non_space_sq(t_expand *data,
 				char **array_split, char **env, int *i);
 
-// [ lexical_expanding_tool3.c ] 4
+// [ lexical_expanding_tool3.c ]
 void		init_expand_data_struct(t_expand *data);
 void		expand_replace_substr_if1(t_expand *data, char **array_split,
 				char **env, int *i);
@@ -368,18 +375,14 @@ void		expand_replace_substr_else(t_expand *data,
 				char **array_split, char **env, int *i);
 void		expand_replace_substr_if(t_expand *data, char **array_split,
 				int *i, char **env);
-
-// [ lexical_expanding_tool4.c ] 4
-//char		*replace_substring_special(t_expand *data, char **env, int len);
-//char		*replace_substring_1(char *token, char *row_env, int i_dollar);
-void		replace_substring_cpy_iter(char *src, int *cpy, int *i, char *dest);
 char		*replace_substring(char **array_split, int *i, char **env,
 				t_expand *data);
-char		*delete_dq_only(char *str);
 
-// [ lex_expand_replace_substring.c ]
-char		*replace_substring_special(t_expand *data, char **env, int len);
-char		*replace_substring_1(char *token, char *row_env, int i_dollar);
+// [ lexical_expanding_tool4.c ]
+void		replace_substring_cpy_iter(char *src, int *cpy, int *i, char *dest);
+char		*delete_dq_only(char *str);
+int			delete_sq_norm(t_data *data, char **env, int i, int j);
+
 // [ lexical_expanding.c ]
 int			expand_token_env_3(t_data *data, int i);
 int			expand_token_env_4(t_data *data, char **env, int i);
@@ -406,6 +409,7 @@ int			ct_wd_right_rdr(t_parse *checks, const char *str);
 int			ct_wd_rdr_pipe(t_parse *checks, const char *str);
 
 // [ lexical_validating.c ]
+// static void	setup_checks(t_parse *checks, t_data data);
 int			count_word(const char *str, t_data data);
 char		*ft_cpy_str(char *dest, char *src, int len);
 void		free_temp_array(char **split_array);
@@ -413,9 +417,14 @@ char		**validate_input(char *user_input, char **env);
 
 /* [ SETTING HEREDOC ]*/
 // [ setup_and_run_heredoc.c]
+char		*get_heredoc_name(int count);
+int			cleanup_heredocs(int count);
+void		setup_temp(t_tmp *temp, char **arr, int *token);
+void		replace_word_by_name(t_tmp *temp, int i);
 int			setup_and_run_heredoc(int *token, char **arr, t_envp *env);
 
 // [ stage_run_heredoc.c]
+// static void	handle_exit_status(pid_t pid, int *status);
 int			stage_heredoc(int fd, char *word, t_envp *env, t_tmp *temp);
 int			open_run_here(char *word, t_envp *env, t_tmp *temp);
 

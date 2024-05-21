@@ -6,7 +6,7 @@
 /*   By: tkwak <tkwak@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 20:12:50 by tkwak             #+#    #+#             */
-/*   Updated: 2024/05/17 16:58:14 by sde-silv         ###   ########.fr       */
+/*   Updated: 2024/05/17 16:58:14 by tkwak            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,34 @@ void	expand_replace_substr_if(t_expand *data, char **array_split,
 			= replace_substring_1(array_split[*i], "", data->i_dollar);
 	else
 		expand_replace_substr_if1(data, array_split, env, i);
+}
+
+char	*replace_substring(char **array_split, int *i, char **env,
+		t_expand *data)
+{
+	int		j;
+	int		i_new;
+	char	*res;
+
+	j = 0;
+	i_new = ft_strchr_m(env[data->row_env], '=') + 1;
+	res = malloc((ft_strlen(env[data->row_env] + i_new)
+				+ data->i_dollar + 1 + data->x) * sizeof(char));
+	if (res == NULL)
+		return (NULL);
+	while (j < data->i_dollar)
+	{
+		res[j] = array_split[*i][j];
+		j++;
+	}
+	replace_substring_cpy_iter(env[data->row_env], &j, &i_new, res);
+	while (array_split[*i][data->y] != '\0')
+	{
+		res[j] = array_split[*i][data->y];
+		data->y++;
+		j++;
+	}
+	res[j] = '\0';
+	free(array_split[*i]);
+	return (res);
 }

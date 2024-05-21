@@ -17,7 +17,7 @@ int	ft_strchr_m(char *str, char c)
 	int	i;
 
 	i = 0;
-	if (!str)
+	if (str == NULL)
 		return (i);
 	while (str[i] != '\0' && str[i] != c)
 		i++;
@@ -62,3 +62,35 @@ int	ft_strcpy(t_data *data, char *tmp, int len, int k)
 	data->token[k][i] = '\0';
 	return (len);
 }
+
+/*
+int	ft_strcpy(t_data *data, char *tmp, int len, int k)
+{
+	int	i;
+
+	i = 0;
+	// printf("this is tmp --%s--\n", tmp);
+	// if (!tmp)
+	// {
+	// 	k--;
+	// 	while (k > 0)
+	// 	{
+	// 		free(data->token[k]);
+	// 		k--;
+	// 	}
+	// 	return (-1);
+	// }
+	data->token[k] = malloc((len + 1) * sizeof(char));
+	if (!data->token[k])
+		return (-1);
+	while (i < len)
+	{
+		data->token[k][i] = tmp[i];
+		// printf("%c", data->token[k][i]);
+		i++;
+	}
+	data->token[k][i] = '\0';
+	// printf("\n");
+	return (0);
+}
+*/

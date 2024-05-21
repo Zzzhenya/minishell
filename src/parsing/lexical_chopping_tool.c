@@ -140,6 +140,41 @@ char	*case_s_quote(t_data *data, char *str, int i, int j)
 	return (meet_space_2(data, &str, &i, &j));
 }
 
+// char	*case_s_quote(t_data *data, char *str, int i, int j)
+// {
+// 	while (str[i] != '\0')
+// 	{
+// 		if (str[i] == '\'')
+// 		{
+// 			data->n_sq--;
+// 			if (data->n_sq % 2 == 0)
+// 			{
+// 				if (str[i + 1] != '\0' && str[i + 1] == ' ')
+// 				{
+// 					ft_strcpy(data, str, (i) + 1, j);
+// 					(i)++;
+// 					str = (str) + (i) + 1;
+// 					return (str);
+// 				}
+// 					// return (meet_space_1(data, &str, &i, &j));
+// 			}
+// 		}
+// 		else
+// 		{
+// 			if (str[i + 1] != '\0' && str[i + 1] == ' ' && data->n_sq % 2 == 0)
+// 			{
+// 				ft_strcpy(data, str, (i) + 1, j);
+// 				(i)++;
+// 				str = (str) + (i) + 1;
+// 				return (str);
+// 			}
+// 				// return (meet_space_1(data, &str, &i, &j));
+// 		}
+// 		i++;
+// 	}
+// 	return (meet_space_2(data, &str, &i, &j));
+// }
+
 char	*case_d_quote(t_data *data, char *str, int i, int j)
 {
 	while (str[i] != '\0')

@@ -6,7 +6,7 @@
 /*   By: tkwak <tkwak@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 20:12:50 by tkwak             #+#    #+#             */
-/*   Updated: 2024/05/17 16:58:14 by sde-silv         ###   ########.fr       */
+/*   Updated: 2024/05/18 10:45:14 by tkwak            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,26 +120,6 @@ int	expand_token_env_6(char **split, char **env, int i)
 	[ Problem ]
 	echo "a' "$HOME" 'a"
 */
-
-int	delete_sq_norm(t_data *data, char **env, int i, int j)
-{
-	if (data->token[i][j] == '\'')
-	{
-		data->token[i] = delete_sq(data->token[i]);
-		if (data->token[i][0] == '\"' && data->token[i][1] == '\"')
-			data->token[i] = delete_dq_only(data->token[i]);
-		return (0);
-	}
-	else if (data->token[i][j] == '\"')
-	{
-		data->token[i] = delete_dq(data->token[i], env);
-		if (data->token[i][0] == '\'' && data->token[i][1] == '\'')
-			data->token[i] = delete_sq(data->token[i]);
-		return (0);
-	}
-	return (-1);
-}
-
 int	expand_env(t_data *data, char **env, int i, int j)
 {
 	while (data->token[i] != NULL)
@@ -164,40 +144,3 @@ int	expand_env(t_data *data, char **env, int i, int j)
 	}
 	return (0);
 }
-
-/*
-	[ Original ]
-int	expand_env(t_data *data, char **env, int i, int j)
-{
-	while (data->token[i] != NULL)
-	{
-		j = 0;
-		while (data->token[i][j] != '\0')
-		{
-			if (data->token[i][j] == '\'')
-			{
-				data->token[i] = delete_sq(data->token[i]);
-				if (data->token[i][0] == '\"' && data->token[i][1] == '\"')
-					data->token[i] = delete_dq_only(data->token[i]);
-				break ;
-			}
-			else if (data->token[i][j] == '\"')
-			{
-				data->token[i] = delete_dq(data->token[i], env);
-				if (data->token[i][0] == '\'' && data->token[i][1] == '\'')
-					data->token[i] = delete_sq(data->token[i]);
-				break ;
-			}
-			else
-			{
-				if (expand_token_env_3(data, i) == -1
-					|| expand_token_env_4(data, env, i) == -1)
-					return (-1);
-			}
-			j++;
-		}
-		i++;
-	}
-	return (0);
-}
-*/
