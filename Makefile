@@ -89,13 +89,11 @@ $(LIBFT):
 $(NAME): $(OBJS) $(LIBFT)
 			$(CC) $(CCFLAGS) $(LDFLAGS) -o $@ $^ -lreadline
 
-leaks: 
-	make re
+leaks: $(NAME)
 	#valgrind -s --show-leak-kinds=all --leak-check=full ./$(NAME)
 	valgrind -s --suppressions=./readline.supp --show-leak-kinds=all --leak-check=full --track-fds=yes ./$(NAME)
 
-leak_log:
-	make re
+leak_log: $(NAME)
 	valgrind -s --suppressions=./readline.supp --show-leak-kinds=all --leak-check=full ./$(NAME) 2>&1 | tee log1.txt
 
 .PHONY: all clean fclean re leaks leak_log
