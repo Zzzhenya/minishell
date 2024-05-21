@@ -90,28 +90,110 @@ void	free_temp_array(char **split_array)
 
 int	add_char_to_end(t_data *data, int i, int j)
 {
-	char *new;
+	int len = 0;
+	char *temp = NULL;
 
-	new = NULL;
-	new = malloc(sizeof(char) * data->token[i][j])
+	if (data->new)
+		len = ft_strlen(data->new);
+	else
+		len = 0;
+	temp = malloc(sizeof(char) * (len + 2));
+	if (!temp)
+		return (-1);
+	if (data->new)
+		ft_strlcpy(temp, data->new, len + 1);
+	temp[len] = data->token[i][j];
+	temp[len + 1] = '\0';
+	free (data->new);
+	data->new = temp;
+	return (1);
+}
+
+int find_env_var_len(t_data *data, int i, int j, char **env)
+{
+	int len;
+
+	len = 0;
+	(void)env;
+	while (data->token[i][j] != '\0')
+	{
+		if (data->token[i][j] == ' ' || data->token[i][j] == '\"' || data->token[i][j] == '\'')
+			break;
+		len ++;
+		j ++;
+	}
+	return (len);
+}
+
+int	find_copy_env_val(t_data *data, char **env, int i, int j)
+{
+	char *var;
+	int ret = 0;
+	int k = 0;
+	char **arr;
+
+	ret = find_env_var_len(data, i,  j, env);
+	var = NULL;
+	var = malloc(sizeof(char) * (ret + 1));
+	if (!var)
+		return (-1);
+	ft_strlcpy(var, data->token[i] + j, ret + 1);
+	while (env[k] != NULL)
+	{
+		arr = ft_split(env[k], '=');
+		if (!ft_strncmp(arr[0], var, ft_strlen(var)) && !ft_strncmp(arr[0], var, ft_strlen(arr[0])))
+		{
+			free (var);
+			var = ft_strjoin(data->new, arr[1]);
+			free (data->new);
+			data->new = var;
+			free_arr(arr, get_arg_count(arr));
+			return (ret);
+		}
+		free_arr(arr, get_arg_count(arr));
+		k ++;
+	}
+	free (var);
+	var = ft_strjoin(data->new, "");
+	free (data->new);
+	data->new = var;
+	return (ret);
 }
 
 void	expand_and_remove_quotes(t_data *data, char **env)
 {
 	int i = 0;
 	int j = 0;
+	int ret = 0;
 
 	while (data->token[i] != NULL)
 	{
 		j = 0;
+		data->new = NULL;
 		while (data->token[i][j] != '\0')
 		{
-			// if (data->token[i][j] == '$')
-			// 	j += check_for_env_var(data, i, j, env);
-			// else
-				j += add_char_to_end(data, i, j);
+			if (data->token[i][j] == '\'')
+			{
+				ret = trim_sq_copy(data, i, j);
+				j += ret;
+			}
+			else if (data->token[i][j] == '$' && data->token[i][j + 1] != '\0')
+			{
+				ret = find_copy_env_val(data, env, i, j + 1) + 1;
+				j += ret;
+			}
+			else
+			{
+				ret = add_char_to_end(data, i, j);
+				if (ret < 0)
+					return ;
+				j += ret;
+			}
 		}
-		add_null_to_end(data, i, j);
+		free (data->token[i]);
+		data->token[i] = ft_strdup(data->new);
+		printf("%d %s\n", i + 1, data->token[i]);
+		free (data->new);
 		i++;
 	}
 }
@@ -135,6 +217,7 @@ char	**validate_input(char *user_input, char **env)
 		return (NULL);
 	if (ft_chopper(&data, data.str, 0, 0) == -1)
 		return (NULL);
+	(void)env;
 	expand_and_remove_quotes(&data, env);
 	// if (expand_env(&data, env, 0, 0) == -1)
 	// 	return (NULL);

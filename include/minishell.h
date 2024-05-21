@@ -189,6 +189,7 @@ typedef struct s_data
 	int		n_sq;
 	int		n_dq;
 	char	**token;
+	char	*new;
 	char	*str;
 }	t_data;
 
