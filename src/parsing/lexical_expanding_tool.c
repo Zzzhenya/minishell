@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexical_expanding_tool.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sde-silv <sde-silv@student.42berlin.d      +#+  +:+       +#+        */
+/*   By: tkwak <tkwak@student.42berlin.de>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/16 20:38:44 by sde-silv          #+#    #+#             */
-/*   Updated: 2024/05/16 20:38:45 by sde-silv         ###   ########.fr       */
+/*   Created: 2024/05/21 10:15:54 by tkwak             #+#    #+#             */
+/*   Updated: 2024/05/21 10:15:55 by tkwak            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,14 +134,12 @@ void	delete_dq_ext(char *tmp, char *res, char **split_array, int j)
 
 	echo "abab""a''a'"''
 */
-char	*delete_dq(char *str, char **env)
+char	*delete_dq(char *str, char **env, int j)
 {
-	int		j;
 	char	*res;
 	char	*tmp;
 	char	**split_array;
 
-	j = 0;
 	res = NULL;
 	tmp = NULL;
 	split_array = split_str_by_dq(str, 0, 0);
@@ -167,36 +165,36 @@ char	*delete_dq(char *str, char **env)
 	return (res);
 }
 
-// /*
-// 	[ Memo ]
-// 	if (split_array[j + 1] != NULL)
-// 		res = ft_strdup(split_array[j]);
-// */
-// char	**split_str_by_sq(char *str, int i, int j)
-// {
-// 	int		start;
-// 	char	**tmp;
+/*
+	[ Original ]
 
-// 	start = 0;
-// 	tmp = (char **)malloc(sizeof(char *) * (100));
-// 	if (tmp == NULL)
-// 		return (NULL);
-// 	while (str[i])
-// 	{
-// 		while (str[i] && str[i] == '\'')
-// 			i++;
-// 		start = i;
-// 		while (str[i] && str[i] != '\'')
-// 			i++;
-// 		if (i > start)
-// 		{
-// 			tmp[j] = (char *)malloc(sizeof(char) * ((i - start) + 1));
-// 			if (tmp[j] == NULL)
-// 				return (NULL);
-// 			ft_cpy_str(tmp[j], &str[start], i - start);
-// 			j++;
-// 		}
-// 	}
-// 	tmp[j] = NULL;
-// 	return (tmp);
-// }
+char	*delete_dq(char *str, char **env, int j)
+{
+	char	*res;
+	char	*tmp;
+	char	**split_array;
+
+	res = NULL;
+	tmp = NULL;
+	split_array = split_str_by_dq(str, 0, 0);
+	if (split_array == NULL)
+		return (NULL);
+	else if (split_array[j] == NULL)
+		res = ft_strdup("");
+	while (split_array[j] != NULL)
+	{
+		if (expand_token_env_5(&split_array[j], j) == -1
+			|| (expand_token_env_6(&split_array[j], env, j) == -1))
+			return (NULL);
+		if (res == NULL)
+			res = ft_strdup(split_array[j]);
+		else if (split_array[j][0] == '\'')
+			res = ft_strjoin(res, delete_sq(split_array[j]));
+		else
+			delete_dq_ext(tmp, res, split_array, j);
+		j++;
+	}
+	free_temp_array(split_array);
+	return (res);
+}
+*/

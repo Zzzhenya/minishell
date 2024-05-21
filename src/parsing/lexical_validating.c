@@ -83,6 +83,9 @@ void	free_temp_array(char **split_array)
 	printf(RED"\tn_word: %d\n"RS, data.n_word);
 	for (int k = 0; k < data.n_word; k++)
 		printf(P"\t\tdata.token[%d]: %s\n"RS, k, data.token[k]);
+
+	[ Delete ]
+	(void)env;
 */
 char	**validate_input(char *user_input, char **env)
 {
@@ -103,37 +106,11 @@ char	**validate_input(char *user_input, char **env)
 		return (NULL);
 	if (ft_chopper(&data, data.str, 0, 0) == -1)
 		return (NULL);
+	// (void)env;
 	if (expand_env(&data, env, 0, 0) == -1)
 		return (NULL);
 	return (data.token);
 }
-/*
-	[ Test ]
-	for (int k = 0; k < data.n_word; k++)
-		printf(P"\t\tdata.token[%d]: %s\n"RS, k, data.token[k]);
 
-	[ Original ]
 
-char	**validate_input(char *user_input, char **env)
-{
-	t_data	data;
-
-	data.str = user_input;
-	if (count_quote(user_input, &data) == -1)
-	{
-		printf("Syntax error\n");
-		return (NULL);
-	}
-	data.n_word = count_word(data.str, data);
-	if (data.n_word == 0)
-		return (NULL);
-	data.token = malloc((data.n_word + 1) * sizeof(char *));
-	if (data.token == NULL)
-		return (NULL);
-	if (ft_chopper(&data, data.str, 0) == -1)
-		return (NULL);
-	if (expand_env(&data, env, 0, 0) == -1)
-		return (NULL);
-	return (data.token);
-}
-*/
+// printf("this many times calles %d\n", x++);

@@ -13,11 +13,11 @@ SRCS = src/parsing/lexical_analysis.c\
  src/parsing/lexical_change_exit_status.c\
  src/parsing/lexical_chopping_tool.c\
  src/parsing/lexical_chopping.c\
+ src/parsing/lexical_expanding_replace_substring.c\
  src/parsing/lexical_expanding_tool.c\
  src/parsing/lexical_expanding_tool2.c\
  src/parsing/lexical_expanding_tool3.c\
  src/parsing/lexical_expanding_tool4.c\
- src/parsing/lex_expand_replace_substring.c\
  src/parsing/lexical_expanding.c\
  src/parsing/lexical_quote.c\
  src/parsing/lexical_validating_cnt_wd.c\

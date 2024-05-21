@@ -19,6 +19,20 @@ void	check_sq(t_data *data, char **str, int *i, int *j)
 	*str = case_s_quote(data, *str, *i, *j);
 }
 
+/*
+void	check_sq(t_data *data, char **str, int *i, int *j)
+{
+	char	*new;
+
+	new = NULL;
+	if (*i != 0)
+		*i = 0;
+	new = case_s_quote(data, *str, *i, *j);
+	free(str);
+	return (new);
+}
+*/
+
 void	check_dq(t_data *data, char **str, int *i, int *j)
 {
 	if (*i != 0)
@@ -73,6 +87,81 @@ int	ft_chopper(t_data *data, char *str, int j, int i)
 	data->token[j] = NULL;
 	return (0);
 }
+
+/*
+int	ft_chopper(t_data *data, char *str, int j, int i)
+{
+	while (j < data->n_word)
+	{
+		i = 0;
+		while (*str != '\0' && *str == ' ')
+			str++;
+		if (check_str_null(data, str, i, j) == -1)
+			return (0);
+		skip_normal_char(str, &i);
+		if (str[i] != '\0' && str[i] == '\'')
+			check_sq(data, &str, &i, &j);
+		else if (str[i] != '\0' && (str[i] == '\"'))
+			check_dq(data, &str, &i, &j);
+		else if (str[0] != '\0' && str[0] != '<'
+			&& str[0] != '>' && str[0] != '|')
+			i = ft_strcpy(data, str, i, j);
+		else if ((str[0] && str[1]) && ((str[0] == '>' && str[1] == '>')
+				|| (str[0] == '<' && str[1] == '<')))
+			i = ft_strcpy(data, str, 2, j);
+		else if ((str[0]) && (str[0] == '<' || str[0] == '>' || str[0] == '|'))
+			i = ft_strcpy(data, str, 1, j);
+		str += i;
+		j++;
+	}
+	data->token[j] = NULL;
+	return (0);
+}
+*/
+
+/*
+// [ 6TH ] Ramesh
+int	ft_chopper(t_data *data, char *str, int j)
+{
+	int	i;
+
+	i = 0;
+	if (str[0] == '\0')
+		return (-1);
+	while (str[i] == ' ')
+		str++;
+	if (check_str_null(data, str, i, j) == -1)
+		return (0);
+	skip_normal_char(str, &i);
+	if (str[i] == '\'')
+	{
+		if (i != 0)
+			i = 0;
+		str = case_s_quote(data, str, i, j);
+	}
+	else if (str[i] == '\"')
+	{
+		if (i != 0)
+			i = 0;
+		str = case_d_quote(data, str, i, j);
+	}
+	else if (str[0] != '\0' && str[0] != '<' && str[0] != '>' && str[0] != '|')
+		i = ft_strcpy(data, str, i, j);
+	else if ((str[0] == '>' && str[1] == '>') || (str[0] == '<' && str[1] == '<'))
+		i = ft_strcpy(data, str, 2, j);
+	else if (str[0] == '<' || str[0] == '>' || str[0] == '|')
+		i = ft_strcpy(data, str, 1, j);
+	if (str[i] == '\0')
+		return (0);
+	printf("this is str + i **%s**\n", str+i);
+	if (ft_chopper(data, str + i, ++j) == -1) // str[i] == '\0'
+	{
+		// free(data->token[j]);
+		data->token[j] = NULL;
+	}
+	return (0);
+}
+*/
 
 // [ 5TH ]
 // int	ft_chopper(t_data *data, char *str, int j)
