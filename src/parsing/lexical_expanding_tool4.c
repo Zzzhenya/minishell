@@ -73,11 +73,15 @@ char	*delete_dq_only(char *str)
 		j++;
 	}
 	free_temp_array(split_array);
+	free (str);
 	return (res);
 }
 
 int	delete_sq_norm(t_data *data, char **env, int i, int j)
 {
+	char	*res;
+
+	res = NULL;
 	if (data->token[i][j] == '\'')
 	{
 		data->token[i] = delete_sq(data->token[i]);
@@ -87,7 +91,9 @@ int	delete_sq_norm(t_data *data, char **env, int i, int j)
 	}
 	else if (data->token[i][j] == '\"')
 	{
-		data->token[i] = delete_dq(data->token[i], env, 0);
+		data->token[i] = delete_dq(data->token[i], env, 0, res);
+		free(res);
+		res = NULL;
 		if (data->token[i][0] == '\'' && data->token[i][1] == '\'')
 			data->token[i] = delete_sq(data->token[i]);
 		return (0);

@@ -17,7 +17,7 @@ int	ft_strchr_m(char *str, char c)
 	int	i;
 
 	i = 0;
-	if (str == NULL)
+	if (str == NULL || str[i] == '\0')
 		return (i);
 	while (str[i] != '\0' && str[i] != c)
 		i++;

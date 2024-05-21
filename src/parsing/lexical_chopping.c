@@ -12,20 +12,20 @@
 
 #include "../../include/minishell.h"
 
-void	check_sq(t_data *data, char **str, int *i, int *j)
-{
-	if (*i != 0)
-		*i = 0;
-	case_s_quote(data, *str, *i, *j);
-}
+// void	check_sq(t_data *data, char **str, int *i, int *j)
+// {
+// 	if (*i != 0)
+// 		*i = 0;
+// 	case_s_quote(data, *str, *i, *j);
+// }
 
-void	check_dq(t_data *data, char **str, int *i, int *j)
-{
-	if (*i != 0)
-		*i = 0;
-	case_d_quote(data, *str, *i, *j);
-}
-/*
+// void	check_dq(t_data *data, char **str, int *i, int *j)
+// {
+// 	if (*i != 0)
+// 		*i = 0;
+// 	case_d_quote(data, *str, *i, *j);
+// }
+
 char	*check_sq(t_data *data, char **str, int *i, int *j)
 {
 	char	*res;
@@ -47,7 +47,6 @@ char	*check_dq(t_data *data, char **str, int *i, int *j)
 	res = case_d_quote(data, *str, *i, *j);
 	return (res);
 }
-*/
 
 /*
 	Current 'j' is 0 from the [f] validate_input.
@@ -68,6 +67,93 @@ char	*check_dq(t_data *data, char **str, int *i, int *j)
 	[O] 	a a'a' a' a' a'a ' a' a '		5			X
 	[O]		'' aa ''						3			X
 */
+int	ft_chopper(t_data *data, char *str, int j, int i)
+{
+	if (str == NULL || str[i] == '\0')
+		return (-1);
+	while (*str != '\0' && *str == ' ')
+		str++;
+	if (check_str_null(data, str, i, j) == -1)
+		return (0);
+	skip_normal_char(str, &i);
+	if (str[i] != '\0' && str[i] == '\'')
+		str = check_sq(data, &str, &i, &j);
+	else if (str[i] != '\0' && (str[i] == '\"'))
+		str = check_dq(data, &str, &i, &j);
+	else if (str[0] != '\0' && str[0] != '<'
+		&& str[0] != '>' && str[0] != '|')
+		i = ft_strcpy(data, str, i, j);
+	else if ((str[0] && str[1]) && ((str[0] == '>' && str[1] == '>')
+			|| (str[0] == '<' && str[1] == '<')))
+		i = ft_strcpy(data, str, 2, j);
+	else if ((str[0]) && (str[0] == '<' || str[0] == '>' || str[0] == '|'))
+		i = ft_strcpy(data, str, 1, j);
+	if (ft_chopper(data, str + i, ++j, 0) == -1 || str[i] == '\0')
+		data->token[j] = NULL;
+	return (0);
+}
+
+/*
+int	ft_chopper(t_data *data, char *str, int j, int i)
+{
+	while (data->n_word > 0)
+	{
+		i = 0;
+		while (*str != '\0' && *str == ' ')
+			str++;
+		if (check_str_null(data, str, i, j) == -1)
+			return (0);
+		skip_normal_char(str, &i);
+		if (str[i] != '\0' && str[i] == '\'')
+			str = check_sq(data, &str, &i, &j);
+		else if (str[i] != '\0' && (str[i] == '\"'))
+			str = check_dq(data, &str, &i, &j);
+		else if (str[0] != '\0' && str[0] != '<'
+			&& str[0] != '>' && str[0] != '|')
+			i = ft_strcpy(data, str, i, j);
+		else if ((str[0] && str[1]) && ((str[0] == '>' && str[1] == '>')
+				|| (str[0] == '<' && str[1] == '<')))
+			i = ft_strcpy(data, str, 2, j);
+		else if ((str[0]) && (str[0] == '<' || str[0] == '>' || str[0] == '|'))
+			i = ft_strcpy(data, str, 1, j);
+		str += i;
+		j++;
+		data->n_word--;
+	}
+	data->token[j] = NULL;
+	return (0);
+}
+*/
+/*
+int	ft_chopper(t_data *data, char *str, int j, int i)
+{
+	if (str == NULL || str[i] == '\0')
+		return (-1);
+	while (*str != '\0' && *str == ' ')
+		str++;
+	if (check_str_null(data, str, i, j) == -1)
+		return (0);
+	skip_normal_char(str, &i);
+	if (str[i] != '\0' && str[i] == '\'')
+		str = check_sq(data, &str, &i, &j);
+	else if (str[i] != '\0' && (str[i] == '\"'))
+		str = check_dq(data, &str, &i, &j);
+	else if (str[0] != '\0' && str[0] != '<'
+		&& str[0] != '>' && str[0] != '|')
+		i = ft_strcpy(data, str, i, j);
+	else if ((str[0] && str[1]) && ((str[0] == '>' && str[1] == '>')
+			|| (str[0] == '<' && str[1] == '<')))
+		i = ft_strcpy(data, str, 2, j);
+	else if ((str[0]) && (str[0] == '<' || str[0] == '>' || str[0] == '|'))
+		i = ft_strcpy(data, str, 1, j);
+	if (ft_chopper(data, str + i, ++j, 0) == -1 || str[i] == '\0')
+		data->token[j] = NULL;
+	return (0);
+}
+*/
+
+/*
+	[Final]
 int	ft_chopper(t_data *data, char *str, int j, int i)
 {
 	while (j < data->n_word)
@@ -97,7 +183,6 @@ int	ft_chopper(t_data *data, char *str, int j, int i)
 	return (0);
 }
 
-/*
 int	ft_chopper(t_data *data, char *str, int j, int i)
 {
 	while (j < data->n_word)
@@ -194,7 +279,7 @@ int	ft_chopper(t_data *data, char *str, int j)
 // 	else if (str[0] != '\0' && str[0] != '<' && str[0] != '>' && str[0] != '|')
 // 		i = ft_strcpy(data, str, i, j);
 // 	else if ((str[0] == '>' && str[1] == '>')
-//			|| (str[0] == '<' && str[1] == '<'))
+// 			|| (str[0] == '<' && str[1] == '<'))
 // 		i = ft_strcpy(data, str, 2, j);
 // 	else if (str[0] == '<' || str[0] == '>' || str[0] == '|')
 // 		i = ft_strcpy(data, str, 1, j);

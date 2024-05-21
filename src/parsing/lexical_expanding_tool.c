@@ -129,22 +129,28 @@ void	delete_dq_ext(char *tmp, char *res, char **split_array, int j)
 }
 
 /*
-
 	[ TEST ]
 	for (int k = 0; split_array[k] != NULL; k++)
 	printf("\t\t\t\t3. Delete dq: split_array[%d]: %s\n", k, split_array[k]);
 
+	int k = 0;
+	while (split_array[k])
+	{
+		printf("split_array[%d]: %s\n", k, split_array[k]);
+		k++;
+	}
+
+	free_temp_array(split_array);
+
 	echo "abab""a''a'"''
-
-
 */
-char	*delete_dq(char *str, char **env, int j)
+char	*delete_dq(char *str, char **env, int j, char *res)
 {
-	char	*res;
 	char	**split_array;
 
-	res = NULL;
-	split_array = split_str_by_dq(str, 0, 0);
+	split_array = NULL;
+	if (str != NULL)
+		split_array = split_str_by_dq(str, 0, 0);
 	if (split_array == NULL)
 		return (NULL);
 	else if (split_array[j] == NULL)
@@ -158,45 +164,35 @@ char	*delete_dq(char *str, char **env, int j)
 		if (res == NULL)
 			res = ft_strdup(split_array[j]);
 		else if (split_array[j][0] == '\'')
-			res = ft_strjoin(res, delete_sq(split_array[j]));
+		{
+			split_array[j] = delete_sq(split_array[j]);
+			res = ft_strjoin(res, split_array[j]);
+		}
 		else
 			delete_dq_ext(NULL, res, split_array, j);
+		free(split_array[j]);
 		j++;
 	}
-	free_temp_array(split_array);
+	free (split_array);
+	free (str);
 	return (res);
 }
 
 /*
-	[ Original ]
-
-char	*delete_dq(char *str, char **env, int j)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*res;
-	char	*tmp;
-	char	**split_array;
+	size_t	len1;
+	size_t	len2;
+	char	*result;
 
-	res = NULL;
-	tmp = NULL;
-	split_array = split_str_by_dq(str, 0, 0);
-	if (split_array == NULL)
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	result = (char *)malloc(sizeof(char) * (len1 + len2 + 1));
+	if (result == NULL)
 		return (NULL);
-	else if (split_array[j] == NULL)
-		res = ft_strdup("");
-	while (split_array[j] != NULL)
-	{
-		if (expand_token_env_5(&split_array[j], j) == -1
-			|| (expand_token_env_6(&split_array[j], env, j) == -1))
-			return (NULL);
-		if (res == NULL)
-			res = ft_strdup(split_array[j]);
-		else if (split_array[j][0] == '\'')
-			res = ft_strjoin(res, delete_sq(split_array[j]));
-		else
-			delete_dq_ext(tmp, res, split_array, j);
-		j++;
-	}
-	free_temp_array(split_array);
-	return (res);
+	ft_memcpy(result, s1, len1);
+	ft_memcpy(result + len1, s2, len2);
+	result[len1 + len2] = '\0';
+	return (result);
 }
 */
