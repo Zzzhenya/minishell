@@ -128,20 +128,21 @@ void	delete_dq_ext(char *tmp, char *res, char **split_array, int j)
 }
 
 /*
+
 	[ TEST ]
 	for (int k = 0; split_array[k] != NULL; k++)
 	printf("\t\t\t\t3. Delete dq: split_array[%d]: %s\n", k, split_array[k]);
 
 	echo "abab""a''a'"''
+
+
 */
 char	*delete_dq(char *str, char **env, int j)
 {
 	char	*res;
-	char	*tmp;
 	char	**split_array;
 
 	res = NULL;
-	tmp = NULL;
 	split_array = split_str_by_dq(str, 0, 0);
 	if (split_array == NULL)
 		return (NULL);
@@ -158,7 +159,7 @@ char	*delete_dq(char *str, char **env, int j)
 		else if (split_array[j][0] == '\'')
 			res = ft_strjoin(res, delete_sq(split_array[j]));
 		else
-			delete_dq_ext(tmp, res, split_array, j);
+			delete_dq_ext(NULL, res, split_array, j);
 		j++;
 	}
 	free_temp_array(split_array);
