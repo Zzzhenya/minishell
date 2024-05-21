@@ -45,7 +45,29 @@ char	*delete_space_from_str(char *str)
 	return (res);
 }
 
-// row_env = find_matching_env_row((split[i]) + i_dollar + 1, env);
+/* row_env = find_matching_env_row((split[i]) + i_dollar + 1, env);
+
+	if string is nonexistant or empty -> return -1
+	delete space from str -> extract the env var name
+
+	char **arr;
+	arr = NULL;
+	while (env[i] != NULL)
+	{
+		if (!ft_strncmp(env[i], res, ft_strlen(res)))
+		{
+			arr = ft_split(env[i], '=');
+			if (!ft_strncmp(res, arr[0], ft_strlen(arr[0])))
+			{
+				free_arr(arr, get_arg_count(arr));
+				free (res);
+		 		return (i);
+			}
+			free_arr(arr, get_arg_count(arr));
+		}
+		i++;
+	}
+*/
 int	find_matching_env_row(char *str, char **env)
 {
 	int		i;

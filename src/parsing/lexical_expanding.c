@@ -26,6 +26,16 @@ int	expand_token_env_3(t_data *data, int i)
 	return (0);
 }
 
+/*
+	if the string has $ return -1 -> i_dollar = -1
+	if the string has a $ and next char is \0 -> return 0
+
+	if  string has a $ 
+	&& 	if the string doesn't have '
+	&& 	if the next cgar us not ?
+	&& 	if the next char is not $
+	get the env_row number
+*/
 int	expand_token_env_4(t_data *data, char **env, int i)
 {
 	int	i_dollar;

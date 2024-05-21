@@ -12,6 +12,14 @@
 
 #include "../../include/minishell.h"
 
+/*
+	go through the string
+	if ' skip
+	set start to first '
+	while not ' skip
+	if current i is larger than start
+	malloc and copy the string to tmp[j]
+*/
 char	**split_str_by_sq(char *str, int i, int j)
 {
 	int		start;
@@ -41,6 +49,10 @@ char	**split_str_by_sq(char *str, int i, int j)
 	return (tmp);
 }
 
+/*
+	get an array of strings split by sq
+	duplicate the array
+*/
 char	*delete_sq(char *str)
 {
 	char	*res;

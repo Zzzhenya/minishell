@@ -91,7 +91,7 @@ $(NAME): $(OBJS) $(LIBFT)
 
 leaks: $(NAME)
 	#valgrind -s --show-leak-kinds=all --leak-check=full ./$(NAME)
-	valgrind -s --suppressions=./readline.supp --show-leak-kinds=all --leak-check=full --track-fds=yes ./$(NAME)
+	valgrind -s --suppressions=./readline.supp --show-leak-kinds=all --leak-check=full --track-origins=yes --track-fds=yes ./$(NAME)
 
 leak_log: $(NAME)
 	valgrind -s --suppressions=./readline.supp --show-leak-kinds=all --leak-check=full ./$(NAME) 2>&1 | tee log1.txt
