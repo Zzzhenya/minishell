@@ -86,22 +86,22 @@ void	update_pipefd(int pipefd[2], int initial_input, int flag_pipe_exist)
 /*	[F]
 	Include in "LIBFT".
 */
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	size_t	len1;
-	size_t	len2;
-	char	*result;
+// char	*ft_strjoin(char const *s1, char const *s2)
+// {
+// 	size_t	len1;
+// 	size_t	len2;
+// 	char	*result;
 
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	result = (char *)malloc(sizeof(char) * (len1 + len2 + 1));
-	if (result == NULL)
-		return (NULL);
-	ft_memcpy(result, s1, len1);
-	ft_memcpy(result + len1, s2, len2);
-	result[len1 + len2] = '\0';
-	return (result);
-}
+// 	len1 = ft_strlen(s1);
+// 	len2 = ft_strlen(s2);
+// 	result = (char *)malloc(sizeof(char) * (len1 + len2 + 1));
+// 	if (result == NULL)
+// 		return (NULL);
+// 	ft_memcpy(result, s1, len1);
+// 	ft_memcpy(result + len1, s2, len2);
+// 	result[len1 + len2] = '\0';
+// 	return (result);
+// }
 
 /*	[F]
 	[Role]
