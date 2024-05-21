@@ -12,34 +12,22 @@
 
 #include "../../include/minishell.h"
 
-void	check_sq(t_data *data, char **str, int *i, int *j)
+char	*check_sq(t_data *data, char **str, int *i, int *j)
+{
+	char	*res = NULL;
+
+	if (*i != 0)
+		*i = 0;
+	res = case_s_quote(data, *str, *i, *j);
+	return (res);
+}
+
+char	*check_dq(t_data *data, char **str, int *i, int *j)
 {
 	if (*i != 0)
 		*i = 0;
-	*str = case_s_quote(data, *str, *i, *j);
+	return (case_d_quote(data, *str, *i, *j));
 }
-
-/*
-void	check_sq(t_data *data, char **str, int *i, int *j)
-{
-	char	*new;
-
-	new = NULL;
-	if (*i != 0)
-		*i = 0;
-	new = case_s_quote(data, *str, *i, *j);
-	free(str);
-	return (new);
-}
-*/
-
-void	check_dq(t_data *data, char **str, int *i, int *j)
-{
-	if (*i != 0)
-		*i = 0;
-	*str = case_d_quote(data, *str, *i, *j);
-}
-
 /*
 	Current 'j' is 0 from the [f] validate_input.
 		(ex) if (ft_chopper(&data, data.str, 0) == -1)
@@ -61,18 +49,21 @@ void	check_dq(t_data *data, char **str, int *i, int *j)
 */
 int	ft_chopper(t_data *data, char *str, int j, int i)
 {
+	char	*res;
+
 	while (j < data->n_word)
 	{
 		i = 0;
+		res = NULL;
 		while (*str != '\0' && *str == ' ')
 			str++;
 		if (check_str_null(data, str, i, j) == -1)
 			return (0);
 		skip_normal_char(str, &i);
 		if (str[i] != '\0' && str[i] == '\'')
-			check_sq(data, &str, &i, &j);
+			res = check_sq(data, &str, &i, &j);
 		else if (str[i] != '\0' && (str[i] == '\"'))
-			check_dq(data, &str, &i, &j);
+			res = check_dq(data, &str, &i, &j);
 		else if (str[0] != '\0' && str[0] != '<'
 			&& str[0] != '>' && str[0] != '|')
 			i = ft_strcpy(data, str, i, j);
