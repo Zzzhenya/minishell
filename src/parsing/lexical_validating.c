@@ -160,6 +160,65 @@ int	find_copy_env_val(t_data *data, char **env, int i, int j)
 	return (ret);
 }
 
+int count_letters(char *str, char skip)
+{
+	int count = 0;
+	int i = 0;
+
+	while (str[i] != '\0')
+	{
+		if (str[i] != '\0' && str[i] == skip)
+			i ++;
+		while (str[i] != '\0' && str[i] != skip)
+		{
+			i ++;
+			count ++;
+		}
+		if (str[i] != '\0' && str[i] == skip)
+			break;
+	}
+	return (count);
+}
+
+int trim_sq_copy(t_data *data, int i, int j)
+{
+	int ret = 0;
+	int len = 0;
+	char *str = NULL;
+	char *join = NULL;
+	int k = 0;
+
+	len = count_letters(data->token[i] + j, '\'');
+	str = malloc (sizeof(char) * len + 1);
+	while (data->token[i][j] != '\0')
+	{
+		if (data->token[i][j] != '\0' && data->token[i][j] == '\'')
+		{
+			ret ++;
+			j ++;
+		}
+		while (data->token[i][j] != '\0' && data->token[i][j] != '\'')
+		{
+			str[k] = data->token[i][j];
+			k ++;
+			ret ++;
+			j ++;
+		}
+		if (data->token[i][j] != '\0' && data->token[i][j] == '\'')
+		{
+			str[k] = '\0';
+			ret ++;
+			j ++;
+			break;
+		}
+	}
+	join = ft_strjoin(data->new, str);
+	free (data->new);
+	free (str);
+	data->new = join;
+	return (ret);
+}
+
 void	expand_and_remove_quotes(t_data *data, char **env)
 {
 	int i = 0;
