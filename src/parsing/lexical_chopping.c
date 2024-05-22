@@ -69,6 +69,33 @@ char	*check_dq(t_data *data, char **str, int *i, int *j)
 */
 int	ft_chopper(t_data *data, char *str, int j, int i)
 {
+	i = 0;
+	if (str[i] == '\0')
+		return (-1);
+	while (str[i] == ' ')
+		str++;
+	if (check_str_null(data, str, i, j) == -1)
+		return (0);
+	skip_normal_char(str, &i);
+	if (str[i] != '\0' && str[i] == '\'')
+		str = check_sq(data, &str, &i, &j);
+	else if (str[i] != '\0' && (str[i] == '\"'))
+		str = check_dq(data, &str, &i, &j);
+	else if (str[0] != '\0' && str[0] != '<'
+		&& str[0] != '>' && str[0] != '|')
+		i = ft_strcpy(data, str, i, j);
+	else if ((str[0] && str[1]) && ((str[0] == '>' && str[1] == '>')
+			|| (str[0] == '<' && str[1] == '<')))
+		i = ft_strcpy(data, str, 2, j);
+	else if ((str[0]) && (str[0] == '<' || str[0] == '>' || str[0] == '|'))
+		i = ft_strcpy(data, str, 1, j);
+	if (ft_chopper(data, str + i, ++j, 0) == -1 || str[i] == '\0')
+		data->token[j] = NULL;
+	return (0);
+}
+/*
+int	ft_chopper(t_data *data, char *str, int j, int i)
+{
 	if (str == NULL)
 		return (-1);
 	// if (str[i] == '\0')
@@ -94,7 +121,7 @@ int	ft_chopper(t_data *data, char *str, int j, int i)
 		data->token[j] = NULL;
 	return (0);
 }
-
+*/
 /*
 int	ft_chopper(t_data *data, char *str, int j, int i)
 {
@@ -215,205 +242,6 @@ int	ft_chopper(t_data *data, char *str, int j, int i)
 }
 */
 
-/*
-// [ 6TH ] Ramesh
-int	ft_chopper(t_data *data, char *str, int j)
-{
-	int	i;
-
-	i = 0;
-	if (str[0] == '\0')
-		return (-1);
-	while (str[i] == ' ')
-		str++;
-	if (check_str_null(data, str, i, j) == -1)
-		return (0);
-	skip_normal_char(str, &i);
-	if (str[i] == '\'')
-	{
-		if (i != 0)
-			i = 0;
-		str = case_s_quote(data, str, i, j);
-	}
-	else if (str[i] == '\"')
-	{
-		if (i != 0)
-			i = 0;
-		str = case_d_quote(data, str, i, j);
-	}
-	else if (str[0] != '\0' && str[0] != '<' && str[0] != '>' && str[0] != '|')
-		i = ft_strcpy(data, str, i, j);
-	else if ((str[0] == '>' && str[1] == '>') || (str[0] == '<' && str[1] == '<'))
-		i = ft_strcpy(data, str, 2, j);
-	else if (str[0] == '<' || str[0] == '>' || str[0] == '|')
-		i = ft_strcpy(data, str, 1, j);
-	if (str[i] == '\0')
-		return (0);
-	printf("this is str + i **%s**\n", str+i);
-	if (ft_chopper(data, str + i, ++j) == -1) // str[i] == '\0'
-	{
-		// free(data->token[j]);
-		data->token[j] = NULL;
-	}
-	return (0);
-}
-*/
-
-// [ 5TH ]
-// int	ft_chopper(t_data *data, char *str, int j)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (str[i] == '\0')
-// 		return (-1);
-// 	while (str[i] == ' ')
-// 		str++;
-// 	str += i;
-// 	i = 0;
-// 	if (check_str_null(data, str, i, j) == -1)
-// 		return (0);
-// 	skip_normal_char(str, &i);
-// 	if (str[i] == '\'')
-// 		check_sq(data, &str, &i, &j);
-// 	else if (str[i] == '\"')
-// 		check_dq(data, &str, &i, &j);
-// 	else if (str[0] != '\0' && str[0] != '<' && str[0] != '>' && str[0] != '|')
-// 		i = ft_strcpy(data, str, i, j);
-// 	else if ((str[0] == '>' && str[1] == '>')
-// 			|| (str[0] == '<' && str[1] == '<'))
-// 		i = ft_strcpy(data, str, 2, j);
-// 	else if (str[0] == '<' || str[0] == '>' || str[0] == '|')
-// 		i = ft_strcpy(data, str, 1, j);
-// 	printf("curr 'j': %d\n", j);
-// 	// int n = ft_strlen(str);
-// 	// if (i < 0 || i >= n)
-// 	// 	return (-1);
-// 	if (ft_chopper(data, str + i, ++j) == -1 || str[i] == '\0')
-// 		data->token[j] = NULL;
-// 	return (0);
-// }
-
-/*
-// [ 4TH ]
-int	ft_chopper(t_data *data, char *str, int j)
-{
-	int	i;
-
-	i = 0;
-	if (str[0] == '\0')
-		return (-1);
-	while (str[i] == ' ')
-		str++;
-	if (check_str_null(data, str, i, j) == -1)
-		return (0);
-	skip_normal_char(str, &i);
-	printf("1. curr 'i': %d\n", i);
-	if (str[i] == '\'')
-	{
-		if (i != 0)
-			i = 0;
-		str = case_s_quote(data, str, i, j);
-		printf("1. str: %s\n", str);
-	}
-	else if (str[i] == '\"')
-	{
-		if (i != 0)
-			i = 0;
-		str = case_d_quote(data, str, i, j);
-	}
-	else if (str[0] != '\0' && str[0] != '<' && str[0] != '>' && str[0] != '|')
-		i = ft_strcpy(data, str, i, j);
-	else if ((str[0] == '>' && str[1] == '>') || (str[0] == '<' && str[1] == '<'))
-		i = ft_strcpy(data, str, 2, j);
-	else if (str[0] == '<' || str[0] == '>' || str[0] == '|')
-		i = ft_strcpy(data, str, 1, j);
-	if (ft_chopper(data, str + i, ++j) == -1 || str[i] == '\0')
-		data->token[j] = NULL;
-	return (0);
-}
-*/
-
-/*
-[ 3RD ]
-char	*ft_norm(t_data *data, char *str, int i, int j)
-{
-	char	*res;
-
-	if (i != 0)
-		i = 0;
-	if (str[i] == '\'')
-		res = case_s_quote(data, str, i, j);
-	else
-		res = case_d_quote(data, str, i, j);
-	return (res);
-}
-
-char	*handle_quote(t_data *data, char *str, int *i, int j)
-{
-	if (str[*i] == '\'')
-	{
-		if (*i != 0)
-			*i = 0;
-		str = case_s_quote(data, str, *i, j);	// malloc
-		if (str == NULL)
-			return (NULL);
-	}
-	else if (str[*i] == '\"')
-	{
-		if (*i != 0)
-			*i = 0;
-		str = case_d_quote(data, str, *i, j);	// malloc
-		if (str == NULL)
-			return (NULL);
-	}
-	return (str);
-}
-
-int	ft_chopper_part1(t_data **data, char **str, int *i, int *j)
-{
-	if (*str[0] == '\0')
-		return (-1);
-	while (*str[*i] == ' ')
-		(*str)++;
-	if (check_str_null(*data, *str, *i, *j) == -1)
-		return (-1);
-	skip_normal_char(*str, &*i);
-	return (0);
-}
-
-int	ft_chopper(t_data *data, char *str, int j)
-{
-	int	i;
-
-	i = 0;
-	if (ft_chopper_part1(&data, &str, &i, &j) == -1)
-		return (-1);
-	if (str[i] == '\'')
-	{
-		if (i != 0)
-			i = 0;
-		str = case_s_quote(data, str, i, j);	// malloc
-		printf("1. str: %s\n", str);
-	}
-	else if (str[i] == '\"')
-	{
-		if (i != 0)
-			i = 0;
-		str = case_d_quote(data, str, i, j);	// malloc
-	}
-	if (str[i] != '\0' && str[i] != '<' && str[i] != '>' && str[i] != '|')
-		i = ft_strcpy(data, str, i, j);
-	else if ((str[0] == '>' && str[1] == '>') || (str[0] == '<' && str[1] == '<'))
-		i = ft_strcpy(data, str, 2, j);
-	else if (str[0] == '<' || str[0] == '>' || str[0] == '|')
-		i = ft_strcpy(data, str, 1, j);
-	if (ft_chopper(data, str + i, ++j) == -1 || str[i] == '\0')
-		data->token[j] = NULL;
-	return (0);
-}
-*/
-
 char	*dup_array(char **str, char *res)
 {
 	int		i;
@@ -435,4 +263,41 @@ char	*dup_array(char **str, char *res)
 		i++;
 	}
 	return (res);
+}
+
+/*
+	go through the string
+	if ' skip
+	set start to first '
+	while not ' skip
+	if current i is larger than start
+	malloc and copy the string to tmp[j]
+*/
+char	**split_str_by_sq(char *str, int i, int j)
+{
+	int		start;
+	char	**tmp;
+
+	start = 0;
+	tmp = (char **)malloc(sizeof(char *) * (100));
+	if (tmp == NULL)
+		return (NULL);
+	while (str[i])
+	{
+		while (str[i] && str[i] == '\'')
+			i++;
+		start = i;
+		while (str[i] && str[i] != '\'')
+			i++;
+		if (i > start)
+		{
+			tmp[j] = (char *)malloc(sizeof(char) * ((i - start) + 1));
+			if (tmp[j] == NULL)
+				return (NULL);
+			ft_cpy_str(tmp[j], &str[start], i - start);
+			j++;
+		}
+	}
+	tmp[j] = NULL;
+	return (tmp);
 }

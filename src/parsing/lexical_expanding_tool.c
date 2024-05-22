@@ -13,43 +13,6 @@
 #include "../../include/minishell.h"
 
 /*
-	go through the string
-	if ' skip
-	set start to first '
-	while not ' skip
-	if current i is larger than start
-	malloc and copy the string to tmp[j]
-*/
-char	**split_str_by_sq(char *str, int i, int j)
-{
-	int		start;
-	char	**tmp;
-
-	start = 0;
-	tmp = (char **)malloc(sizeof(char *) * (100));
-	if (tmp == NULL)
-		return (NULL);
-	while (str[i])
-	{
-		while (str[i] && str[i] == '\'')
-			i++;
-		start = i;
-		while (str[i] && str[i] != '\'')
-			i++;
-		if (i > start)
-		{
-			tmp[j] = (char *)malloc(sizeof(char) * ((i - start) + 1));
-			if (tmp[j] == NULL)
-				return (NULL);
-			ft_cpy_str(tmp[j], &str[start], i - start);
-			j++;
-		}
-	}
-	tmp[j] = NULL;
-	return (tmp);
-}
-
-/*
 	get an array of strings split by sq
 	duplicate the array
 */
@@ -132,12 +95,16 @@ char	**split_str_by_dq(char *str, int i, int j)
 	return (tmp);
 }
 
-void	delete_dq_ext(char *tmp, char *res, char **split_array, int j)
+char	*delete_dq_ext(char *res, char **split_array, int j)
 {
+	char	*tmp;
+
+	tmp = NULL;
 	tmp = ft_strdup(res);
 	free(res);
 	res = ft_strjoin(tmp, split_array[j]);
 	free(tmp);
+	return (res);
 }
 
 /*
@@ -156,6 +123,45 @@ void	delete_dq_ext(char *tmp, char *res, char **split_array, int j)
 
 	echo "abab""a''a'"''
 */
+char	*norm_line(char **split_array, char **env, int j, char *res)
+{
+	while (split_array[j] != NULL)
+	{
+		if (expand_token_env_5(&split_array[j], j) == -1)
+			return (NULL);
+		else if (expand_token_env_6(&split_array[j], env, j) == -1)
+			return (NULL);
+		if (res == NULL)
+			res = ft_strdup(split_array[j]);
+		else if (split_array[j][0] == '\'')
+		{
+			split_array[j] = delete_sq(split_array[j]);
+			res = ft_strjoin(res, split_array[j]);
+		}
+		else
+			res = delete_dq_ext(res, split_array, j);
+		free(split_array[j]);
+		j++;
+	}
+	return (res);
+}
+
+char	*delete_dq(char *str, char **env, int j, char *res)
+{
+	char	**split_array;
+
+	split_array = NULL;
+	if (str != NULL)
+		split_array = split_str_by_dq(str, 0, 0);
+	if (split_array == NULL)
+		return (NULL);
+	else if (split_array[j] == NULL)
+		res = ft_strdup("");
+	res = norm_line (split_array, env, j, res);
+	free_together (split_array, str);
+	return (res);
+}
+/*
 char	*delete_dq(char *str, char **env, int j, char *res)
 {
 	char	**split_array;
@@ -181,30 +187,11 @@ char	*delete_dq(char *str, char **env, int j, char *res)
 			res = ft_strjoin(res, split_array[j]);
 		}
 		else
-			delete_dq_ext(NULL, res, split_array, j);
+			res = delete_dq_ext(res, split_array, j);
 		free(split_array[j]);
 		j++;
 	}
-	free (split_array);
-	free (str);
+	free_together (split_array, str);
 	return (res);
-}
-
-/*
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	size_t	len1;
-	size_t	len2;
-	char	*result;
-
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	result = (char *)malloc(sizeof(char) * (len1 + len2 + 1));
-	if (result == NULL)
-		return (NULL);
-	ft_memcpy(result, s1, len1);
-	ft_memcpy(result + len1, s2, len2);
-	result[len1 + len2] = '\0';
-	return (result);
 }
 */

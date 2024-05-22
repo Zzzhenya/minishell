@@ -53,12 +53,10 @@ char	*delete_dq_only(char *str)
 {
 	int		j;
 	char	*res;
-	char	*tmp;
 	char	**split_array;
 
 	j = 0;
 	res = NULL;
-	tmp = NULL;
 	split_array = split_str_by_dq(str, 0, 0);
 	if (split_array == NULL)
 		return (NULL);
@@ -69,7 +67,7 @@ char	*delete_dq_only(char *str)
 		if (res == NULL)
 			res = ft_strdup(split_array[j]);
 		else
-			delete_dq_ext(tmp, res, split_array, j);
+			delete_dq_ext(res, split_array, j);
 		j++;
 	}
 	free_temp_array(split_array);
