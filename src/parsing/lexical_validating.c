@@ -109,12 +109,11 @@ int	add_char_to_end(t_data *data, int i, int j)
 	return (1);
 }
 
-int find_env_var_len(t_data *data, int i, int j, char **env)
+int find_env_var_len(t_data *data, int i, int j)
 {
 	int len;
 
 	len = 0;
-	(void)env;
 	while (data->token[i][j] != '\0')
 	{
 		if (data->token[i][j] == ' ' || data->token[i][j] == '\"' || data->token[i][j] == '\'' || data->token[i][j] == '$')
@@ -132,7 +131,7 @@ int	find_copy_env_val(t_data *data, char **env, int i, int j)
 	int k = 0;
 	char **arr;
 
-	ret = find_env_var_len(data, i,  j, env);
+	ret = find_env_var_len(data, i,  j);
 	var = NULL;
 	var = malloc(sizeof(char) * (ret + 1));
 	if (!var)
@@ -242,12 +241,12 @@ int trim_dq_copy(t_data *data, int i, int j, char *dqstr)
 		}
 		if (data->token[i][j] != '\0' && data->token[i][j] == '\"')
 		{
+			dqstr[k] = '\0';
 			ret ++;
 			j ++;
-			break;
+			return (ret);
 		}
 	}
-	dqstr[k] = '\0';
 	return (ret);
 }
 
@@ -255,50 +254,86 @@ int dq_env_var_len(char *temp, int i)
 {
 	int len = 0;
 
-	while (temp[i] != '\0')
+	if (temp[i] == '$')
 	{
-		if (temp[i] == ' ' || temp[i] == '\"' || temp[i] == '\'' || temp[i] == '$')
-			break;
-		len ++;
 		i ++;
+		while (temp[i] != '\0')
+		{
+			if (temp[i] == ' ' || temp[i] == '\"' || temp[i] == '\'' || temp[i] == '$')
+				break;
+			len ++;
+			i ++;
+		}
 	}
 	return (len);
 }
 
-int dq_find_replace_env(char **env, char *dqstr, char *temp, int i)
+int dq_env(char *dqstr,char *temp,int i,char **env)
 {
-	int len = 0;
-	int k = 0;
-	char *var = NULL;
+	char *var;
+	int var_len = 0;
+	int j = 0;
 	char **arr = NULL;
-	
-	len = dq_env_var_len(temp, i + 1);
-	printf("var len: %d\n", len);
-	var = malloc(sizeof(char) * len + 1);
-	ft_strlcpy(var, temp + i + 1, len + 1);
-	printf("var : %s\n", var);
-	while (env[k] != NULL)
+
+	var = NULL;
+	j = i;
+	while (temp[j] != '\0')
 	{
+		if (temp[j] == ' ' || temp[j] == '$' || temp[j] == '\'' || temp[j] == '\"')
+			break;
+		j ++;
+		var_len++;
+	}
+	var = malloc(sizeof(char) * (var_len + 1));
+	ft_strlcpy(var, temp + 1, var_len + 1);
+	j = 0;
+	while (env[j] != NULL)
+	{
+		arr = ft_split(env[j], '=');
+		if (!ft_strncmp(arr[0], var, ft_strlen(var)))
+		{
+			free(var);
+			var = NULL;
+			var = ft_strdup(dqstr);
+			free (dqstr);
+			dqstr = ft_strjoin(var, arr[1]);
+			free (var);
+			free_arr(arr, get_arg_count(arr));
+			return (var_len);
+		}
+		free_arr(arr, get_arg_count(arr));
+		arr = NULL;
+		j ++;
+	}
+	free(var);
+	var = ft_strdup(dqstr);
+	free (dqstr);
+	dqstr = ft_strjoin(var, "");
+	free (var);
+	return (var_len);
+}
+
+/*
+
 		arr = ft_split(env[k], '=');
 		if (!ft_strncmp(arr[0], var, ft_strlen(var)) && !ft_strncmp(arr[0], var, ft_strlen(arr[0])))
 		{
 			free (var);
-			var = ft_strjoin(dqstr, arr[1]);
-			free (dqstr);
-			dqstr = var;
-			printf("val : %s\n", var);
+			var = ft_strjoin(data->new, arr[1]);
+			free (data->new);
+			data->new = var;
 			free_arr(arr, get_arg_count(arr));
-			return (len);
+			return (ret);
 		}
 		free_arr(arr, get_arg_count(arr));
 		k ++;
 	}
 	free (var);
-	var = ft_strjoin(dqstr, "");
-	free (dqstr);
-	dqstr = var;
-	return (len);
-}
+	var = ft_strjoin(data->new, "");
+	free (data->new);
+	data->new = var;
+
+*/
 
 int dq_copy_char(char *dqstr, char *temp, int i)
 {
@@ -316,33 +351,43 @@ int dq_copy_char(char *dqstr, char *temp, int i)
 		ft_strlcpy(join, dqstr, len + 1);
 	join[len] = temp[i];
 	join[len + 1] = '\0';
-	free (dqstr);
-	dqstr = join;
+	//free (dqstr);
+	dqstr = ft_strdup(join);
+	free (join);
 	return (1);
 
 }
 
-void	dq_find_copy_env(char *dqstr, char **env)
+void	dq_find_copy_env(char *dqstr, char **env, t_data *data)
 {
 	int i = 0;
 	int ret = 0;
+	char *join = NULL;
 
+	
 	char *temp = NULL;
 	temp = ft_strdup(dqstr);
 	while (temp[i] != '\0')
 	{
-		if (temp[i] == '$')
+		if (temp[i] == '$' && temp[i + 1] != '\0')
 		{
-			ret = dq_find_replace_env(env, dqstr, temp, i);
+			i ++;
+			ret = dq_env(dqstr, temp, i, env);
 			i += ret;
 		}
 		else
 		{
-		 	ret = dq_copy_char(dqstr, temp, i);
-		 	i += ret;
+			ret = dq_copy_char(dqstr, temp, i);
+			i += ret;
 		}
-		i ++;
 	}
+	// if (data->new)
+	// 	join = ft_strjoin(data->new, dqstr);
+	// else
+		join = ft_strdup(dqstr);
+	free (data->new);
+	data->new = ft_strdup(join);
+	free (join);
 }
 
 int trim_dq_expand_copy(t_data *data, int i, int j, char **env)
@@ -368,13 +413,13 @@ int trim_dq_expand_copy(t_data *data, int i, int j, char **env)
 	}
 	else
 	{
-		dq_find_copy_env(dqstr, env);
-		if (data->new)
-			join = ft_strjoin(data->new, dqstr);
-		else
-			join = ft_strdup(dqstr);
-		free (data->new);
-		data->new = join;
+		dq_find_copy_env(dqstr, env, data);
+		// if (data->new)
+		// 	join = ft_strjoin(data->new, dqstr);
+		// else
+		// 	join = ft_strdup(dqstr);
+		// free (data->new);
+		// data->new = join;
 		return (ret);
 	}
 }
@@ -416,7 +461,6 @@ void	expand_and_remove_quotes(t_data *data, char **env)
 		}
 		free (data->token[i]);
 		data->token[i] = ft_strdup(data->new);
-		printf("%d %s\n", i + 1, data->token[i]);
 		free (data->new);
 		i++;
 	}
@@ -441,7 +485,6 @@ char	**validate_input(char *user_input, char **env)
 		return (NULL);
 	if (ft_chopper(&data, data.str, 0, 0) == -1)
 		return (NULL);
-	(void)env;
 	expand_and_remove_quotes(&data, env);
 	// if (expand_env(&data, env, 0, 0) == -1)
 	// 	return (NULL);
