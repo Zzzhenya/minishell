@@ -333,6 +333,7 @@ void		if_dollar_q_mark(char **tmp, char *status, int *flag, int *i);
 void		if_tmp(int *flag, char *tmp, char **argv);
 char		*convert_status_to_ascii(void);
 void		replace_exit_status(char ***argv, int i, int flag, int j);
+void		free_together(char **av1, char *av2);
 
 // [ lexical_chopping_tool.c ]
 int			check_str_null(t_data *data, char *str, int i, int j);
@@ -342,12 +343,11 @@ char		*case_s_quote(t_data *data, char *str, int i, int j);
 char		*case_d_quote(t_data *data, char *str, int i, int j);
 
 // [ lexical_chopping.c ]
-// void		check_sq(t_data *data, char **str, int *i, int *j);
-// void		check_dq(t_data *data, char **str, int *i, int *j);
 char		*check_sq(t_data *data, char **str, int *i, int *j);
 char		*check_dq(t_data *data, char **str, int *i, int *j);
 int			ft_chopper(t_data *data, char *str, int j, int i);
 char		*dup_array(char **str, char *res);
+char		**split_str_by_sq(char *str, int i, int j);
 
 // [ lexical_expanding_replace_substring.c ]
 char		*replace_substring_special(t_expand *data, char **env, int len);
@@ -357,10 +357,10 @@ int			cpy_after_env_var(char *token, char *res, int j, int i);
 char		*replace_substring_1(char *token, char *row_env, int i_dollar);
 
 // [ lexical_expanding_tool.c ] 5
-char		**split_str_by_sq(char *str, int i, int j);
 char		*delete_sq(char *str);
 char		**split_str_by_dq(char *str, int i, int j);
-void		delete_dq_ext(char *tmp, char *res, char **split_array, int j);
+char		*delete_dq_ext(char *res, char **split_array, int j);
+char		*norm_line(char **split_array, char **env, int j, char *res);
 char		*delete_dq(char *str, char **env, int j, char *res);
 
 // [ lexical_expanding_tool2.c ] 3

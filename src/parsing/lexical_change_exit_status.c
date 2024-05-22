@@ -74,3 +74,9 @@ void	replace_exit_status(char ***argv, int i, int flag, int j)
 	free(status);
 	return ;
 }
+
+void	free_together(char **av1, char *av2)
+{
+	free (av1);
+	free (av2);
+}
