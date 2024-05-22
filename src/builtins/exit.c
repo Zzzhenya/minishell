@@ -31,7 +31,7 @@ int	ft_isanumber(char *str)
 	if (str[i] != '\0' && !ft_isdigit(str[i]))
 		return (0);
 	else
-		return (i - sign);
+		return (i * sign);
 }
 
 void	print_exit_error(char *string, char *message)
