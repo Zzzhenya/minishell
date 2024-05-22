@@ -25,6 +25,8 @@
 */
 int	check_str_null(t_data *data, char *str, int i, int j)
 {
+	if (str == NULL)
+		return (-1);
 	if (str[i] == '\0')
 	{
 		data->token[j] = NULL;

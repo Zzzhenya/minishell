@@ -156,23 +156,17 @@ void	delete_dq_ext(char *tmp, char *res, char **split_array, int j)
 
 	echo "abab""a''a'"''
 */
-
-void	delete_dq_handle_null(char *str, char **split_array, int j, char *res)
+char	*delete_dq(char *str, char **env, int j, char *res)
 {
+	char	**split_array;
+
+	split_array = NULL;
 	if (str != NULL)
 		split_array = split_str_by_dq(str, 0, 0);
 	if (split_array == NULL)
 		return (NULL);
 	else if (split_array[j] == NULL)
 		res = ft_strdup("");
-}
-
-char	*delete_dq(char *str, char **env, int j, char *res)
-{
-	char	**split_array;
-
-	split_array = NULL;
-	delete_dq_handle_null(str, split_array, j, res);
 	while (split_array[j] != NULL)
 	{
 		if (expand_token_env_5(&split_array[j], j) == -1)

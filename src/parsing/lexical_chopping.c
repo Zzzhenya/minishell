@@ -69,8 +69,10 @@ char	*check_dq(t_data *data, char **str, int *i, int *j)
 */
 int	ft_chopper(t_data *data, char *str, int j, int i)
 {
-	if (str == NULL || str[i] == '\0')
+	if (str == NULL)
 		return (-1);
+	// if (str[i] == '\0')
+	// 	return (-1);
 	while (*str != '\0' && *str == ' ')
 		str++;
 	if (check_str_null(data, str, i, j) == -1)
