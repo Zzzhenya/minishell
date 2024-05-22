@@ -82,6 +82,7 @@ char	*delete_dq_only(char *str)
 		if the first char and the second char in the updated string is " 
 		-> delete dq only and update the token
 */
+
 int	delete_sq_norm(t_data *data, char **env, int i, int j)
 {
 	char	*res;
