@@ -38,7 +38,7 @@ void	free_stuff_and_exit(t_envp *my_data, int yes, int i)
 {
 	if ((my_data->builtin == 1 && my_data->procs == 1) || yes == 1)
 	{
-		if (yes == 1)
+		if (yes == 1 && my_data->procs == 1)
 		{
 			close(my_data->saved_stdout);
 			close(my_data->saved_stdin);
